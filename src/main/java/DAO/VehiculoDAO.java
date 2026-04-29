@@ -1,10 +1,8 @@
 package DAO;
 
 import CONFIGURADOR.ConexionBD;
-import MODELO.Cliente;
 import MODELO.Vehiculo;
 
-import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,64 +12,63 @@ import java.util.List;
 
 public class VehiculoDAO {
 
-    public VehiculoDAO() {
-
-    }
-
-    //Metodo para dar de alta a vehiculos
+    // =========================
+    // INSERTAR VEHÍCULO
+    // =========================
     public static boolean InsertarVehiculo(Vehiculo v) {
 
-        String sqlInsercion = """
-                    INSERT INTO vehiculo
-                    (matricula, numBastidor, marca, modelo, anio, kmsActuales, idCliente)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)
-                """;
+        String sql = """
+            INSERT INTO Vehiculo
+            (matricula, marca, modelo, anio, kmsActuales, combustible, color, idCliente)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """;
 
         try (Connection con = ConexionBD.getConexion();
-             PreparedStatement ps = con.prepareStatement(sqlInsercion)) {
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, v.getMatricula());
-            ps.setString(2, v.getBastidor());
-            ps.setString(3, v.getMarca());
-            ps.setString(4, v.getModelo());
-            ps.setInt(5, v.getAnio());
-            ps.setInt(6, v.getKmsActuales());
-            ps.setInt(7, v.getCliente());
+            ps.setString(2, v.getMarca());
+            ps.setString(3, v.getModelo());
+            ps.setInt(4, v.getAnio());
+            ps.setInt(5, v.getKmsActuales());
+            ps.setString(6, v.getCombustible());
+            ps.setString(7, v.getColor());
+            ps.setInt(8, v.getIdCliente());
 
-            int filasAfect = ps.executeUpdate();
+            return ps.executeUpdate() > 0;
 
-            return filasAfect > 0;
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.out.println("Erro al dar de alta el vehiculo " + ex.getMessage());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return false;
     }
 
-    //Metodo para dar de baja a vehiculos
+    // =========================
+    // ELIMINAR VEHÍCULO
+    // =========================
+    public static boolean EliminarVehiculo(String matricula) {
 
-    public static boolean EliminarVehiculo(String matricula){
-        String sqlEliminacion = "DELETE FROM Vehiculo WHERE matricula = ?";
+        String sql = "DELETE FROM Vehiculo WHERE matricula = ?";
 
         try (Connection con = ConexionBD.getConexion();
-             PreparedStatement ps = con.prepareStatement(sqlEliminacion)){
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, matricula);
+            return ps.executeUpdate() > 0;
 
-            int filasAfec = ps.executeUpdate();
-            return filasAfec > 0;
-
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Error al dar de baja el vehiculo " + e.getMessage());
         }
         return false;
     }
 
+    // =========================
+    // LISTAR VEHÍCULOS
+    // =========================
     public static List<Vehiculo> ListarVehiculos() {
+
         List<Vehiculo> lista = new ArrayList<>();
-        String sql = "SELECT * FROM vehiculo";
+        String sql = "SELECT * FROM Vehiculo";
 
         try (Connection con = ConexionBD.getConexion();
              PreparedStatement ps = con.prepareStatement(sql);
@@ -80,20 +77,52 @@ public class VehiculoDAO {
             while (rs.next()) {
                 Vehiculo v = new Vehiculo(
                         rs.getString("matricula"),
-                        rs.getString("numBastidor"),
                         rs.getString("marca"),
                         rs.getString("modelo"),
                         rs.getInt("anio"),
                         rs.getInt("kmsActuales"),
+                        rs.getString("combustible"),
+                        rs.getString("color"),
                         rs.getInt("idCliente")
                 );
                 lista.add(v);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return lista;
     }
 
+    // =========================
+    // MODIFICAR VEHÍCULO
+    // =========================
+    public static boolean ModificarVehiculo(Vehiculo v) {
 
+        String sql = """
+            UPDATE Vehiculo
+            SET marca = ?, modelo = ?, anio = ?, kmsActuales = ?,
+                combustible = ?, color = ?, idCliente = ?
+            WHERE matricula = ?
+        """;
+
+        try (Connection con = ConexionBD.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, v.getMarca());
+            ps.setString(2, v.getModelo());
+            ps.setInt(3, v.getAnio());
+            ps.setInt(4, v.getKmsActuales());
+            ps.setString(5, v.getCombustible());
+            ps.setString(6, v.getColor());
+            ps.setInt(7, v.getIdCliente());
+            ps.setString(8, v.getMatricula());
+
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

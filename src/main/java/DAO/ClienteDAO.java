@@ -41,7 +41,7 @@ public class ClienteDAO {
         String sql = """
             SELECT 1
             FROM Cliente
-            WHERE dni = ? AND contraseña = ?
+            WHERE dni = ? AND contraseña = ? AND contraseña <> ''
             """;
 
         try(Connection con = ConexionBD.getConexion();
@@ -114,5 +114,31 @@ public class ClienteDAO {
         }
 
         return lista;
+    }
+
+    public boolean modificarCliente(Cliente c) {
+
+        String sql = """
+        UPDATE Cliente
+        SET nombre = ?, apellidos = ?, telefono = ?, email = ?, direccion = ?
+        WHERE dni = ?
+    """;
+
+        try (Connection con = ConexionBD.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, c.getNombre());
+            ps.setString(2, c.getApellidos());
+            ps.setString(3, c.getTelefono());
+            ps.setString(4, c.getEmail());
+            ps.setString(5, c.getDireccion());
+            ps.setString(6, c.getDni());
+
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

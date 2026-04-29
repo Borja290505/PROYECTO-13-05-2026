@@ -8,7 +8,6 @@ import java.awt.*;
 public class MenuCliente extends VentanaBase {
 
     private JButton btnAltaCliente;
-    private JButton btnBajaCliente;
     private JButton btnListarCliente;
     private JButton btnModificarCliente;
     private JButton btnVolver;
@@ -28,24 +27,20 @@ public class MenuCliente extends VentanaBase {
         panelBotones.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 
         btnAltaCliente = new JButton("Alta Cliente");
-        btnBajaCliente = new JButton("Baja Cliente");
         btnListarCliente = new JButton("Lista Clientes");
-        btnModificarCliente = new JButton("Lista Clientes");
+        btnModificarCliente = new JButton("Modificar Cliente");
 
         Dimension tamaño = new Dimension(180, 120);
         btnAltaCliente.setPreferredSize(tamaño);
-        btnBajaCliente.setPreferredSize(tamaño);
         btnListarCliente.setPreferredSize(tamaño);
         btnModificarCliente.setPreferredSize(tamaño);
 
         Font fuente = new Font("Arial", Font.BOLD,14);
         btnAltaCliente.setFont(fuente);
-        btnBajaCliente.setFont(fuente);
         btnListarCliente.setFont(fuente);
         btnModificarCliente.setFont(fuente);
 
         panelBotones.add(btnAltaCliente);
-        panelBotones.add(btnBajaCliente);
         panelBotones.add(btnListarCliente);
         panelBotones.add(btnModificarCliente);
 
@@ -65,10 +60,6 @@ public class MenuCliente extends VentanaBase {
     // ===== GETTERS (OBLIGATORIOS) =====
     public JButton getBtnAltaCliente() {
         return btnAltaCliente;
-    }
-
-    public JButton getBtnBajaCliente() {
-        return btnBajaCliente;
     }
 
     public JButton getBtnListarCliente() {

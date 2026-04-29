@@ -1,13 +1,19 @@
 package VISTA.MENU.VEHICULO;
 
-import MODELO.Vehiculo;
-import VISTA.VentanaBase;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.util.List;
 
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+import MODELO.Vehiculo;
+import VISTA.VentanaBase;
+
 public class ListarVehiculo extends VentanaBase {
+
     private JTable tabla;
     private DefaultTableModel modeloTabla;
     private JButton btnVolver;
@@ -17,7 +23,10 @@ public class ListarVehiculo extends VentanaBase {
         setLayout(new BorderLayout(10, 10));
 
         // Configuración de la tabla
-        String[] columnas = {"Matrícula", "Bastidor", "Marca", "Modelo", "Año", "Kms", "ID Cliente"};
+        String[] columnas = {
+            "Matrícula", "Marca", "Modelo", "Año", "Kms", "ID Cliente"
+        };
+
         modeloTabla = new DefaultTableModel(columnas, 0);
         tabla = new JTable(modeloTabla);
 
@@ -36,12 +45,18 @@ public class ListarVehiculo extends VentanaBase {
         modeloTabla.setRowCount(0); // Limpiar tabla
         for (Vehiculo v : vehiculos) {
             Object[] fila = {
-                    v.getMatricula(), v.getBastidor(), v.getMarca(),
-                    v.getModelo(), v.getAnio(), v.getKmsActuales(), v.getCliente()
+                v.getMatricula(),
+                v.getMarca(),
+                v.getModelo(),
+                v.getAnio(),
+                v.getKmsActuales(),
+                v.getIdCliente()
             };
             modeloTabla.addRow(fila);
         }
     }
 
-    public JButton getBtnVolver() { return btnVolver; }
+    public JButton getBtnVolver() {
+        return btnVolver;
+    }
 }

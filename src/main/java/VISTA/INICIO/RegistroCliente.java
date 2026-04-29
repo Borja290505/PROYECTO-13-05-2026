@@ -1,18 +1,26 @@
 package VISTA.INICIO;
 
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+
 import MODELO.Cliente;
 import VISTA.VentanaBase;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.Scanner;
-
 public class RegistroCliente extends VentanaBase {
 
-    private JTextField txtDni, txtNombre, txtApellidos, txtTelefono, txtEmail, txtDireccion;
-    private JPasswordField txtContraseña;
-    private JButton btnRegistrar;
-    private JButton btnVolver;
+    private final JTextField txtDni, txtNombre, txtApellidos, txtTelefono, txtEmail, txtDireccion;
+    private final JPasswordField txtContraseña;
+    private final JButton btnRegistrar;
+    private final JButton btnVolver;
 
     public RegistroCliente() {
         super("Registro de Cliente");
