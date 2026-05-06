@@ -10,6 +10,7 @@ public class MenuOrden extends VentanaBase {
     private JButton btnListarOrdenes;
     private JButton btnVolver;
     private JButton btnModificarOrden;
+    private JButton btnFinalizarOrden;
 
     public MenuOrden(){
         super("Menu Ordenes");
@@ -22,26 +23,31 @@ public class MenuOrden extends VentanaBase {
         titulo.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
         add(titulo, BorderLayout.NORTH);
 
-        JPanel panelBotones = new JPanel(new GridLayout(2, 2, 40, 0));
+        JPanel panelBotones = new JPanel(new GridLayout(2, 2, 40, 40));
         panelBotones.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 
         btnListarOrdenes = new JButton("ListarOrdenes");
         btnNuevaOrden = new JButton("Nueva Orden");
         btnModificarOrden = new JButton("Modificar Orden");
+        btnFinalizarOrden = new JButton("Finalizar Orden");
 
         Dimension tamaño = new Dimension(180, 120);
         btnListarOrdenes.setPreferredSize(tamaño);
         btnNuevaOrden.setPreferredSize(tamaño);
         btnModificarOrden.setPreferredSize(tamaño);
+        btnFinalizarOrden.setPreferredSize(tamaño);
 
         Font fuente = new Font("Arial", Font.BOLD,14);
         btnListarOrdenes.setFont(fuente);
         btnNuevaOrden.setFont(fuente);
         btnModificarOrden.setFont(fuente);
+        btnFinalizarOrden.setFont(fuente);
 
-        panelBotones.add(btnListarOrdenes);
         panelBotones.add(btnNuevaOrden);
+        panelBotones.add(btnFinalizarOrden);
+        panelBotones.add(btnListarOrdenes);
         panelBotones.add(btnModificarOrden);
+
 
         add(panelBotones, BorderLayout.CENTER);
 
@@ -87,5 +93,13 @@ public class MenuOrden extends VentanaBase {
 
     public void setBtnVolver(JButton btnVolver) {
         this.btnVolver = btnVolver;
+    }
+
+    public JButton getBtnFinalizarOrden() {
+        return btnFinalizarOrden;
+    }
+
+    public void setBtnFinalizarOrden(JButton btnFinalizarOrden) {
+        this.btnFinalizarOrden = btnFinalizarOrden;
     }
 }

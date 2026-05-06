@@ -10,7 +10,6 @@ public class MenuPrincipal extends VentanaBase {
     private JButton btnVehiculos;
     private JButton btnClientes;
     private JButton btnOrdenes;
-    private JButton btnFacturacion;
     private JButton btnEstadisticas;
     private JButton btnSalir;
 
@@ -36,36 +35,32 @@ public class MenuPrincipal extends VentanaBase {
 
 
         //Texto de cada boton
-        btnVehiculos = new JButton("Vehiculos");
         btnClientes = new JButton("Clientes");
+        btnVehiculos = new JButton("Vehiculos");
         btnOrdenes = new JButton("Ordenes");
-        btnFacturacion = new JButton("Facturacion");
         btnEstadisticas = new JButton("Estadisticas");
         btnSalir = new JButton("Salir");
 
         //Tamaño que tiene cada boton
         Dimension tamaño = new Dimension(180, 100);
-        btnVehiculos.setPreferredSize(tamaño);
         btnClientes.setPreferredSize(tamaño);
+        btnVehiculos.setPreferredSize(tamaño);
         btnOrdenes.setPreferredSize(tamaño);
-        btnFacturacion.setPreferredSize(tamaño);
         btnEstadisticas.setPreferredSize(tamaño);
         btnSalir.setPreferredSize(tamaño);
 
         //Le damos a cada boton el mismo tipo de letra
         Font fuente = new Font("Arial", Font.BOLD, 14);
-        btnVehiculos.setFont(fuente);
         btnClientes.setFont(fuente);
+        btnVehiculos.setFont(fuente);
         btnOrdenes.setFont(fuente);
-        btnFacturacion.setFont(fuente);
         btnEstadisticas.setFont(fuente);
         btnSalir.setFont(fuente);
 
         //Mostramos los botones
-        panelCentral.add(btnVehiculos);
         panelCentral.add(btnClientes);
+        panelCentral.add(btnVehiculos);
         panelCentral.add(btnOrdenes);
-        panelCentral.add(btnFacturacion);
         panelCentral.add(btnEstadisticas);
         panelCentral.add(btnSalir);
 
@@ -88,14 +83,6 @@ public class MenuPrincipal extends VentanaBase {
 
     public void setBtnEstadisticas(JButton btnEstadisticas) {
         this.btnEstadisticas = btnEstadisticas;
-    }
-
-    public JButton getBtnFacturacion() {
-        return btnFacturacion;
-    }
-
-    public void setBtnFacturacion(JButton btnFacturacion) {
-        this.btnFacturacion = btnFacturacion;
     }
 
     public JButton getBtnOrdenes() {

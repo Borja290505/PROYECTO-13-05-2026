@@ -8,33 +8,22 @@ public class OrdenReparacion {
     private int idOrden;
     private LocalDate fechaApertura;
     private LocalDate fechaCierre;
+    private LocalDate fechaEstimadaCierre;
     private int kmEntrada;
     private String estado;
     private String observaciones;
+    private Double precio_;
 
     private Vehiculo vehiculo;
-    private List<OrdenReparacionRepuesto> repuestosUsados;
 
-    public OrdenReparacion() {
+    public OrdenReparacion() {}
+
+    public String getEstado() {
+        return estado;
     }
 
-    public OrdenReparacion(int idOrden, LocalDate fechaApertura, LocalDate fechaCierre, int kmEntrada, String estado, String observaciones, Vehiculo vehiculo, List<OrdenReparacionRepuesto> repuestosUsados) {
-        this.idOrden = idOrden;
-        this.fechaApertura = fechaApertura;
-        this.fechaCierre = fechaCierre;
-        this.kmEntrada = kmEntrada;
+    public void setEstado(String estado) {
         this.estado = estado;
-        this.observaciones = observaciones;
-        this.vehiculo = vehiculo;
-        this.repuestosUsados = repuestosUsados;
-    }
-
-    public int getIdOrden() {
-        return idOrden;
-    }
-
-    public void setIdOrden(int idOrden) {
-        this.idOrden = idOrden;
     }
 
     public LocalDate getFechaApertura() {
@@ -53,20 +42,20 @@ public class OrdenReparacion {
         this.fechaCierre = fechaCierre;
     }
 
+    public int getIdOrden() {
+        return idOrden;
+    }
+
+    public void setIdOrden(int idOrden) {
+        this.idOrden = idOrden;
+    }
+
     public int getKmEntrada() {
         return kmEntrada;
     }
 
     public void setKmEntrada(int kmEntrada) {
         this.kmEntrada = kmEntrada;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
     }
 
     public String getObservaciones() {
@@ -85,11 +74,27 @@ public class OrdenReparacion {
         this.vehiculo = vehiculo;
     }
 
-    public List<OrdenReparacionRepuesto> getRepuestosUsados() {
-        return repuestosUsados;
+    public Double getPrecio() {
+        return precio_;
     }
 
-    public void setRepuestosUsados(List<OrdenReparacionRepuesto> repuestosUsados) {
-        this.repuestosUsados = repuestosUsados;
+    public void setPrecio(Double precio_) {
+        this.precio_ = precio_;
+    }
+
+    public LocalDate getFechaEstimadaCierre() {
+        return fechaEstimadaCierre;
+    }
+
+    public void setFechaEstimadaCierre(LocalDate fechaEstimadaCierre) {
+        this.fechaEstimadaCierre = fechaEstimadaCierre;
+    }
+
+    public Double getPrecio_() {
+        return precio_;
+    }
+
+    public void setPrecio_(Double precio_) {
+        this.precio_ = precio_;
     }
 }

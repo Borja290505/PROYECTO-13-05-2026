@@ -25,6 +25,10 @@ public class Vehiculo {
         this.idCliente = idCliente;
     }
 
+    public Vehiculo() {
+
+    }
+
     public String getMatricula() { return matricula; }
     public String getMarca() { return marca; }
     public String getModelo() { return modelo; }
@@ -33,4 +37,36 @@ public class Vehiculo {
     public String getCombustible() { return combustible; }
     public String getColor() { return color; }
     public int getIdCliente() { return idCliente; }
+
+    public void setAnio(int anio) {
+        this.anio = anio;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public void setCombustible(String combustible) {
+        this.combustible = combustible;
+    }
+
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
+    }
+
+    public void setKmsActuales(int kmsActuales) {
+        this.kmsActuales = kmsActuales;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
 }

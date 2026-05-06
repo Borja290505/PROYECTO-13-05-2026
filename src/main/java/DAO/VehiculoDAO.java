@@ -125,4 +125,37 @@ public class VehiculoDAO {
         }
         return false;
     }
+
+    // =========================
+// BUSCAR VEHÍCULO POR MATRÍCULA
+// =========================
+    public static Vehiculo buscarPorMatricula(String matricula) {
+
+        String sql = "SELECT * FROM Vehiculo WHERE matricula = ?";
+
+        try (Connection con = ConexionBD.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, matricula);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new Vehiculo(
+                        rs.getString("matricula"),
+                        rs.getString("marca"),
+                        rs.getString("modelo"),
+                        rs.getInt("anio"),
+                        rs.getInt("kmsActuales"),
+                        rs.getString("combustible"),
+                        rs.getString("color"),
+                        rs.getInt("idCliente")
+                );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null; // no existe
+    }
 }
