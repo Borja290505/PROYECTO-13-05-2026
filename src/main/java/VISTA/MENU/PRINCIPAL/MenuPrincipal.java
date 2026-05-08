@@ -10,6 +10,7 @@ public class MenuPrincipal extends VentanaBase {
     private JButton btnVehiculos;
     private JButton btnClientes;
     private JButton btnOrdenes;
+    private JButton btnFacturacion;
     private JButton btnEstadisticas;
     private JButton btnSalir;
 
@@ -20,14 +21,26 @@ public class MenuPrincipal extends VentanaBase {
         this.usuario = usuario;
 
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout(0, 20));
-
+        // =========================
+        // PANEL SUPERIOR (TÍTULO + USUARIO ACTIVO)
+        // =========================
+        JPanel panelSuperior = new JPanel(new GridLayout(2, 1));
 
         JLabel titulo = new JLabel("Menú Principal", SwingConstants.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 22));
-        titulo.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
-        add(titulo, BorderLayout.NORTH);
+        titulo.setBorder(BorderFactory.createEmptyBorder(15, 20, 5, 20));
+
+        JLabel lblUsuario = new JLabel(
+                "Usuario activo: " + usuario,
+                SwingConstants.CENTER
+        );
+        lblUsuario.setFont(new Font("Arial", Font.ITALIC, 14));
+        lblUsuario.setBorder(BorderFactory.createEmptyBorder(0, 20, 10, 20));
+
+        panelSuperior.add(titulo);
+        panelSuperior.add(lblUsuario);
+
+        add(panelSuperior, BorderLayout.NORTH);
 
 
         JPanel panelCentral = new JPanel(new GridLayout(2, 2, 40, 40));
@@ -38,6 +51,7 @@ public class MenuPrincipal extends VentanaBase {
         btnClientes = new JButton("Clientes");
         btnVehiculos = new JButton("Vehiculos");
         btnOrdenes = new JButton("Ordenes");
+        btnFacturacion = new JButton("Facturacion");
         btnEstadisticas = new JButton("Estadisticas");
         btnSalir = new JButton("Salir");
 
@@ -46,6 +60,7 @@ public class MenuPrincipal extends VentanaBase {
         btnClientes.setPreferredSize(tamaño);
         btnVehiculos.setPreferredSize(tamaño);
         btnOrdenes.setPreferredSize(tamaño);
+        btnFacturacion.setPreferredSize(tamaño);
         btnEstadisticas.setPreferredSize(tamaño);
         btnSalir.setPreferredSize(tamaño);
 
@@ -54,6 +69,7 @@ public class MenuPrincipal extends VentanaBase {
         btnClientes.setFont(fuente);
         btnVehiculos.setFont(fuente);
         btnOrdenes.setFont(fuente);
+        btnFacturacion.setFont(fuente);
         btnEstadisticas.setFont(fuente);
         btnSalir.setFont(fuente);
 
@@ -61,6 +77,7 @@ public class MenuPrincipal extends VentanaBase {
         panelCentral.add(btnClientes);
         panelCentral.add(btnVehiculos);
         panelCentral.add(btnOrdenes);
+        panelCentral.add(btnFacturacion);
         panelCentral.add(btnEstadisticas);
         panelCentral.add(btnSalir);
 
@@ -75,14 +92,6 @@ public class MenuPrincipal extends VentanaBase {
 
     public void setBtnClientes(JButton btnClientes) {
         this.btnClientes = btnClientes;
-    }
-
-    public JButton getBtnEstadisticas() {
-        return btnEstadisticas;
-    }
-
-    public void setBtnEstadisticas(JButton btnEstadisticas) {
-        this.btnEstadisticas = btnEstadisticas;
     }
 
     public JButton getBtnOrdenes() {
@@ -107,5 +116,29 @@ public class MenuPrincipal extends VentanaBase {
 
     public void setBtnVehiculos(JButton btnVehiculos) {
         this.btnVehiculos = btnVehiculos;
+    }
+
+    public JButton getBtnFacturacion() {
+        return btnFacturacion;
+    }
+
+    public void setBtnFacturacion(JButton btnFacturacion) {
+        this.btnFacturacion = btnFacturacion;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public JButton getBtnEstadisticas() {
+        return btnEstadisticas;
+    }
+
+    public void setBtnEstadisticas(JButton btnEstadisticas) {
+        this.btnEstadisticas = btnEstadisticas;
     }
 }

@@ -10,18 +10,18 @@ public class Factura {
     private double iva;
     private double total;
 
-    private OrdenReparacion orden;
+    private int idOrden;
 
     public Factura() {
     }
 
-    public Factura(int idFactura, LocalDate fechaFactura, double subtotal, double iva, double total, OrdenReparacion orden) {
-        this.idFactura = idFactura;
+    public Factura(LocalDate fechaFactura, int idFactura, int idOrden, double iva, double subtotal, double total) {
         this.fechaFactura = fechaFactura;
-        this.subtotal = subtotal;
+        this.idFactura = idFactura;
+        this.idOrden = idOrden;
         this.iva = iva;
+        this.subtotal = subtotal;
         this.total = total;
-        this.orden = orden;
     }
 
     public int getIdFactura() {
@@ -64,11 +64,11 @@ public class Factura {
         this.total = total;
     }
 
-    public OrdenReparacion getOrden() {
-        return orden;
+    public int getIdOrden() {
+        return idOrden;
     }
 
-    public void setOrden(OrdenReparacion orden) {
-        this.orden = orden;
+    public void setIdOrden(int idOrden) {
+        this.idOrden = idOrden;
     }
 }

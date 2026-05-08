@@ -16,7 +16,6 @@ public class ModificarCliente extends VentanaBase {
 
     public ModificarCliente() {
         super("Modificar Cliente");
-
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
 

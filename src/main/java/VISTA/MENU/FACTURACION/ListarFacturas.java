@@ -1,35 +1,29 @@
-package VISTA.MENU.CLIENTE;
+package VISTA.MENU.FACTURACION;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.util.List;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import MODELO.Cliente;
+import MODELO.Factura;
 import VISTA.VentanaBase;
 
-public class ListaCliente extends VentanaBase {
+public class ListarFacturas extends VentanaBase {
 
     private JTable tabla;
     private DefaultTableModel modeloTabla;
     private JButton btnVolver;
 
-    public ListaCliente() {
-        super("Listado de Clientes");
+    public ListarFacturas() {
 
+        super("Listado de Facturas");
         setLayout(new BorderLayout(15, 15));
 
         // =========================
         // TÍTULO
         // =========================
-        JLabel lblTitulo = new JLabel("Clientes Registrados");
+        JLabel lblTitulo = new JLabel("Facturas Registradas");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
         lblTitulo.setHorizontalAlignment(JLabel.CENTER);
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(15, 0, 10, 0));
@@ -39,13 +33,13 @@ public class ListaCliente extends VentanaBase {
         // TABLA
         // =========================
         String[] columnas = {
-                "DNI", "Nombre", "Apellidos", "Teléfono", "Email", "Dirección"
+                "ID Factura", "Fecha", "Subtotal", "IVA", "Total", "ID Orden"
         };
 
         modeloTabla = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Tabla solo lectura
+                return false; // solo lectura
             }
         };
 
@@ -56,11 +50,13 @@ public class ListaCliente extends VentanaBase {
         scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
         add(scrollPane, BorderLayout.CENTER);
 
-
+        // =========================
+        // PANEL INFERIOR
+        // =========================
         JPanel panelSur = new JPanel();
         panelSur.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
 
-        btnVolver = new JButton("Volver al Menú");
+        btnVolver = new JButton("Volver");
         panelSur.add(btnVolver);
 
         add(panelSur, BorderLayout.SOUTH);
@@ -70,24 +66,28 @@ public class ListaCliente extends VentanaBase {
     }
 
     // =========================
-    // CARGAR DATOS
+    // CARGAR DATOS EN LA TABLA
     // =========================
-    public void cargarDatos(List<Cliente> clientes) {
-        modeloTabla.setRowCount(0);
+    public void cargarDatos(List<Factura> facturas) {
 
-        for (Cliente c : clientes) {
+        modeloTabla.setRowCount(0); // limpiar tabla
+
+        for (Factura f : facturas) {
             Object[] fila = {
-                    c.getDni(),
-                    c.getNombre(),
-                    c.getApellidos(),
-                    c.getTelefono(),
-                    c.getEmail(),
-                    c.getDireccion()
+                    f.getIdFactura(),
+                    f.getFechaFactura(),
+                    f.getSubtotal(),
+                    f.getIva(),
+                    f.getTotal(),
+                    f.getIdOrden()
             };
             modeloTabla.addRow(fila);
         }
     }
 
+    // =========================
+    // GETTER
+    // =========================
     public JButton getBtnVolver() {
         return btnVolver;
     }

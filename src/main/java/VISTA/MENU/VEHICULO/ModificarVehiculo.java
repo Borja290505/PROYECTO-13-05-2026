@@ -1,13 +1,12 @@
 package VISTA.MENU.VEHICULO;
 
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import javax.swing.*;
 import MODELO.Cliente;
 import MODELO.Vehiculo;
 import VISTA.VentanaBase;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
-import java.awt.*;
-import java.util.List;
 import DAO.ClienteDAO;
 
 public class ModificarVehiculo extends VentanaBase {
@@ -16,97 +15,69 @@ public class ModificarVehiculo extends VentanaBase {
     private JComboBox<Cliente> comboClientes;
     private JButton btnBuscar, btnModificar, btnVolver;
 
-    public ModificarVehiculo() {
+    public ModificarVehiculo(){
         super("Modificar Vehículo");
-        setSize(500, 600); // Un poco más alta para que quepa todo bien
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new BorderLayout(15, 15));
+        setLayout(new BorderLayout(10, 10));
 
-        // --- TÍTULO Y BUSCADOR (NORTE) ---
-        JPanel panelNorte = new JPanel(new BorderLayout(10, 10));
-        panelNorte.setBorder(new EmptyBorder(20, 20, 10, 20));
+        JLabel lblTitulo = new JLabel("Gestión de Modificaciones");
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
+        lblTitulo.setHorizontalAlignment(JLabel.CENTER);
+        lblTitulo.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
+        add(lblTitulo, BorderLayout.NORTH);
 
-        JLabel lblTitulo = new JLabel("Gestión de Modificaciones", SwingConstants.CENTER);
-        lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
-        panelNorte.add(lblTitulo, BorderLayout.NORTH);
+        // Panel del formulario
+        JPanel formulario = new JPanel(new GridLayout(7, 2, 10, 10));
+        formulario.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
 
-        JPanel buscador = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        buscador.setBorder(BorderFactory.createTitledBorder(null, "Buscador de Vehículo", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 12)));
-
+        formulario.add(new JLabel("Matrícula:"));
         txtMatricula = new JTextField();
-        txtMatricula.setPreferredSize(new Dimension(150, 30));
+        formulario.add(txtMatricula);
+
         btnBuscar = new JButton("Buscar");
-        btnBuscar.setBackground(new Color(102, 178, 255)); // Azul claro
-        btnBuscar.setFont(new Font("Arial", Font.BOLD, 12));
+        formulario.add(btnBuscar);
+        formulario.add(new JLabel(""));
 
-        buscador.add(new JLabel("Matrícula:"));
-        buscador.add(txtMatricula);
-        buscador.add(btnBuscar);
-        panelNorte.add(buscador, BorderLayout.CENTER);
-
-        add(panelNorte, BorderLayout.NORTH);
-
-        // --- FORMULARIO (CENTRO) ---
-        JPanel formulario = new JPanel(new GridLayout(6, 2, 10, 15));
-        formulario.setBorder(BorderFactory.createCompoundBorder(
-                new EmptyBorder(10, 30, 10, 30),
-                BorderFactory.createTitledBorder("Datos del Vehículo")
-        ));
-
-        // Estilo común para etiquetas
-        Font labelFont = new Font("Arial", Font.BOLD, 14);
-
-        formulario.add(crearLabel("Marca:", labelFont));
+        formulario.add(new JLabel("Marca:"));
         txtMarca = new JTextField();
         formulario.add(txtMarca);
 
-        formulario.add(crearLabel("Modelo:", labelFont));
+        formulario.add(new JLabel("Modelo:"));
         txtModelo = new JTextField();
         formulario.add(txtModelo);
 
-        formulario.add(crearLabel("Año:", labelFont));
+        formulario.add(new JLabel("Año:"));
         txtAnio = new JTextField();
         formulario.add(txtAnio);
 
-        formulario.add(crearLabel("Kilómetros:", labelFont));
+        formulario.add(new JLabel("Kilómetros:"));
         txtKms = new JTextField();
         formulario.add(txtKms);
 
-        formulario.add(crearLabel("Propietario:", labelFont));
+        formulario.add(new JLabel("Propietario:"));
         comboClientes = new JComboBox<>();
         cargarClientes();
         formulario.add(comboClientes);
 
         add(formulario, BorderLayout.CENTER);
 
-        // --- BOTONES DE ACCIÓN (SUR) ---
-        JPanel panelBotones = new JPanel(new GridLayout(1, 2, 15, 10));
-        panelBotones.setBorder(new EmptyBorder(10, 30, 30, 30));
-
+        // Panel de botones
+        JPanel botones = new JPanel();
         btnModificar = new JButton("Guardar Cambios");
-        btnModificar.setFont(new Font("Arial", Font.BOLD, 14));
-        btnModificar.setBackground(new Color(144, 238, 144)); // Verde claro
-        btnModificar.setEnabled(false); // Desactivado hasta buscar
+        btnVolver = new JButton("Volver");
 
-        btnVolver = new JButton("Cancelar / Volver");
-        btnVolver.setFont(new Font("Arial", Font.BOLD, 14));
-
-        panelBotones.add(btnModificar);
-        panelBotones.add(btnVolver);
-        add(panelBotones, BorderLayout.SOUTH);
-
-        // Bloquear campos inicialmente
+        // Bloqueo inicial hasta que se busque un vehículo
         setCamposEditables(false);
 
-        setLocationRelativeTo(null); // Centrar en pantalla
+        botones.add(btnModificar);
+        botones.add(btnVolver);
+        add(botones, BorderLayout.SOUTH);
+
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
-    private JLabel crearLabel(String texto, Font fuente) {
-        JLabel label = new JLabel(texto);
-        label.setFont(fuente);
-        return label;
-    }
+    // --- MÉTODOS REQUERIDOS POR EL CONTROLADOR ---
 
     public void rellenarCampos(Vehiculo v) {
         txtMarca.setText(v.getMarca());
@@ -114,6 +85,7 @@ public class ModificarVehiculo extends VentanaBase {
         txtAnio.setText(String.valueOf(v.getAnio()));
         txtKms.setText(String.valueOf(v.getKmsActuales()));
 
+        // Seleccionar el cliente correcto en el combo
         for (int i = 0; i < comboClientes.getItemCount(); i++) {
             if (comboClientes.getItemAt(i).getIdCliente() == v.getIdCliente()) {
                 comboClientes.setSelectedIndex(i);
@@ -121,6 +93,7 @@ public class ModificarVehiculo extends VentanaBase {
             }
         }
     }
+
 
     public void setCamposEditables(boolean estado) {
         txtMarca.setEditable(estado);
@@ -131,13 +104,12 @@ public class ModificarVehiculo extends VentanaBase {
         btnModificar.setEnabled(estado);
     }
 
+
     private void cargarClientes() {
-        ClienteDAO dao = new ClienteDAO();
-        List<Cliente> clientes = dao.listarClientes();
-        for (Cliente c : clientes) comboClientes.addItem(c);
+        new ClienteDAO().listarClientes().forEach(comboClientes::addItem);
     }
 
-    // Getters para el controlador
+    // --- GETTERS ---
     public JTextField getTxtMatricula() { return txtMatricula; }
     public JTextField getTxtMarca() { return txtMarca; }
     public JTextField getTxtModelo() { return txtModelo; }

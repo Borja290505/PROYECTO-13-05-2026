@@ -47,12 +47,14 @@ public class FinalizarOrden extends VentanaBase {
                 return;
             }
 
-            boolean finalizada = OrdenReparacionDAO.finalizarOrdenPorMatricula(
-                            txtMatricula.getText(),
-                            txtObservaciones.getText()
-                    );
+            // ✅ AHORA ES UN INT
+            int idOrden = OrdenReparacionDAO.finalizarOrdenPorMatricula(
+                    txtMatricula.getText(),
+                    txtObservaciones.getText()
+            );
 
-            if (!finalizada) {
+            // ✅ COMPROBAMOS EL VALOR
+            if (idOrden == -1) {
                 JOptionPane.showMessageDialog(this,
                         "No existe una orden ABIERTA para esa matrícula",
                         "Error",
@@ -69,36 +71,20 @@ public class FinalizarOrden extends VentanaBase {
         });
     }
 
+    // GETTERS
     public JButton getBtnFinalizar() {
-
         return btnFinalizar;
-    }
-
-    public void setBtnFinalizar(JButton btnFinalizar) {
-        this.btnFinalizar = btnFinalizar;
     }
 
     public JButton getBtnVolver() {
         return btnVolver;
     }
 
-    public void setBtnVolver(JButton btnVolver) {
-        this.btnVolver = btnVolver;
-    }
-
     public JTextField getTxtMatricula() {
         return txtMatricula;
     }
 
-    public void setTxtMatricula(JTextField txtMatricula) {
-        this.txtMatricula = txtMatricula;
-    }
-
     public JTextField getTxtObservaciones() {
         return txtObservaciones;
-    }
-
-    public void setTxtObservaciones(JTextField txtObservaciones) {
-        this.txtObservaciones = txtObservaciones;
     }
 }

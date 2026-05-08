@@ -61,7 +61,7 @@ public class ClienteDAO {
         }
     }
 
-    public Cliente obtenerClientePorDni(String dni) {
+    public static Cliente obtenerClientePorDni(String dni) {
 
         String sql = "SELECT * FROM cliente WHERE dni = ?";
 
@@ -102,10 +102,12 @@ public class ClienteDAO {
 
             while (rs.next()) {
                 Cliente c = new Cliente();
-                c.setIdCliente(rs.getInt("idCliente"));
                 c.setDni(rs.getString("dni"));
                 c.setNombre(rs.getString("nombre"));
                 c.setApellidos(rs.getString("apellidos"));
+                c.setTelefono(rs.getString("telefono"));
+                c.setEmail(rs.getString("email"));
+                c.setDireccion(rs.getString("direccion"));
                 lista.add(c);
             }
 
