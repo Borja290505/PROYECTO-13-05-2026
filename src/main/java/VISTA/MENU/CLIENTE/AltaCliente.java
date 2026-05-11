@@ -84,4 +84,60 @@ public class AltaCliente extends VentanaBase {
     }
     public JButton getBtnGuardar() { return btnGuardar; }
     public JButton getBtnVolver() { return btnVolver; }
+
+    public void setBtnGuardar(JButton btnGuardar) {
+        this.btnGuardar = btnGuardar;
+    }
+
+    public void setBtnVolver(JButton btnVolver) {
+        this.btnVolver = btnVolver;
+    }
+
+    public JTextField getTxtApellidos() {
+        return txtApellidos;
+    }
+
+    public void setTxtApellidos(JTextField txtApellidos) {
+        this.txtApellidos = txtApellidos;
+    }
+
+    public JTextField getTxtDireccion() {
+        return txtDireccion;
+    }
+
+    public void setTxtDireccion(JTextField txtDireccion) {
+        this.txtDireccion = txtDireccion;
+    }
+
+    public JTextField getTxtDni() {
+        return txtDni;
+    }
+
+    public void setTxtDni(JTextField txtDni) {
+        this.txtDni = txtDni;
+    }
+
+    public JTextField getTxtEmail() {
+        return txtEmail;
+    }
+
+    public void setTxtEmail(JTextField txtEmail) {
+        this.txtEmail = txtEmail;
+    }
+
+    public JTextField getTxtNombre() {
+        return txtNombre;
+    }
+
+    public void setTxtNombre(JTextField txtNombre) {
+        this.txtNombre = txtNombre;
+    }
+
+    public JTextField getTxtTelefono() {
+        return txtTelefono;
+    }
+
+    public void setTxtTelefono(JTextField txtTelefono) {
+        this.txtTelefono = txtTelefono;
+    }
 }

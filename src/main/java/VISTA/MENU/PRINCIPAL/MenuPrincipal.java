@@ -14,31 +14,18 @@ public class MenuPrincipal extends VentanaBase {
     private JButton btnEstadisticas;
     private JButton btnSalir;
 
-    private String usuario;
-
-    public MenuPrincipal(String usuario) {
+    public MenuPrincipal() {
         super("Menú Principal");
-        this.usuario = usuario;
-
 
         // =========================
-        // PANEL SUPERIOR (TÍTULO + USUARIO ACTIVO)
+        // PANEL SUPERIOR
         // =========================
         JPanel panelSuperior = new JPanel(new GridLayout(2, 1));
 
         JLabel titulo = new JLabel("Menú Principal", SwingConstants.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 22));
         titulo.setBorder(BorderFactory.createEmptyBorder(15, 20, 5, 20));
-
-        JLabel lblUsuario = new JLabel(
-                "Usuario activo: " + usuario,
-                SwingConstants.CENTER
-        );
-        lblUsuario.setFont(new Font("Arial", Font.ITALIC, 14));
-        lblUsuario.setBorder(BorderFactory.createEmptyBorder(0, 20, 10, 20));
-
         panelSuperior.add(titulo);
-        panelSuperior.add(lblUsuario);
 
         add(panelSuperior, BorderLayout.NORTH);
 
@@ -124,14 +111,6 @@ public class MenuPrincipal extends VentanaBase {
 
     public void setBtnFacturacion(JButton btnFacturacion) {
         this.btnFacturacion = btnFacturacion;
-    }
-
-    public String getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
     }
 
     public JButton getBtnEstadisticas() {

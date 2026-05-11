@@ -215,4 +215,12 @@ public class NuevaOrden extends VentanaBase {
     public void setTxtPrecio(JTextField txtPrecio) {
         this.txtPrecio = txtPrecio;
     }
+
+    public JTextField getTxtFechaEstimadaCierre() {
+        return txtFechaEstimadaCierre;
+    }
+
+    public void setTxtFechaEstimadaCierre(JTextField txtFechaEstimadaCierre) {
+        this.txtFechaEstimadaCierre = txtFechaEstimadaCierre;
+    }
 }

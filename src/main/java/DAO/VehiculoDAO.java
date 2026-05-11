@@ -30,7 +30,7 @@ public class VehiculoDAO {
             ps.setString(2, v.getMarca());
             ps.setString(3, v.getModelo());
             ps.setInt(4, v.getAnio());
-            ps.setInt(5, v.getKmsActuales());
+            ps.setDouble(5, v.getKmsActuales());
             ps.setString(6, v.getCombustible());
             ps.setString(7, v.getColor());
             ps.setInt(8, v.getIdCliente());
@@ -80,7 +80,7 @@ public class VehiculoDAO {
                         rs.getString("marca"),
                         rs.getString("modelo"),
                         rs.getInt("anio"),
-                        rs.getInt("kmsActuales"),
+                        rs.getDouble("kmsActuales"),
                         rs.getString("combustible"),
                         rs.getString("color"),
                         rs.getInt("idCliente")
@@ -112,7 +112,7 @@ public class VehiculoDAO {
             ps.setString(1, v.getMarca());
             ps.setString(2, v.getModelo());
             ps.setInt(3, v.getAnio());
-            ps.setInt(4, v.getKmsActuales());
+            ps.setDouble(4, v.getKmsActuales());
             ps.setString(5, v.getCombustible());
             ps.setString(6, v.getColor());
             ps.setInt(7, v.getIdCliente());
@@ -145,7 +145,7 @@ public class VehiculoDAO {
                         rs.getString("marca"),
                         rs.getString("modelo"),
                         rs.getInt("anio"),
-                        rs.getInt("kmsActuales"),
+                        rs.getDouble("kmsActuales"),
                         rs.getString("combustible"),
                         rs.getString("color"),
                         rs.getInt("idCliente")

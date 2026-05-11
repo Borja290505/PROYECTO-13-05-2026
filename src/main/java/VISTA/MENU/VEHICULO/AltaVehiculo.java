@@ -23,7 +23,7 @@ import VISTA.VentanaBase;
 
 public class AltaVehiculo extends VentanaBase {
 
-    private JTextField txtMatricula, txtMarca, txtModelo, txtAnio, txtKms;
+    private JTextField txtMatricula, txtMarca, txtModelo, txtAnio, txtKms, txtColor;
     private JTextField txtBuscarDni;
     private JLabel lblClienteEncontrado;
     private Cliente clienteEncontrado;
@@ -45,7 +45,7 @@ public class AltaVehiculo extends VentanaBase {
         add(lblTitulo, BorderLayout.NORTH);
 
         // Panel del formulario usando GridLayout simple
-        JPanel formulario = new JPanel(new GridLayout(7, 2, 10, 10));
+        JPanel formulario = new JPanel(new GridLayout(8, 2, 10, 10));
         formulario.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
 
         formulario.add(new JLabel("Matrícula:"));
@@ -67,6 +67,10 @@ public class AltaVehiculo extends VentanaBase {
         formulario.add(new JLabel("Km actuales:"));
         txtKms = new JTextField();
         formulario.add(txtKms);
+
+        formulario.add(new JLabel("Color:"));
+        txtColor = new JTextField();
+        formulario.add(txtColor);
 
         formulario.add(new JLabel("Cliente (DNI):"));
         txtBuscarDni = new JTextField();
@@ -90,71 +94,7 @@ public class AltaVehiculo extends VentanaBase {
         botones.add(btnGuardar);
         botones.add(btnVolver);
 
-        btnBuscarCliente.addActionListener(e -> {
-            String dni = txtBuscarDni.getText().trim();
 
-            if (dni.isEmpty()) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Introduce un DNI para buscar el cliente",
-                        "Dato requerido",
-                        JOptionPane.WARNING_MESSAGE
-                );
-                return;
-            }
-
-            ClienteDAO dao = new ClienteDAO();
-            clienteEncontrado = dao.obtenerClientePorDni(dni);
-
-            if (clienteEncontrado != null) {
-                lblClienteEncontrado.setText(
-                        clienteEncontrado.getNombre() + " " + clienteEncontrado.getApellidos() + " - DNI: " + clienteEncontrado.getDni()
-                );
-                lblClienteEncontrado.setForeground(Color.GREEN);
-            } else {
-                lblClienteEncontrado.setText("Cliente no encontrado");
-                lblClienteEncontrado.setForeground(Color.RED);
-                clienteEncontrado = null;
-
-                JOptionPane.showMessageDialog(
-                        this,
-                        "No existe ningún cliente en la base de datos con el DNI:\n" + dni,
-                        "Cliente no encontrado",
-                        JOptionPane.ERROR_MESSAGE
-                );
-            }
-        });
-
-        btnGuardar.addActionListener(e -> {
-            try {
-                if (clienteEncontrado == null) {
-                    JOptionPane.showMessageDialog(this,
-                            "Debes buscar y seleccionar un cliente antes");
-                    return;
-                }
-
-                Vehiculo v = new Vehiculo(
-                        txtMatricula.getText().trim(),
-                        txtMarca.getText().trim(),
-                        txtModelo.getText().trim(),
-                        Integer.parseInt(txtAnio.getText()),
-                        Integer.parseInt(txtKms.getText()),
-                        "Gasolina",
-                        "Blanco",
-                        clienteEncontrado.getIdCliente()
-                );
-
-                if (InsertarVehiculo(v)) {
-                    JOptionPane.showMessageDialog(this,
-                            "Vehículo insertado correctamente");
-                    dispose();
-                }
-
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this,
-                        "Año y KM deben ser numéricos");
-            }
-        });
 
         add(botones, BorderLayout.SOUTH);
 
@@ -167,5 +107,103 @@ public class AltaVehiculo extends VentanaBase {
 
     public JButton getBtnVolver() {
         return btnVolver;
+    }
+
+    public JButton getBtnBuscarCliente() {
+        return btnBuscarCliente;
+    }
+
+    public void setBtnBuscarCliente(JButton btnBuscarCliente) {
+        this.btnBuscarCliente = btnBuscarCliente;
+    }
+
+    public void setBtnGuardar(JButton btnGuardar) {
+        this.btnGuardar = btnGuardar;
+    }
+
+    public void setBtnVolver(JButton btnVolver) {
+        this.btnVolver = btnVolver;
+    }
+
+    public void setClienteEncontrado(Cliente c) {
+        this.clienteEncontrado = c;
+
+        if (c != null) {
+            lblClienteEncontrado.setText(
+                    c.getNombre() + " " + c.getApellidos()
+            );
+            lblClienteEncontrado.setForeground(Color.GREEN);
+        } else {
+            lblClienteEncontrado.setText("Cliente no encontrado");
+            lblClienteEncontrado.setForeground(Color.RED);
+        }
+    }
+
+    public Cliente getClienteSeleccionado() {
+        return clienteEncontrado;
+    }
+
+    public JLabel getLblClienteEncontrado() {
+        return lblClienteEncontrado;
+    }
+
+    public void setLblClienteEncontrado(JLabel lblClienteEncontrado) {
+        this.lblClienteEncontrado = lblClienteEncontrado;
+    }
+
+    public JTextField getTxtAnio() {
+        return txtAnio;
+    }
+
+    public void setTxtAnio(JTextField txtAnio) {
+        this.txtAnio = txtAnio;
+    }
+
+    public JTextField getTxtBuscarDni() {
+        return txtBuscarDni;
+    }
+
+    public void setTxtBuscarDni(JTextField txtBuscarDni) {
+        this.txtBuscarDni = txtBuscarDni;
+    }
+
+    public JTextField getTxtKms() {
+        return txtKms;
+    }
+
+    public void setTxtKms(JTextField txtKms) {
+        this.txtKms = txtKms;
+    }
+
+    public JTextField getTxtMarca() {
+        return txtMarca;
+    }
+
+    public void setTxtMarca(JTextField txtMarca) {
+        this.txtMarca = txtMarca;
+    }
+
+    public JTextField getTxtMatricula() {
+        return txtMatricula;
+    }
+
+    public void setTxtMatricula(JTextField txtMatricula) {
+        this.txtMatricula = txtMatricula;
+    }
+
+    public JTextField getTxtModelo() {
+        return txtModelo;
+    }
+
+    public void setTxtModelo(JTextField txtModelo) {
+        this.txtModelo = txtModelo;
+    }
+
+    public JTextField getTxtColor() {
+        return txtColor;
+    }
+
+    public void setTxtColor(JTextField txtColor) {
+        this.txtColor = txtColor;
     }
 }

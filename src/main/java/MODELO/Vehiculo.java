@@ -6,13 +6,13 @@ public class Vehiculo {
     private String marca;
     private String modelo;
     private int anio;
-    private int kmsActuales;
+    private Double kmsActuales;
     private String combustible;
     private String color;
     private int idCliente;
 
     public Vehiculo(String matricula, String marca, String modelo,
-                    int anio, int kmsActuales,
+                    int anio, Double kmsActuales,
                     String combustible, String color, int idCliente) {
 
         this.matricula = matricula;
@@ -33,7 +33,7 @@ public class Vehiculo {
     public String getMarca() { return marca; }
     public String getModelo() { return modelo; }
     public int getAnio() { return anio; }
-    public int getKmsActuales() { return kmsActuales; }
+    public double getKmsActuales() { return kmsActuales; }
     public String getCombustible() { return combustible; }
     public String getColor() { return color; }
     public int getIdCliente() { return idCliente; }
@@ -54,7 +54,7 @@ public class Vehiculo {
         this.idCliente = idCliente;
     }
 
-    public void setKmsActuales(int kmsActuales) {
+    public void setKmsActuales(double kmsActuales) {
         this.kmsActuales = kmsActuales;
     }
 

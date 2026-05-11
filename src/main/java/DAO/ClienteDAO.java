@@ -37,6 +37,27 @@ public class ClienteDAO {
         }
     }
 
+    public boolean existeClientePorDni(String dni) {
+
+        String sql = "SELECT COUNT(*) FROM cliente WHERE dni = ?";
+
+        try (Connection con = ConexionBD.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, dni);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
     public boolean loginCliente(String dni, String contraseña){
         String sql = """
             SELECT 1
