@@ -4,28 +4,19 @@ import DAO.ClienteDAO;
 import DAO.VehiculoDAO;
 import MODELO.Cliente;
 import MODELO.Vehiculo;
-import VISTA.MENU.PRINCIPAL.MenuPrincipal;
 import VISTA.MENU.VEHICULO.*;
 
 import javax.swing.*;
+
+import java.util.List;
 
 import static UTIL.Validaciones.*;
 
 public class VehiculoControlador {
 
-    private static ClienteDAO clienteDAO;
+    private ClienteDAO clienteDAO = new ClienteDAO();
 
-    // =========================
-    // CONSTRUCTOR
-    // =========================
-    public VehiculoControlador() {
-        clienteDAO = new ClienteDAO();
-    }
-
-    // =========================
-    // MENÚ VEHÍCULOS
-    // =========================
-    public static void abrirMenuVehiculo() {
+    public void abrirMenuVehiculo() {
 
         MenuVehiculo menu = new MenuVehiculo();
 
@@ -51,14 +42,14 @@ public class VehiculoControlador {
 
         menu.getBtnVolver().addActionListener(e -> {
             menu.dispose();
-            new MenuPrincipal(); // vuelve al menú principal
+            new MenuPrincipalControlador(); // vuelve al menú principal
         });
     }
 
     // =========================
     // ALTA VEHÍCULO
     // =========================
-    private static void abrirAltaVehiculo() {
+    private void abrirAltaVehiculo() {
 
         AltaVehiculo vista = new AltaVehiculo();
 
@@ -165,7 +156,7 @@ public class VehiculoControlador {
     // =========================
     // BAJA VEHÍCULO
     // =========================
-    private static void abrirBajaVehiculo() {
+    private void abrirBajaVehiculo() {
 
         BajaVehiculo vista = new BajaVehiculo();
 
@@ -194,10 +185,33 @@ public class VehiculoControlador {
     // =========================
     // LISTAR VEHÍCULOS
     // =========================
-    private static void abrirListarVehiculos() {
+    private void abrirListarVehiculos() {
 
         ListarVehiculo vista = new ListarVehiculo();
         vista.cargarDatos(VehiculoDAO.ListarVehiculos());
+
+        vista.getBtnBuscar().addActionListener(e -> {
+
+            String matricula = vista.getTxtBuscarMatricula()
+                    .getText()
+                    .trim()
+                    .toUpperCase();
+
+            if (matricula.isEmpty()) {
+                vista.cargarDatos(VehiculoDAO.ListarVehiculos());
+                return;
+            }
+
+            Vehiculo v = VehiculoDAO.buscarPorMatricula(matricula);
+
+            if (v == null) {
+                JOptionPane.showMessageDialog(vista,
+                        "No existe ningún vehículo con esa matrícula");
+                vista.cargarDatos(List.of());
+            } else {
+                vista.cargarDatos(List.of(v));
+            }
+        });
 
         vista.getBtnVolver().addActionListener(e -> {
             vista.dispose();
@@ -208,7 +222,7 @@ public class VehiculoControlador {
     // =========================
     // MODIFICAR VEHÍCULO
     // =========================
-    private static void abrirModificarVehiculo() {
+    private void abrirModificarVehiculo() {
 
         ModificarVehiculo vista = new ModificarVehiculo();
 
@@ -227,6 +241,8 @@ public class VehiculoControlador {
                         "No se encontró ningún vehículo con esa matrícula.");
             }
         });
+
+
 
         vista.getBtnModificar().addActionListener(e -> {
             try {

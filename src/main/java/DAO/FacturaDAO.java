@@ -14,9 +14,9 @@ public class FacturaDAO {
     public static boolean insertarFactura(Factura f) {
 
         String sql = """
-        INSERT INTO factura (fechaFactura, subtotal, iva, total, idOrden)
-        VALUES (?, ?, ?, ?, ?)
-    """;
+                    INSERT INTO factura (fechaFactura, subtotal, iva, total, idOrden)
+                    VALUES (?, ?, ?, ?, ?)
+                """;
 
         try (Connection con = ConexionBD.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -39,7 +39,13 @@ public class FacturaDAO {
 
         List<Factura> lista = new ArrayList<>();
 
-        String sql = "SELECT * FROM factura";
+
+        String sql = """
+                    SELECT f.*, o.matricula
+                    FROM factura f
+                    JOIN ordenreparacion o ON f.idOrden = o.idOrden
+                """;
+
 
         try (Connection con = ConexionBD.getConexion();
              PreparedStatement ps = con.prepareStatement(sql);
@@ -52,7 +58,7 @@ public class FacturaDAO {
                 f.setSubtotal(rs.getDouble("subtotal"));
                 f.setIva(rs.getDouble("iva"));
                 f.setTotal(rs.getDouble("total"));
-                f.setIdOrden(rs.getInt("idOrden"));
+                f.setMatricula(rs.getString("matricula"));
 
                 lista.add(f);
             }
@@ -69,11 +75,11 @@ public class FacturaDAO {
         List<Factura> lista = new ArrayList<>();
 
         String sql = """
-        SELECT f.*
-        FROM factura f
-        JOIN ordenreparacion o ON f.idOrden = o.idOrden
-        WHERE o.matricula = ?
-    """;
+                    SELECT f.*
+                    FROM factura f
+                    JOIN ordenreparacion o ON f.idOrden = o.idOrden
+                    WHERE o.matricula = ?
+                """;
 
         try (Connection con = ConexionBD.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -88,7 +94,7 @@ public class FacturaDAO {
                 f.setSubtotal(rs.getDouble("subtotal"));
                 f.setIva(rs.getDouble("iva"));
                 f.setTotal(rs.getDouble("total"));
-                f.setIdOrden(rs.getInt("idOrden"));
+                f.setMatricula(rs.getString("matricula"));
 
                 lista.add(f);
             }
@@ -105,13 +111,13 @@ public class FacturaDAO {
         List<Factura> lista = new ArrayList<>();
 
         String sql = """
-        SELECT f.*
-        FROM factura f
-        JOIN ordenreparacion o ON f.idOrden = o.idOrden
-        JOIN vehiculo v ON o.matricula = v.matricula
-        JOIN cliente c ON v.idCliente = c.idCliente
-        WHERE c.dni = ?
-    """;
+                    SELECT f.*, o.matricula
+                    FROM factura f
+                    JOIN ordenreparacion o ON f.idOrden = o.idOrden
+                    JOIN vehiculo v ON o.matricula = v.matricula
+                    JOIN cliente c ON v.idCliente = c.idCliente
+                    WHERE c.dni = ?
+                """;
 
         try (Connection con = ConexionBD.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -126,7 +132,7 @@ public class FacturaDAO {
                 f.setSubtotal(rs.getDouble("subtotal"));
                 f.setIva(rs.getDouble("iva"));
                 f.setTotal(rs.getDouble("total"));
-                f.setIdOrden(rs.getInt("idOrden"));
+                f.setMatricula(rs.getString("matricula"));
                 lista.add(f);
             }
 

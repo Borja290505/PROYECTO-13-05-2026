@@ -1,12 +1,10 @@
 package CONTROLADOR;
 
-import DAO.OrdenReparacionDAO;
 import DAO.FacturaDAO;
-import MODELO.OrdenReparacion;
+import DAO.OrdenReparacionDAO;
 import MODELO.Factura;
-
+import MODELO.OrdenReparacion;
 import VISTA.MENU.ORDEN.*;
-import VISTA.MENU.PRINCIPAL.MenuPrincipal;
 
 import javax.swing.*;
 import java.time.LocalDate;
@@ -14,12 +12,12 @@ import java.util.List;
 
 public class OrdenRepControlador {
 
-    private static OrdenReparacion ordenActual;
+    private OrdenReparacion ordenActual;
 
     // =========================
     // MENÚ ÓRDENES
     // =========================
-    public static void abrirMenuOrdenes() {
+    public void abrirMenuOrdenes() {
 
         MenuOrden menu = new MenuOrden();
 
@@ -45,19 +43,18 @@ public class OrdenRepControlador {
 
         menu.getBtnVolver().addActionListener(e -> {
             menu.dispose();
-            new MenuPrincipal(); // vuelve al menú principal
+            new MenuPrincipalControlador(); // volver al menú principal
         });
     }
 
     // =========================
     // NUEVA ORDEN
     // =========================
-    private static void abrirNuevaOrden() {
+    private void abrirNuevaOrden() {
 
         NuevaOrden vista = new NuevaOrden();
 
         vista.getBtnCrear().addActionListener(e -> {
-            // aquí iría la lógica de crear orden
             JOptionPane.showMessageDialog(vista,
                     "Orden creada correctamente");
             vista.dispose();
@@ -73,7 +70,7 @@ public class OrdenRepControlador {
     // =========================
     // FINALIZAR ORDEN
     // =========================
-    private static void abrirFinalizarOrden() {
+    private void abrirFinalizarOrden() {
 
         FinalizarOrden vista = new FinalizarOrden();
 
@@ -88,10 +85,11 @@ public class OrdenRepControlador {
                 return;
             }
 
-            int idOrden = OrdenReparacionDAO.finalizarOrdenPorMatricula(
-                    matricula,
-                    observaciones
-            );
+            int idOrden =
+                    OrdenReparacionDAO.finalizarOrdenPorMatricula(
+                            matricula,
+                            observaciones
+                    );
 
             if (idOrden == -1) {
                 JOptionPane.showMessageDialog(vista,
@@ -102,7 +100,6 @@ public class OrdenRepControlador {
             OrdenReparacion orden =
                     OrdenReparacionDAO.buscarPorMatricula(matricula);
 
-            // ===== CREAR FACTURA =====
             double subtotal = orden.getPrecio();
             double total = subtotal * 1.21;
             double iva = total - subtotal;
@@ -132,7 +129,7 @@ public class OrdenRepControlador {
     // =========================
     // LISTAR ÓRDENES
     // =========================
-    private static void abrirListarOrdenes() {
+    private void abrirListarOrdenes() {
 
         ListarOrdenes vista = new ListarOrdenes();
         List<OrdenReparacion> lista =
@@ -149,7 +146,7 @@ public class OrdenRepControlador {
     // =========================
     // MODIFICAR ORDEN
     // =========================
-    private static void abrirModificarOrden() {
+    private void abrirModificarOrden() {
 
         ModificarOrden vista = new ModificarOrden();
 

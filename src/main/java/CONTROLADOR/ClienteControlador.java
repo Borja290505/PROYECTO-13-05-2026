@@ -1,74 +1,19 @@
 package CONTROLADOR;
 
-import DAO.*;
-
+import DAO.ClienteDAO;
 import MODELO.Cliente;
-import MODELO.Factura;
-import MODELO.OrdenReparacion;
-import MODELO.Vehiculo;
-
-import UTIL.LoginApp;
-
-import VISTA.INICIO.RegistroCliente;
-import VISTA.INICIO.PaginaInicio;
-
-import VISTA.MENU.ESTADISTICAS.Estadisticas;
-import VISTA.MENU.FACTURACION.*;
-import VISTA.MENU.PRINCIPAL.MenuPrincipal;
-
-
 import VISTA.MENU.CLIENTE.*;
-import VISTA.MENU.VEHICULO.*;
-import VISTA.MENU.ORDEN.*;
 
 import javax.swing.*;
-import java.awt.image.VolatileImage;
-import java.util.List;
 
 import static UTIL.Validaciones.*;
 
 public class ClienteControlador {
 
-    private PaginaInicio inicioVista;
-    private static ClienteDAO clienteDAO;
-    private static Cliente clienteActivo;
-    private OrdenReparacion ordenActual;
+    private ClienteDAO clienteDAO = new ClienteDAO();
+    private Cliente clienteActual;
 
-    public ClienteControlador() {
-
-        clienteDAO = new ClienteDAO();
-        inicioVista = new PaginaInicio();
-
-        inicioVista.getBtnInicioSesion().addActionListener(e -> {
-            String usuario = inicioVista.getTxtUsuario().getText().trim();
-            String pass = new String(inicioVista.getTxtPassword()
-                    .getPassword()).trim();
-
-            boolean loginCorrecto = clienteDAO.loginCliente(usuario, pass);
-            LoginApp.registrarLogin(usuario, loginCorrecto);
-
-            if (loginCorrecto) {
-                clienteActivo = clienteDAO.obtenerClientePorDni(usuario);
-                inicioVista.dispose();
-                 new MenuPrincipal();
-            } else {
-                JOptionPane.showMessageDialog(inicioVista,
-                        "Usuario o contraseña incorrectos");
-            }
-        });
-
-        inicioVista.getBtnRegistro().addActionListener(e -> {
-            inicioVista.dispose();
-            LoginControlador.abrirRegistro();
-        });
-    }
-
-    // =========================
-    // MENÚs
-    // =========================
-
-
-    public static void abrirMenuCliente() {
+    public void abrirMenuCliente() {
 
         MenuCliente menu = new MenuCliente();
 
@@ -89,15 +34,11 @@ public class ClienteControlador {
 
         menu.getBtnVolver().addActionListener(e -> {
             menu.dispose();
-             new MenuPrincipal();
+            new MenuPrincipalControlador();
         });
     }
 
-
-    // =========================
-    // CLIENTES (YA LOS TENGO CON LAS COMPROBACIONES)
-    // =========================
-    private static void abrirAltaCliente() {
+    private void abrirAltaCliente() {
 
         AltaCliente vista = new AltaCliente();
 
@@ -109,56 +50,34 @@ public class ClienteControlador {
             String email = vista.getTxtEmail().getText().trim();
             String telefono = vista.getTxtTelefono().getText().trim();
 
-            // Formato DNI
             if (!dniValido(dni)) {
-                JOptionPane.showMessageDialog(vista,
-                        "El DNI no tiene un formato válido");
+                JOptionPane.showMessageDialog(vista, "El DNI tiene que tener formato 12345678A");
                 return;
             }
 
-            // Nombre
             if (!nombreValido(nombre)) {
-                JOptionPane.showMessageDialog(vista,
-                        "El nombre no tiene un formato válido");
+                JOptionPane.showMessageDialog(vista, "El nombre no puede contener numeros");
                 return;
             }
-
-            // Nombre
-            if (!apellidoValido(apellidos)) {
-                JOptionPane.showMessageDialog(vista,
-                        "Los apellidos no tiene un formato válido");
+            if (!apellidoValido(apellidos) ) {
+                JOptionPane.showMessageDialog(vista, "El apellido no puede contener numeros");
                 return;
             }
-
-            // Teléfono
-            if (!telefono.isEmpty() && !telefonoValido(telefono)) {
-                JOptionPane.showMessageDialog(vista,
-                        "El teléfono debe tener 9 dígitos");
-                return;
-            }
-            // Email
             if (!emailValido(email)) {
-                JOptionPane.showMessageDialog(vista,
-                        "El email no es válido");
+                JOptionPane.showMessageDialog(vista, "El email tiene que tener formato ****@****.****");
                 return;
             }
 
-            // Duplicado DNI
             if (clienteDAO.existeClientePorDni(dni)) {
-                JOptionPane.showMessageDialog(vista,
-                        "Ya existe un cliente con ese DNI");
+                JOptionPane.showMessageDialog(vista, "Cliente ya existente");
                 return;
             }
-
 
             Cliente c = vista.getClienteFormulario();
             c.setFechaAlta(java.time.LocalDateTime.now());
-
             clienteDAO.insertarCliente(c);
 
-            JOptionPane.showMessageDialog(vista,
-                    "Cliente registrado correctamente");
-
+            JOptionPane.showMessageDialog(vista, "Cliente registrado");
             vista.dispose();
             abrirMenuCliente();
         });
@@ -169,105 +88,92 @@ public class ClienteControlador {
         });
     }
 
-    private static void abrirListarClientes() {
+    private void abrirListarClientes() {
 
         ListaCliente vista = new ListaCliente();
+
+        // Cargar todos al inicio
         vista.cargarDatos(clienteDAO.listarClientes());
 
-        vista.getBtnVolver().addActionListener(e -> {
-            vista.dispose();
-            abrirMenuCliente();
-        });
-    }
-
-    private static void abrirModificarCliente() {
-
-        ModificarCliente vistaModificarCliente = new ModificarCliente();
-
         // BOTÓN BUSCAR
-        vistaModificarCliente.getBtnBuscar().addActionListener(e -> {
+        vista.getBtnBuscar().addActionListener(e -> {
 
-            String dni = vistaModificarCliente.getTxtDni().getText().trim();
+            String tipo = vista.getComboTipoBusqueda()
+                    .getSelectedItem()
+                    .toString();
 
-            clienteActivo = ClienteDAO.obtenerClientePorDni(dni);
+            String texto = vista.getTxtBuscar()
+                    .getText()
+                    .trim()
+                    .toUpperCase();
 
-            if (clienteActivo != null) {
-                vistaModificarCliente.rellenarCampos(clienteActivo);
-                vistaModificarCliente.setCamposEditables(true);
-                vistaModificarCliente.getTxtDni().setEditable(false);
-            } else {
-                JOptionPane.showMessageDialog(
-                        vistaModificarCliente,
-                        "No se encontró ningún cliente con ese DNI."
-                );
-            }
-        });
-
-        // BOTÓN MODIFICAR
-        vistaModificarCliente.getBtnModificar().addActionListener(e -> {
-
-            if (clienteActivo == null) {
-                JOptionPane.showMessageDialog(
-                        vistaModificarCliente,
-                        "Primero debes buscar un cliente."
-                );
+            // Si no escriben nada → listar todos
+            if (texto.isEmpty()) {
+                vista.cargarDatos(clienteDAO.listarClientes());
                 return;
             }
 
-            String nombre = vistaModificarCliente.getTxtNombre().getText().trim();
-            String apellidos = vistaModificarCliente.getTxtApellidos().getText().trim();
-            String telefono = vistaModificarCliente.getTxtTelefono().getText().trim();
-            String email = vistaModificarCliente.getTxtEmail().getText().trim();
-            String direccion = vistaModificarCliente.getTxtDireccion().getText().trim();
-            String dni = vistaModificarCliente.getTxtDni().getText().trim();
+            // ===== BUSCAR POR DNI =====
+            if (tipo.equals("DNI")) {
 
+                Cliente c = clienteDAO.obtenerClientePorDni(texto);
 
-            if (!dniValido(dni)) {
-                JOptionPane.showMessageDialog(vistaModificarCliente,
-                        "El dni tiene que tener 8 numeros y un letra");
-                return;
-            }else if (!nombreValido(nombre)) {
-                JOptionPane.showMessageDialog(vistaModificarCliente,
-                        "El nombre solo puede tener letras");
-                return;
-            } else if (!apellidoValido(apellidos)) {
-                JOptionPane.showMessageDialog(vistaModificarCliente,
-                        "Los apellidos solo puede tener letras");
-                return;
-            } else if (!telefonoValido(telefono)) {
-                JOptionPane.showMessageDialog(vistaModificarCliente,
-                        "El teléfono debe tener 9 dígitos");
-                return;
-            } else if (!emailValido(email)) {
-                JOptionPane.showMessageDialog(vistaModificarCliente,
-                        "El email no tiene un formato válido");
-                return;
+                if (c == null) {
+                    JOptionPane.showMessageDialog(vista,
+                            "No existe ningún cliente con ese DNI");
+                    vista.cargarDatos(java.util.List.of());
+                } else {
+                    vista.cargarDatos(java.util.List.of(c));
+                }
+
             }
-            clienteActivo.setNombre(nombre);
-            clienteActivo.setApellidos(apellidos);
-            clienteActivo.setTelefono(telefono);
-            clienteActivo.setEmail(email);
-            clienteActivo.setDni(dni);
-
-
-            if (clienteDAO.modificarCliente(clienteActivo)) {
-                JOptionPane.showMessageDialog(
-                        vistaModificarCliente,
-                        "Cliente actualizado correctamente."
-                );
-                vistaModificarCliente.dispose();
-                abrirMenuCliente();
-            } else {
-                JOptionPane.showMessageDialog(
-                        vistaModificarCliente,
-                        "Error al actualizar el cliente."
+            // ===== BUSCAR POR NOMBRE / APELLIDOS =====
+            else {
+                vista.cargarDatos(
+                        clienteDAO.buscarClientesPorNombre(texto)
                 );
             }
         });
 
         // BOTÓN VOLVER
-        vistaModificarCliente.getBtnVolver().addActionListener(e -> {
-            vistaModificarCliente.dispose();
+        vista.getBtnVolver().addActionListener(e -> {
+            vista.dispose();
+            abrirMenuCliente();
+        });
+    }
+
+    private void abrirModificarCliente() {
+
+        ModificarCliente vista = new ModificarCliente();
+
+        vista.getBtnBuscar().addActionListener(e -> {
+            clienteActual = clienteDAO.obtenerClientePorDni(
+                    vista.getTxtDni().getText().trim().toUpperCase());
+
+            if (clienteActual == null) {
+                JOptionPane.showMessageDialog(vista, "No encontrado");
+                return;
+            }
+
+            vista.rellenarCampos(clienteActual);
+            vista.setCamposEditables(true);
+        });
+
+        vista.getBtnModificar().addActionListener(e -> {
+
+            if (!emailValido(vista.getTxtEmail().getText())) {
+                JOptionPane.showMessageDialog(vista, "Email inválido");
+                return;
+            }
+
+            clienteDAO.modificarCliente(clienteActual);
+            JOptionPane.showMessageDialog(vista, "Cliente actualizado");
+            vista.dispose();
+            abrirMenuCliente();
+        });
+
+        vista.getBtnVolver().addActionListener(e -> {
+            vista.dispose();
             abrirMenuCliente();
         });
     }

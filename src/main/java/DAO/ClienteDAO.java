@@ -139,6 +139,43 @@ public class ClienteDAO {
         return lista;
     }
 
+    public java.util.List<Cliente> buscarClientesPorNombre(String texto) {
+
+        java.util.List<Cliente> lista = new java.util.ArrayList<>();
+
+        String sql = """
+        SELECT *
+        FROM cliente
+        WHERE nombre LIKE ? OR apellidos LIKE ?
+    """;
+
+        try (java.sql.Connection con = CONFIGURADOR.ConexionBD.getConexion();
+             java.sql.PreparedStatement ps = con.prepareStatement(sql)) {
+
+            String patron = "%" + texto + "%";
+            ps.setString(1, patron);
+            ps.setString(2, patron);
+
+            java.sql.ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Cliente c = new Cliente();
+                c.setDni(rs.getString("dni"));
+                c.setNombre(rs.getString("nombre"));
+                c.setApellidos(rs.getString("apellidos"));
+                c.setTelefono(rs.getString("telefono"));
+                c.setEmail(rs.getString("email"));
+                c.setDireccion(rs.getString("direccion"));
+                lista.add(c);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
+
     public boolean modificarCliente(Cliente c) {
 
         String sql = """

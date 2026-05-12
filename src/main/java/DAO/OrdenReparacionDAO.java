@@ -188,10 +188,7 @@ public class OrdenReparacionDAO {
                 o.setKmEntrada(rs.getInt("kmEntrada"));
                 o.setPrecio(rs.getDouble("manoObra"));
 
-                // Fechas
-                o.setFechaApertura(
-                        rs.getDate("fechaApertura").toLocalDate()
-                );
+                o.setFechaApertura(rs.getDate("fechaApertura").toLocalDate());
 
                 if (rs.getDate("fechaEstimadaCierre") != null) {
                     o.setFechaEstimadaCierre(
@@ -204,6 +201,11 @@ public class OrdenReparacionDAO {
                             rs.getDate("fechaCierre").toLocalDate()
                     );
                 }
+
+                // ✅ VEHÍCULO
+                Vehiculo v = new Vehiculo();
+                v.setMatricula(rs.getString("matricula"));
+                o.setVehiculo(v);
 
                 return o;
             }

@@ -2,10 +2,7 @@ package CONTROLADOR;
 
 import DAO.FacturaDAO;
 import MODELO.Factura;
-import VISTA.MENU.FACTURACION.BuscarFacturas;
-import VISTA.MENU.FACTURACION.ListarFacturas;
-import VISTA.MENU.FACTURACION.MenuFacturacion;
-import VISTA.MENU.PRINCIPAL.MenuPrincipal;
+import VISTA.MENU.FACTURACION.*;
 
 import java.util.List;
 
@@ -26,7 +23,7 @@ public class FacturacionControlador {
 
         menu.getBtnVolver().addActionListener(e -> {
             menu.dispose();
-            new MenuPrincipal();
+            new MenuPrincipalControlador();
         });
     }
     // =========================

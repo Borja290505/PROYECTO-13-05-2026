@@ -9,17 +9,18 @@ public class Factura {
     private double subtotal;
     private double iva;
     private double total;
-
+    private String matricula;
     private int idOrden;
 
     public Factura() {
     }
 
-    public Factura(LocalDate fechaFactura, int idFactura, int idOrden, double iva, double subtotal, double total) {
+    public Factura(LocalDate fechaFactura, int idFactura, int idOrden, double iva, String matricula, double subtotal, double total) {
         this.fechaFactura = fechaFactura;
         this.idFactura = idFactura;
         this.idOrden = idOrden;
         this.iva = iva;
+        this.matricula = matricula;
         this.subtotal = subtotal;
         this.total = total;
     }
@@ -70,5 +71,13 @@ public class Factura {
 
     public void setIdOrden(int idOrden) {
         this.idOrden = idOrden;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
     }
 }

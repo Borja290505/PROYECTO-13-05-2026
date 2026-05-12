@@ -4,21 +4,15 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import DAO.ClienteDAO;
-import static DAO.VehiculoDAO.InsertarVehiculo;
 import MODELO.Cliente;
-import MODELO.Vehiculo;
 import VISTA.VentanaBase;
 
 public class AltaVehiculo extends VentanaBase {
@@ -26,6 +20,7 @@ public class AltaVehiculo extends VentanaBase {
     private JTextField txtMatricula, txtMarca, txtModelo, txtAnio, txtKms, txtColor;
     private JTextField txtBuscarDni;
     private JLabel lblClienteEncontrado;
+
     private Cliente clienteEncontrado;
 
     private JButton btnGuardar, btnVolver, btnBuscarCliente;
@@ -34,17 +29,20 @@ public class AltaVehiculo extends VentanaBase {
         super("Alta Vehículo");
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null); // Centrar la ventana en la pantalla
         setLayout(new BorderLayout(10, 10));
+        setLocationRelativeTo(null);
 
-        // Título simple en la parte superior
-        JLabel lblTitulo = new JLabel("Registrar Nuevo Vehículo");
+        // =========================
+        // TÍTULO
+        // =========================
+        JLabel lblTitulo = new JLabel("Registrar Nuevo Vehículo", JLabel.CENTER);
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-        lblTitulo.setHorizontalAlignment(JLabel.CENTER);
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
         add(lblTitulo, BorderLayout.NORTH);
 
-        // Panel del formulario usando GridLayout simple
+        // =========================
+        // FORMULARIO
+        // =========================
         JPanel formulario = new JPanel(new GridLayout(8, 2, 10, 10));
         formulario.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
 
@@ -84,23 +82,26 @@ public class AltaVehiculo extends VentanaBase {
 
         add(formulario, BorderLayout.CENTER);
 
-        // Panel de botones en la parte inferior usando el FlowLayout por defecto
-        JPanel botones = new JPanel();
-        botones.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0)); // Margen inferior
-        
+        // =========================
+        // BOTONES
+        // =========================
+        JPanel panelBotones = new JPanel();
+        panelBotones.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
+
         btnGuardar = new JButton("Guardar");
         btnVolver = new JButton("Volver");
-        
-        botones.add(btnGuardar);
-        botones.add(btnVolver);
 
+        panelBotones.add(btnGuardar);
+        panelBotones.add(btnVolver);
 
-
-        add(botones, BorderLayout.SOUTH);
+        add(panelBotones, BorderLayout.SOUTH);
 
         setVisible(true);
     }
 
+    // =========================
+    // GETTERS PARA EL CONTROLADOR
+    // =========================
     public JButton getBtnGuardar() {
         return btnGuardar;
     }
@@ -113,18 +114,37 @@ public class AltaVehiculo extends VentanaBase {
         return btnBuscarCliente;
     }
 
-    public void setBtnBuscarCliente(JButton btnBuscarCliente) {
-        this.btnBuscarCliente = btnBuscarCliente;
+    public JTextField getTxtMatricula() {
+        return txtMatricula;
     }
 
-    public void setBtnGuardar(JButton btnGuardar) {
-        this.btnGuardar = btnGuardar;
+    public JTextField getTxtMarca() {
+        return txtMarca;
     }
 
-    public void setBtnVolver(JButton btnVolver) {
-        this.btnVolver = btnVolver;
+    public JTextField getTxtModelo() {
+        return txtModelo;
     }
 
+    public JTextField getTxtAnio() {
+        return txtAnio;
+    }
+
+    public JTextField getTxtKms() {
+        return txtKms;
+    }
+
+    public JTextField getTxtColor() {
+        return txtColor;
+    }
+
+    public JTextField getTxtBuscarDni() {
+        return txtBuscarDni;
+    }
+
+    // =========================
+    // CLIENTE SELECCIONADO
+    // =========================
     public void setClienteEncontrado(Cliente c) {
         this.clienteEncontrado = c;
 
@@ -141,69 +161,5 @@ public class AltaVehiculo extends VentanaBase {
 
     public Cliente getClienteSeleccionado() {
         return clienteEncontrado;
-    }
-
-    public JLabel getLblClienteEncontrado() {
-        return lblClienteEncontrado;
-    }
-
-    public void setLblClienteEncontrado(JLabel lblClienteEncontrado) {
-        this.lblClienteEncontrado = lblClienteEncontrado;
-    }
-
-    public JTextField getTxtAnio() {
-        return txtAnio;
-    }
-
-    public void setTxtAnio(JTextField txtAnio) {
-        this.txtAnio = txtAnio;
-    }
-
-    public JTextField getTxtBuscarDni() {
-        return txtBuscarDni;
-    }
-
-    public void setTxtBuscarDni(JTextField txtBuscarDni) {
-        this.txtBuscarDni = txtBuscarDni;
-    }
-
-    public JTextField getTxtKms() {
-        return txtKms;
-    }
-
-    public void setTxtKms(JTextField txtKms) {
-        this.txtKms = txtKms;
-    }
-
-    public JTextField getTxtMarca() {
-        return txtMarca;
-    }
-
-    public void setTxtMarca(JTextField txtMarca) {
-        this.txtMarca = txtMarca;
-    }
-
-    public JTextField getTxtMatricula() {
-        return txtMatricula;
-    }
-
-    public void setTxtMatricula(JTextField txtMatricula) {
-        this.txtMatricula = txtMatricula;
-    }
-
-    public JTextField getTxtModelo() {
-        return txtModelo;
-    }
-
-    public void setTxtModelo(JTextField txtModelo) {
-        this.txtModelo = txtModelo;
-    }
-
-    public JTextField getTxtColor() {
-        return txtColor;
-    }
-
-    public void setTxtColor(JTextField txtColor) {
-        this.txtColor = txtColor;
     }
 }

@@ -1,59 +1,112 @@
 package VISTA.MENU.VEHICULO;
 
-import java.awt.BorderLayout;
-import java.util.List;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-
 import MODELO.Vehiculo;
 import VISTA.VentanaBase;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.List;
 
 public class ListarVehiculo extends VentanaBase {
 
     private JTable tabla;
     private DefaultTableModel modeloTabla;
+
+    private JTextField txtBuscarMatricula;
+    private JButton btnBuscar;
     private JButton btnVolver;
 
     public ListarVehiculo() {
         super("Listado de Vehículos");
         setLayout(new BorderLayout(10, 10));
 
-        // Configuración de la tabla
+        // =========================
+        // PANEL SUPERIOR (TÍTULO + BUSCADOR)
+        // =========================
+        JPanel panelSuperior = new JPanel(new BorderLayout(10, 10));
+
+        JLabel lblTitulo = new JLabel("Vehículos Registrados", JLabel.CENTER);
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
+        lblTitulo.setBorder(BorderFactory.createEmptyBorder(15, 0, 5, 0));
+        panelSuperior.add(lblTitulo, BorderLayout.NORTH);
+
+        JPanel panelBuscar = new JPanel(new BorderLayout(10, 10));
+        panelBuscar.setBorder(BorderFactory.createEmptyBorder(10, 40, 10, 40));
+
+        panelBuscar.add(new JLabel("Buscar por Matrícula:"), BorderLayout.WEST);
+
+        txtBuscarMatricula = new JTextField();
+        panelBuscar.add(txtBuscarMatricula, BorderLayout.CENTER);
+
+        btnBuscar = new JButton("Buscar");
+        panelBuscar.add(btnBuscar, BorderLayout.EAST);
+
+        panelSuperior.add(panelBuscar, BorderLayout.CENTER);
+        add(panelSuperior, BorderLayout.NORTH);
+
+        // =========================
+        // TABLA
+        // =========================
         String[] columnas = {
-            "Matrícula", "Marca", "Modelo", "Año", "Kms", "ID Cliente"
+                "Matrícula", "Marca", "Modelo", "Año", "Km", "ID Cliente"
         };
 
-        modeloTabla = new DefaultTableModel(columnas, 0);
+        modeloTabla = new DefaultTableModel(columnas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
         tabla = new JTable(modeloTabla);
+        tabla.getTableHeader().setReorderingAllowed(false);
 
         add(new JScrollPane(tabla), BorderLayout.CENTER);
 
-        // Botón volver
-        btnVolver = new JButton("Volver al Menú");
+        // =========================
+        // PANEL INFERIOR
+        // =========================
         JPanel panelSur = new JPanel();
+        btnVolver = new JButton("Volver");
+
+        panelSur.add(btnBuscar);
         panelSur.add(btnVolver);
+
         add(panelSur, BorderLayout.SOUTH);
 
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
+    // =========================
+    // CARGAR DATOS
+    // =========================
     public void cargarDatos(List<Vehiculo> vehiculos) {
-        modeloTabla.setRowCount(0); // Limpiar tabla
+        modeloTabla.setRowCount(0);
+
         for (Vehiculo v : vehiculos) {
             Object[] fila = {
-                v.getMatricula(),
-                v.getMarca(),
-                v.getModelo(),
-                v.getAnio(),
-                v.getKmsActuales(),
-                v.getIdCliente()
+                    v.getMatricula(),
+                    v.getMarca(),
+                    v.getModelo(),
+                    v.getAnio(),
+                    v.getKmsActuales(),
+                    v.getIdCliente()
             };
             modeloTabla.addRow(fila);
         }
+    }
+
+    // =========================
+    // GETTERS PARA CONTROLADOR
+    // =========================
+    public JTextField getTxtBuscarMatricula() {
+        return txtBuscarMatricula;
+    }
+
+    public JButton getBtnBuscar() {
+        return btnBuscar;
     }
 
     public JButton getBtnVolver() {

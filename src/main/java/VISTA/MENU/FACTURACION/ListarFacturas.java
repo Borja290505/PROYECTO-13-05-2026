@@ -33,7 +33,7 @@ public class ListarFacturas extends VentanaBase {
         // TABLA
         // =========================
         String[] columnas = {
-                "ID Factura", "Fecha", "Subtotal", "IVA", "Total", "ID Orden"
+                "Fecha", "Subtotal", "IVA", "Total", "Matricula"
         };
 
         modeloTabla = new DefaultTableModel(columnas, 0) {
@@ -74,12 +74,11 @@ public class ListarFacturas extends VentanaBase {
 
         for (Factura f : facturas) {
             Object[] fila = {
-                    f.getIdFactura(),
                     f.getFechaFactura(),
                     f.getSubtotal(),
                     f.getIva(),
                     f.getTotal(),
-                    f.getIdOrden()
+                    f.getMatricula()
             };
             modeloTabla.addRow(fila);
         }

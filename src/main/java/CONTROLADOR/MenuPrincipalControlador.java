@@ -1,79 +1,61 @@
 package CONTROLADOR;
 
-import MODELO.Cliente;
+import MODELO.OrdenReparacion;
 import VISTA.MENU.PRINCIPAL.MenuPrincipal;
 
 import javax.swing.*;
 
 public class MenuPrincipalControlador {
-    private Cliente clienteActivo;
 
-    public MenuPrincipalControlador(Cliente clienteActivo) {
-        this.clienteActivo = clienteActivo;
+    public MenuPrincipalControlador() {
+        abrirMenu();
     }
 
-    private void abrirMenuPrincipal() {
+    private void abrirMenu() {
 
         MenuPrincipal menu = new MenuPrincipal();
 
-        menu.getBtnVehiculos().addActionListener(e -> {
-            menu.dispose();
-            VehiculoControlador.abrirMenuVehiculo();
-        });
-
         menu.getBtnClientes().addActionListener(e -> {
             menu.dispose();
-            ClienteControlador.abrirMenuCliente();
+            new ClienteControlador().abrirMenuCliente();
+        });
+
+        menu.getBtnVehiculos().addActionListener(e -> {
+            menu.dispose();
+            new VehiculoControlador().abrirMenuVehiculo();
         });
 
         menu.getBtnOrdenes().addActionListener(e -> {
             menu.dispose();
-            OrdenRepControlador.abrirMenuOrdenes();
+            new OrdenRepControlador().abrirMenuOrdenes();
         });
 
         menu.getBtnFacturacion().addActionListener(e -> {
             menu.dispose();
-            FacturacionControlador.abrirMenuFacturacion();
+            new FacturacionControlador().abrirMenuFacturacion();
         });
 
         menu.getBtnEstadisticas().addActionListener(e -> {
             menu.dispose();
-            EstadisticasControlador.abrirMenuEstadisticas();
+            new EstadisticasControlador().abrirMenuEstadisticas();
         });
 
         menu.getBtnSalir().addActionListener(e -> {
 
-            String[] opciones = {
-                    "Cerrar sesión",
-                    "Salir del programa",
-                    "Cancelar"
-            };
-
-            int eleccion = JOptionPane.showOptionDialog(
-                    menu,
+            String[] opciones = {"Cerrar sesión", "Salir del programa", "Cancelar"};
+            int op = JOptionPane.showOptionDialog(menu,
                     "¿Qué deseas hacer?",
-                    "Cerrar sesión",
+                    "Salir",
                     JOptionPane.DEFAULT_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    opciones,
-                    opciones[0]
-            );
+                    null, opciones, opciones[0]);
 
-            // 0 → Cerrar sesión
-            if (eleccion == 0) {
-                clienteActivo = null;   // limpieza
-                menu.dispose();         // cerramos el menú
-                new ClienteControlador(); // volvemos al login
-            }
-
-            // 1 → Salir del programa
-            else if (eleccion == 1) {
+            if (op == 0) {
+                menu.dispose();
+                new LoginControlador();
+            } else if (op == 1) {
                 System.exit(0);
             }
-
-            // 2 → Cancelar (no hacemos nada)
         });
-
     }
 }

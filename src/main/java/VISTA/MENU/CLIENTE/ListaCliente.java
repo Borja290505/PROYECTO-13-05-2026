@@ -1,39 +1,55 @@
 package VISTA.MENU.CLIENTE;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
-import java.util.List;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-
 import MODELO.Cliente;
 import VISTA.VentanaBase;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.List;
 
 public class ListaCliente extends VentanaBase {
 
     private JTable tabla;
     private DefaultTableModel modeloTabla;
+
+    private JComboBox<String> comboTipoBusqueda;
+    private JTextField txtBuscar;
+    private JButton btnBuscar;
     private JButton btnVolver;
 
     public ListaCliente() {
         super("Listado de Clientes");
-
         setLayout(new BorderLayout(15, 15));
 
         // =========================
-        // TÍTULO
+        // PANEL SUPERIOR (TÍTULO + BUSCADOR)
         // =========================
-        JLabel lblTitulo = new JLabel("Clientes Registrados");
+        JPanel panelSuperior = new JPanel(new BorderLayout(10, 10));
+
+        JLabel lblTitulo = new JLabel("Clientes Registrados", JLabel.CENTER);
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
-        lblTitulo.setHorizontalAlignment(JLabel.CENTER);
-        lblTitulo.setBorder(BorderFactory.createEmptyBorder(15, 0, 10, 0));
-        add(lblTitulo, BorderLayout.NORTH);
+        lblTitulo.setBorder(BorderFactory.createEmptyBorder(15, 0, 5, 0));
+        panelSuperior.add(lblTitulo, BorderLayout.NORTH);
+
+        JPanel panelBuscar = new JPanel(new GridLayout(2, 2, 10, 10));
+        panelBuscar.setBorder(BorderFactory.createEmptyBorder(10, 40, 10, 40));
+
+        comboTipoBusqueda = new JComboBox<>(new String[]{
+                "DNI",
+                "Nombre / Apellidos"
+        });
+
+        txtBuscar = new JTextField();
+        btnBuscar = new JButton("Buscar");
+
+        panelBuscar.add(new JLabel("Buscar por:"));
+        panelBuscar.add(comboTipoBusqueda);
+        panelBuscar.add(new JLabel("Valor:"));
+        panelBuscar.add(txtBuscar);
+
+        panelSuperior.add(panelBuscar, BorderLayout.CENTER);
+        add(panelSuperior, BorderLayout.NORTH);
 
         // =========================
         // TABLA
@@ -45,22 +61,22 @@ public class ListaCliente extends VentanaBase {
         modeloTabla = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Tabla solo lectura
+                return false;
             }
         };
 
         tabla = new JTable(modeloTabla);
         tabla.getTableHeader().setReorderingAllowed(false);
 
-        JScrollPane scrollPane = new JScrollPane(tabla);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
-        add(scrollPane, BorderLayout.CENTER);
+        add(new JScrollPane(tabla), BorderLayout.CENTER);
 
-
+        // =========================
+        // PANEL INFERIOR
+        // =========================
         JPanel panelSur = new JPanel();
-        panelSur.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
+        btnVolver = new JButton("Volver");
 
-        btnVolver = new JButton("Volver al Menú");
+        panelSur.add(btnBuscar);
         panelSur.add(btnVolver);
 
         add(panelSur, BorderLayout.SOUTH);
@@ -70,7 +86,7 @@ public class ListaCliente extends VentanaBase {
     }
 
     // =========================
-    // CARGAR DATOS
+    // CARGAR DATOS EN TABLA
     // =========================
     public void cargarDatos(List<Cliente> clientes) {
         modeloTabla.setRowCount(0);
@@ -86,6 +102,21 @@ public class ListaCliente extends VentanaBase {
             };
             modeloTabla.addRow(fila);
         }
+    }
+
+    // =========================
+    // GETTERS PARA EL CONTROLADOR
+    // =========================
+    public JComboBox<String> getComboTipoBusqueda() {
+        return comboTipoBusqueda;
+    }
+
+    public JTextField getTxtBuscar() {
+        return txtBuscar;
+    }
+
+    public JButton getBtnBuscar() {
+        return btnBuscar;
     }
 
     public JButton getBtnVolver() {

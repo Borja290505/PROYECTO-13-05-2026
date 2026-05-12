@@ -9,7 +9,6 @@ public class MenuFacturacion extends VentanaBase {
 
     private JButton btnListarFacturas;
     private JButton btnBuscarFacturas;
-    private JButton btnEstadisticas;
     private JButton btnVolver;
 
     public MenuFacturacion(){
@@ -29,16 +28,14 @@ public class MenuFacturacion extends VentanaBase {
         // =========================
         // PANEL CENTRAL (BOTONES)
         // =========================
-        JPanel panelCentro = new JPanel(new GridLayout(3, 1, 15, 15));
+        JPanel panelCentro = new JPanel(new GridLayout(1, 2, 15, 15));
         panelCentro.setBorder(BorderFactory.createEmptyBorder(30, 60, 30, 60));
 
         btnListarFacturas = new JButton("Listar Facturas");
         btnBuscarFacturas = new JButton("Buscar Facturas");
-        btnEstadisticas = new JButton("Estadísticas");
 
         panelCentro.add(btnListarFacturas);
         panelCentro.add(btnBuscarFacturas);
-        panelCentro.add(btnEstadisticas);
 
         add(panelCentro, BorderLayout.CENTER);
 
@@ -66,10 +63,6 @@ public class MenuFacturacion extends VentanaBase {
 
     public JButton getBtnBuscarFacturas() {
         return btnBuscarFacturas;
-    }
-
-    public JButton getBtnEstadisticas() {
-        return btnEstadisticas;
     }
 
     public JButton getBtnVolver() {
