@@ -1,75 +1,122 @@
 package VISTA.MENU.FACTURACION;
 
-import javax.swing.*;
-import java.awt.*;
-
+import MODELO.Factura;
 import VISTA.VentanaBase;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.List;
 
 public class MenuFacturacion extends VentanaBase {
 
-    private JButton btnListarFacturas;
-    private JButton btnBuscarFacturas;
-    private JButton btnVolver;
+    private JComboBox<String> comboTipoBusqueda;
+    private JTextField txtValor;
+    private JButton btnBuscar, btnVolver;
 
-    public MenuFacturacion(){
-        super("Menú de Facturación");
+    private JTable tabla;
+    private DefaultTableModel modeloTabla;
+
+    public MenuFacturacion() {
+
+        super("Buscar Facturas");
         setLayout(new BorderLayout(10, 10));
         Font fuenteBotones = new Font("Arial", Font.BOLD, 14);
 
 
         // =========================
-        // TÍTULO
+        // PANEL SUPERIOR (TÍTULO + BUSCADOR)
         // =========================
+        JPanel panelSuperior = new JPanel(new BorderLayout(10, 10));
+
         JLabel lblTitulo = new JLabel("Gestión de Facturas");
-        lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
         lblTitulo.setHorizontalAlignment(JLabel.CENTER);
-        lblTitulo.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
-        add(lblTitulo, BorderLayout.NORTH);
+        lblTitulo.setBorder(BorderFactory.createEmptyBorder(15, 0, 5, 0));
+        panelSuperior.add(lblTitulo, BorderLayout.NORTH);
+
+        JPanel panelBuscar = new JPanel(new GridLayout(2, 2, 10, 10));
+        panelBuscar.setBorder(BorderFactory.createEmptyBorder(10, 40, 10, 40));
+
+        comboTipoBusqueda = new JComboBox<>(
+                new String[]{"Matrícula", "DNI Cliente"}
+        );
+        txtValor = new JTextField();
+
+        panelBuscar.add(new JLabel("Buscar por:"));
+        panelBuscar.add(comboTipoBusqueda);
+        panelBuscar.add(new JLabel("Valor:"));
+        panelBuscar.add(txtValor);
+
+        panelSuperior.add(panelBuscar, BorderLayout.CENTER);
+
+        add(panelSuperior, BorderLayout.NORTH);
 
         // =========================
-        // PANEL CENTRAL (BOTONES)
+        // TABLA
         // =========================
-        JPanel panelCentro = new JPanel(new GridLayout(1, 2, 15, 15));
-        panelCentro.setBorder(BorderFactory.createEmptyBorder(30, 60, 30, 60));
+        String[] columnas = {
+                "Fecha Factura", "Subtotal", "IVA", "Total", "Matricula"
+        };
 
-        btnListarFacturas = new JButton("Listar Facturas");
-        btnBuscarFacturas = new JButton("Buscar Facturas");
+        modeloTabla = new DefaultTableModel(columnas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
-        Font fuente = new Font("Arial", Font.BOLD,14);
-        btnListarFacturas.setFont(fuente);
-        btnBuscarFacturas.setFont(fuente);
-
-        Dimension tamaño = new Dimension(180, 120);
-        btnListarFacturas.setPreferredSize(tamaño);
-        btnBuscarFacturas.setPreferredSize(tamaño);
-
-        panelCentro.add(btnListarFacturas);
-        panelCentro.add(btnBuscarFacturas);
-
-        add(panelCentro, BorderLayout.CENTER);
+        tabla = new JTable(modeloTabla);
+        add(new JScrollPane(tabla), BorderLayout.CENTER);
 
         // =========================
         // PANEL SUR
         // =========================
         JPanel panelSur = new JPanel();
-        panelSur.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
-
+        btnBuscar = new JButton("Buscar");
+        btnBuscar.setFont(fuenteBotones);
         btnVolver = new JButton("Volver");
         btnVolver.setFont(fuenteBotones);
+
+        panelSur.add(btnBuscar);
         panelSur.add(btnVolver);
 
         add(panelSur, BorderLayout.SOUTH);
+
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 
     // =========================
+    // CARGAR RESULTADOS
+    // =========================
+    public void cargarDatos(List<Factura> facturas) {
+
+        modeloTabla.setRowCount(0);
+
+        for (Factura f : facturas) {
+            Object[] fila = {
+                    f.getFechaFactura(),
+                    f.getSubtotal(),
+                    f.getIva(),
+                    f.getTotal(),
+                    f.getMatricula()
+            };
+            modeloTabla.addRow(fila);
+        }
+    }
+
     // GETTERS
-    // =========================
-    public JButton getBtnListarFacturas() {
-        return btnListarFacturas;
+    public JComboBox<String> getComboTipoBusqueda() {
+        return comboTipoBusqueda;
     }
 
-    public JButton getBtnBuscarFacturas() {
-        return btnBuscarFacturas;
+    public JTextField getTxtValor() {
+        return txtValor;
+    }
+
+    public JButton getBtnBuscar() {
+        return btnBuscar;
     }
 
     public JButton getBtnVolver() {

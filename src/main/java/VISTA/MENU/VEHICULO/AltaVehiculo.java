@@ -7,7 +7,6 @@ import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -17,7 +16,7 @@ import VISTA.VentanaBase;
 
 public class AltaVehiculo extends VentanaBase {
 
-    private JTextField txtMatricula, txtMarca, txtModelo, txtAnio, txtKms, txtColor;
+    private JTextField txtMatricula, txtMarca, txtModelo, txtAnio, txtKms;
     private JTextField txtBuscarDni;
     private JLabel lblClienteEncontrado;
 
@@ -64,10 +63,6 @@ public class AltaVehiculo extends VentanaBase {
         formulario.add(new JLabel("Km actuales:"));
         txtKms = new JTextField();
         formulario.add(txtKms);
-
-        formulario.add(new JLabel("Color:"));
-        txtColor = new JTextField();
-        formulario.add(txtColor);
 
         formulario.add(new JLabel("Cliente (DNI):"));
         txtBuscarDni = new JTextField();
@@ -134,10 +129,6 @@ public class AltaVehiculo extends VentanaBase {
 
     public JTextField getTxtKms() {
         return txtKms;
-    }
-
-    public JTextField getTxtColor() {
-        return txtColor;
     }
 
     public JTextField getTxtBuscarDni() {

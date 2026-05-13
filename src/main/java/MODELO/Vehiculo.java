@@ -7,21 +7,14 @@ public class Vehiculo {
     private String modelo;
     private int anio;
     private Double kmsActuales;
-    private String combustible;
-    private String color;
-    private int idCliente;
+    private Integer idCliente;
 
-    public Vehiculo(String matricula, String marca, String modelo,
-                    int anio, Double kmsActuales,
-                    String combustible, String color, int idCliente) {
-
+    public Vehiculo(String matricula, String marca, String modelo,int anio ,double kmsActuales, int idCliente) {
         this.matricula = matricula;
         this.marca = marca;
         this.modelo = modelo;
         this.anio = anio;
         this.kmsActuales = kmsActuales;
-        this.combustible = combustible;
-        this.color = color;
         this.idCliente = idCliente;
     }
 
@@ -34,20 +27,10 @@ public class Vehiculo {
     public String getModelo() { return modelo; }
     public int getAnio() { return anio; }
     public double getKmsActuales() { return kmsActuales; }
-    public String getCombustible() { return combustible; }
-    public String getColor() { return color; }
     public int getIdCliente() { return idCliente; }
 
     public void setAnio(int anio) {
         this.anio = anio;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public void setCombustible(String combustible) {
-        this.combustible = combustible;
     }
 
     public void setIdCliente(int idCliente) {
@@ -68,5 +51,9 @@ public class Vehiculo {
 
     public void setModelo(String modelo) {
         this.modelo = modelo;
+    }
+
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
     }
 }

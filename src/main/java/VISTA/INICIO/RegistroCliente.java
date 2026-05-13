@@ -104,5 +104,31 @@ public class RegistroCliente extends VentanaBase {
         JOptionPane.showMessageDialog(this, mensaje);
     }
 
+    public JTextField getTxtDni() {
+        return txtDni;
+    }
 
+    public JTextField getTxtNombre() {
+        return txtNombre;
+    }
+
+    public JTextField getTxtApellidos() {
+        return txtApellidos;
+    }
+
+    public JTextField getTxtTelefono() {
+        return txtTelefono;
+    }
+
+    public JTextField getTxtEmail() {
+        return txtEmail;
+    }
+
+    public JTextField getTxtDireccion() {
+        return txtDireccion;
+    }
+
+    public JPasswordField getTxtContraseña() {
+        return txtContraseña;
+    }
 }

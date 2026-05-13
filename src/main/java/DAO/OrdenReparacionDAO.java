@@ -11,6 +11,9 @@ import java.util.List;
 
 public class OrdenReparacionDAO {
 
+    // =========================
+    // INSERTAR ORDEN
+    // =========================
     public static int insertarOrden(OrdenReparacion orden) {
 
         String sql = "INSERT INTO ordenreparacion " +
@@ -18,8 +21,7 @@ public class OrdenReparacionDAO {
                 "VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection con = ConexionBD.getConexion();
-             PreparedStatement ps = con.prepareStatement(
-                     sql, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setDate(1, Date.valueOf(orden.getFechaApertura()));
             ps.setInt(2, orden.getKmEntrada());
@@ -42,10 +44,12 @@ public class OrdenReparacionDAO {
         return -1;
     }
 
+    // =========================
+    // EXISTE ORDEN ABIERTA
+    // =========================
     public static boolean existeOrdenAbierta(String matricula) {
 
-        String sql = "SELECT * FROM ordenreparacion " +
-                "WHERE matricula = ? AND estado = 'ABIERTA'";
+        String sql = "SELECT * FROM ordenreparacion WHERE matricula = ? AND estado = 'ABIERTA'";
 
         try (Connection con = ConexionBD.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -53,7 +57,7 @@ public class OrdenReparacionDAO {
             ps.setString(1, matricula);
             ResultSet rs = ps.executeQuery();
 
-            return rs.next(); // si hay resultado, existe orden abierta
+            return rs.next();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -62,15 +66,18 @@ public class OrdenReparacionDAO {
         return false;
     }
 
+    // =========================
+    // BUSCAR ORDEN ABIERTA
+    // =========================
     public static OrdenReparacion buscarOrdenAbiertaPorMatricula(String matricula) {
 
         String sql = """
-        SELECT *
-        FROM ordenreparacion
-        WHERE matricula = ? AND estado = 'ABIERTA'
-        ORDER BY fechaApertura DESC
-        LIMIT 1
-    """;
+            SELECT *
+            FROM ordenreparacion
+            WHERE matricula = ? AND estado = 'ABIERTA'
+            ORDER BY fechaApertura DESC
+            LIMIT 1
+        """;
 
         try (Connection con = ConexionBD.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -79,6 +86,7 @@ public class OrdenReparacionDAO {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
+
                 OrdenReparacion o = new OrdenReparacion();
                 o.setIdOrden(rs.getInt("idOrden"));
                 o.setFechaApertura(rs.getDate("fechaApertura").toLocalDate());
@@ -87,6 +95,7 @@ public class OrdenReparacionDAO {
                 o.setObservaciones(rs.getString("observaciones"));
                 o.setPrecio(rs.getDouble("manoObra"));
 
+                // ✅ VEHÍCULO → SOLO MATRÍCULA
                 Vehiculo v = new Vehiculo();
                 v.setMatricula(rs.getString("matricula"));
                 o.setVehiculo(v);
@@ -101,13 +110,16 @@ public class OrdenReparacionDAO {
         return null;
     }
 
+    // =========================
+    // FINALIZAR ORDEN
+    // =========================
     public static int finalizarOrdenPorMatricula(String matricula, String observaciones) {
 
         String sql = """
-        UPDATE ordenreparacion
-        SET fechaCierre = ?, estado = ?, observaciones = ?
-        WHERE matricula = ? AND estado = 'ABIERTA'
-    """;
+            UPDATE ordenreparacion
+            SET fechaCierre = ?, estado = ?, observaciones = ?
+            WHERE matricula = ? AND estado = 'ABIERTA'
+        """;
 
         try (Connection con = ConexionBD.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -120,7 +132,6 @@ public class OrdenReparacionDAO {
             int filas = ps.executeUpdate();
 
             if (filas > 0) {
-                // ✅ AHORA recuperamos el idOrden
                 return obtenerIdOrdenPorMatricula(matricula);
             }
 
@@ -131,15 +142,18 @@ public class OrdenReparacionDAO {
         return -1;
     }
 
+    // =========================
+    // OBTENER ID ORDEN
+    // =========================
     public static int obtenerIdOrdenPorMatricula(String matricula) {
 
         String sql = """
-        SELECT idOrden
-        FROM ordenreparacion
-        WHERE matricula = ?
-        ORDER BY fechaCierre DESC
-        LIMIT 1
-    """;
+            SELECT idOrden
+            FROM ordenreparacion
+            WHERE matricula = ?
+            ORDER BY fechaCierre DESC
+            LIMIT 1
+        """;
 
         try (Connection con = ConexionBD.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -158,6 +172,9 @@ public class OrdenReparacionDAO {
         return -1;
     }
 
+    // =========================
+    // LISTAR ORDENES
+    // =========================
     public static List<OrdenReparacion> listarOrdenes() {
 
         List<OrdenReparacion> lista = new ArrayList<>();
@@ -182,6 +199,7 @@ public class OrdenReparacionDAO {
                     o.setFechaCierre(rs.getDate("fechaCierre").toLocalDate());
                 }
 
+                // ✅ VEHÍCULO
                 Vehiculo v = new Vehiculo();
                 v.setMatricula(rs.getString("matricula"));
                 o.setVehiculo(v);
@@ -196,15 +214,18 @@ public class OrdenReparacionDAO {
         return lista;
     }
 
+    // =========================
+    // BUSCAR ÚLTIMA ORDEN
+    // =========================
     public static OrdenReparacion buscarPorMatricula(String matricula) {
 
         String sql = """
-        SELECT *
-        FROM ordenreparacion
-        WHERE matricula = ?
-        ORDER BY fechaApertura DESC
-        LIMIT 1
-    """;
+            SELECT *
+            FROM ordenreparacion
+            WHERE matricula = ?
+            ORDER BY fechaApertura DESC
+            LIMIT 1
+        """;
 
         try (Connection con = ConexionBD.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -221,13 +242,10 @@ public class OrdenReparacionDAO {
                 o.setObservaciones(rs.getString("observaciones"));
                 o.setKmEntrada(rs.getInt("kmEntrada"));
                 o.setPrecio(rs.getDouble("manoObra"));
-
                 o.setFechaApertura(rs.getDate("fechaApertura").toLocalDate());
 
                 if (rs.getDate("fechaCierre") != null) {
-                    o.setFechaCierre(
-                            rs.getDate("fechaCierre").toLocalDate()
-                    );
+                    o.setFechaCierre(rs.getDate("fechaCierre").toLocalDate());
                 }
 
                 // ✅ VEHÍCULO
@@ -245,20 +263,23 @@ public class OrdenReparacionDAO {
         return null;
     }
 
+    // =========================
+    // MODIFICAR ORDEN
+    // =========================
     public static boolean modificarOrden(OrdenReparacion o) {
 
         String sql = """
-        UPDATE ordenreparacion
-        SET estado = ?, observaciones = ?, manoObra = ?
-        WHERE idOrden = ?
-    """;
+            UPDATE ordenreparacion
+            SET estado = ?, observaciones = ?, manoObra = ?
+            WHERE idOrden = ?
+        """;
 
         try (Connection con = ConexionBD.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, o.getEstado());
             ps.setString(2, o.getObservaciones());
-            ps.setDouble(3, o.getPrecio()); // manoObra
+            ps.setDouble(3, o.getPrecio());
             ps.setInt(4, o.getIdOrden());
 
             return ps.executeUpdate() > 0;

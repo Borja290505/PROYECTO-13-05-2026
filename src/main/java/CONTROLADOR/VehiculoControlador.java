@@ -82,7 +82,6 @@ public class VehiculoControlador {
             String modelo = vista.getTxtModelo().getText().trim();
             String anioTxt = vista.getTxtAnio().getText().trim();
             String kmsTxt = vista.getTxtKms().getText().trim();
-            String color = vista.getTxtColor().getText().trim();
 
             Cliente propietario = vista.getClienteSeleccionado();
 
@@ -110,12 +109,6 @@ public class VehiculoControlador {
                 return;
             }
 
-            if (!colorValido(color)) {
-                JOptionPane.showMessageDialog(vista,
-                        "El color no es válido");
-                return;
-            }
-
             if (propietario == null) {
                 JOptionPane.showMessageDialog(vista,
                         "Debes buscar y seleccionar un cliente");
@@ -123,16 +116,14 @@ public class VehiculoControlador {
             }
 
             int anio = Integer.parseInt(anioTxt);
-            double kms = Double.parseDouble(kmsTxt);
+            double kmsActuales = Double.parseDouble(kmsTxt);
 
             Vehiculo v = new Vehiculo(
                     matricula,
                     marca,
                     modelo,
                     anio,
-                    kms,
-                    "Gasolina",
-                    color,
+                    kmsActuales,
                     propietario.getIdCliente()
             );
 
@@ -249,8 +240,8 @@ public class VehiculoControlador {
                 String matricula = vista.getTxtMatricula().getText();
                 String marca = vista.getTxtMarca().getText();
                 String modelo = vista.getTxtModelo().getText();
-                int anio = Integer.parseInt(vista.getTxtAnio().getText());
-                double kms = Double.parseDouble(vista.getTxtKms().getText());
+                int anio = Integer.parseInt(vista.getTxtAnio().getText().trim());
+                double kmsActuales = Double.parseDouble(vista.getTxtKms().getText().trim());
 
                 Cliente c = (Cliente) vista.getComboClientes().getSelectedItem();
 
@@ -260,16 +251,7 @@ public class VehiculoControlador {
                     return;
                 }
 
-                Vehiculo v = new Vehiculo(
-                        matricula,
-                        marca,
-                        modelo,
-                        anio,
-                        kms,
-                        "Gasolina",
-                        "Blanco",
-                        c.getIdCliente()
-                );
+                Vehiculo v = new Vehiculo(matricula,marca,modelo,anio,kmsActuales, c.getIdCliente());
 
                 if (VehiculoDAO.ModificarVehiculo(v)) {
                     JOptionPane.showMessageDialog(vista,

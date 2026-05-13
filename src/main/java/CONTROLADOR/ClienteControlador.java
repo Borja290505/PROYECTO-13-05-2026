@@ -68,6 +68,10 @@ public class ClienteControlador {
                 return;
             }
 
+            if(!telefonoValido(telefono)){
+                JOptionPane.showMessageDialog(vista,"El telefo tiene que estar formado por 9 numeros");
+            }
+
             if (clienteDAO.existeClientePorDni(dni)) {
                 JOptionPane.showMessageDialog(vista, "Cliente ya existente");
                 return;

@@ -19,8 +19,8 @@ public class VehiculoDAO {
 
         String sql = """
             INSERT INTO Vehiculo
-            (matricula, marca, modelo, anio, kmsActuales, combustible, color, idCliente)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            (matricula, marca, modelo, anio, kmsActuales, idCliente)
+            VALUES (?, ?, ?, ?, ?, ?)
         """;
 
         try (Connection con = ConexionBD.getConexion();
@@ -31,9 +31,7 @@ public class VehiculoDAO {
             ps.setString(3, v.getModelo());
             ps.setInt(4, v.getAnio());
             ps.setDouble(5, v.getKmsActuales());
-            ps.setString(6, v.getCombustible());
-            ps.setString(7, v.getColor());
-            ps.setInt(8, v.getIdCliente());
+            ps.setInt(6, v.getIdCliente());
 
             return ps.executeUpdate() > 0;
 
@@ -81,8 +79,6 @@ public class VehiculoDAO {
                         rs.getString("modelo"),
                         rs.getInt("anio"),
                         rs.getDouble("kmsActuales"),
-                        rs.getString("combustible"),
-                        rs.getString("color"),
                         rs.getInt("idCliente")
                 );
                 lista.add(v);
@@ -102,7 +98,7 @@ public class VehiculoDAO {
         String sql = """
             UPDATE Vehiculo
             SET marca = ?, modelo = ?, anio = ?, kmsActuales = ?,
-                combustible = ?, color = ?, idCliente = ?
+                combustible = ?, idCliente = ?
             WHERE matricula = ?
         """;
 
@@ -113,10 +109,8 @@ public class VehiculoDAO {
             ps.setString(2, v.getModelo());
             ps.setInt(3, v.getAnio());
             ps.setDouble(4, v.getKmsActuales());
-            ps.setString(5, v.getCombustible());
-            ps.setString(6, v.getColor());
-            ps.setInt(7, v.getIdCliente());
-            ps.setString(8, v.getMatricula());
+            ps.setInt(5, v.getIdCliente());
+            ps.setString(6, v.getMatricula());
 
             return ps.executeUpdate() > 0;
 
@@ -146,8 +140,6 @@ public class VehiculoDAO {
                         rs.getString("modelo"),
                         rs.getInt("anio"),
                         rs.getDouble("kmsActuales"),
-                        rs.getString("combustible"),
-                        rs.getString("color"),
                         rs.getInt("idCliente")
                 );
             }

@@ -26,7 +26,7 @@ public class Validaciones {
     }
 
     public static boolean apellidoValido(String nombre) {
-        return nombre.matches(regexNombre);
+        return nombre.matches(regexApellido);
     }
 
     public static boolean emailValido(String email) {

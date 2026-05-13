@@ -8,6 +8,10 @@ import VISTA.INICIO.RegistroCliente;
 
 import javax.swing.*;
 
+import static UTIL.Validaciones.*;
+import static UTIL.Validaciones.emailValido;
+import static UTIL.Validaciones.telefonoValido;
+
 public class LoginControlador {
 
     private PaginaInicio vista;
@@ -52,6 +56,39 @@ public class LoginControlador {
             try {
                 Cliente c = registroVista.getClienteFormulario();
                 c.setFechaAlta(java.time.LocalDateTime.now());
+
+                String dni = registroVista.getTxtDni().getText().trim().toUpperCase();
+                String nombre = registroVista.getTxtNombre().getText().trim();
+                String apellidos = registroVista.getTxtApellidos().getText().trim();
+                String email = registroVista.getTxtEmail().getText().trim();
+                String telefono = registroVista.getTxtTelefono().getText().trim();
+
+                if (!dniValido(dni)) {
+                    JOptionPane.showMessageDialog(vista, "El DNI tiene que tener formato 12345678A");
+                    return;
+                }
+
+                if (!nombreValido(nombre)) {
+                    JOptionPane.showMessageDialog(vista, "El nombre no puede contener numeros");
+                    return;
+                }
+                if (!apellidoValido(apellidos) ) {
+                    JOptionPane.showMessageDialog(vista, "El apellido no puede contener numeros");
+                    return;
+                }
+                if (!emailValido(email)) {
+                    JOptionPane.showMessageDialog(vista, "El email tiene que tener formato ****@****.****");
+                    return;
+                }
+
+                if(!telefonoValido(telefono)){
+                    JOptionPane.showMessageDialog(vista,"El telefo tiene que estar formado por 9 numeros");
+                }
+
+                if (clienteDAO.existeClientePorDni(dni)) {
+                    JOptionPane.showMessageDialog(vista, "Cliente ya existente");
+                    return;
+                }
 
                 clienteDAO.insertarCliente(c);
                 registroVista.mostrarMensaje("Cliente registrado correctamente");
