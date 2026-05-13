@@ -12,6 +12,9 @@ public abstract class VentanaBase extends JFrame {
         setSize(ANCHO, ALTO);
         setLocationRelativeTo(null); // Centrada
         setResizable(false);
+
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         setVisible(true);
     }
 }

@@ -26,7 +26,6 @@ public class ListarOrdenes extends VentanaBase {
         modelo.addColumn("Matrícula");
         modelo.addColumn("Fecha Apertura");
         modelo.addColumn("Fecha Cierre");
-        modelo.addColumn("Fecha Estimada Cierre");
         modelo.addColumn("Estado");
         modelo.addColumn("KM Entrada");
         modelo.addColumn("Precio");
@@ -47,7 +46,6 @@ public class ListarOrdenes extends VentanaBase {
                     o.getVehiculo().getMatricula(),
                     o.getFechaApertura(),
                     o.getFechaCierre(),
-                    o.getFechaEstimadaCierre(),
                     o.getEstado(),
                     o.getKmEntrada(),
                     o.getPrecio(),

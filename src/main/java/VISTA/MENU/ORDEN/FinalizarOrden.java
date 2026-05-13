@@ -32,43 +32,6 @@ public class FinalizarOrden extends VentanaBase {
         add(btnFinalizar);
         add(btnVolver);
 
-        configurarEventos();
-    }
-
-    private void configurarEventos() {
-
-        btnFinalizar.addActionListener(e -> {
-
-            if (txtMatricula.getText().isBlank()) {
-                JOptionPane.showMessageDialog(this,
-                        "Debes introducir una matrícula",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // ✅ AHORA ES UN INT
-            int idOrden = OrdenReparacionDAO.finalizarOrdenPorMatricula(
-                    txtMatricula.getText(),
-                    txtObservaciones.getText()
-            );
-
-            // ✅ COMPROBAMOS EL VALOR
-            if (idOrden == -1) {
-                JOptionPane.showMessageDialog(this,
-                        "No existe una orden ABIERTA para esa matrícula",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            JOptionPane.showMessageDialog(this,
-                    "Orden finalizada correctamente",
-                    "Éxito",
-                    JOptionPane.INFORMATION_MESSAGE);
-
-            dispose();
-        });
     }
 
     // GETTERS

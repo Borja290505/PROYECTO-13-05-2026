@@ -8,7 +8,6 @@ public class OrdenReparacion {
     private int idOrden;
     private LocalDate fechaApertura;
     private LocalDate fechaCierre;
-    private LocalDate fechaEstimadaCierre;
     private int kmEntrada;
     private String estado;
     private String observaciones;
@@ -80,14 +79,6 @@ public class OrdenReparacion {
 
     public void setPrecio(Double precio_) {
         this.precio_ = precio_;
-    }
-
-    public LocalDate getFechaEstimadaCierre() {
-        return fechaEstimadaCierre;
-    }
-
-    public void setFechaEstimadaCierre(LocalDate fechaEstimadaCierre) {
-        this.fechaEstimadaCierre = fechaEstimadaCierre;
     }
 
     public Double getPrecio_() {

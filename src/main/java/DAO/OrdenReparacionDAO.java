@@ -62,6 +62,45 @@ public class OrdenReparacionDAO {
         return false;
     }
 
+    public static OrdenReparacion buscarOrdenAbiertaPorMatricula(String matricula) {
+
+        String sql = """
+        SELECT *
+        FROM ordenreparacion
+        WHERE matricula = ? AND estado = 'ABIERTA'
+        ORDER BY fechaApertura DESC
+        LIMIT 1
+    """;
+
+        try (Connection con = ConexionBD.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, matricula);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                OrdenReparacion o = new OrdenReparacion();
+                o.setIdOrden(rs.getInt("idOrden"));
+                o.setFechaApertura(rs.getDate("fechaApertura").toLocalDate());
+                o.setKmEntrada(rs.getInt("kmEntrada"));
+                o.setEstado(rs.getString("estado"));
+                o.setObservaciones(rs.getString("observaciones"));
+                o.setPrecio(rs.getDouble("manoObra"));
+
+                Vehiculo v = new Vehiculo();
+                v.setMatricula(rs.getString("matricula"));
+                o.setVehiculo(v);
+
+                return o;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public static int finalizarOrdenPorMatricula(String matricula, String observaciones) {
 
         String sql = """
@@ -143,11 +182,6 @@ public class OrdenReparacionDAO {
                     o.setFechaCierre(rs.getDate("fechaCierre").toLocalDate());
                 }
 
-                if (rs.getDate("fechaEstimadaCierre") != null) {
-                    o.setFechaEstimadaCierre(
-                            rs.getDate("fechaEstimadaCierre").toLocalDate());
-                }
-
                 Vehiculo v = new Vehiculo();
                 v.setMatricula(rs.getString("matricula"));
                 o.setVehiculo(v);
@@ -190,12 +224,6 @@ public class OrdenReparacionDAO {
 
                 o.setFechaApertura(rs.getDate("fechaApertura").toLocalDate());
 
-                if (rs.getDate("fechaEstimadaCierre") != null) {
-                    o.setFechaEstimadaCierre(
-                            rs.getDate("fechaEstimadaCierre").toLocalDate()
-                    );
-                }
-
                 if (rs.getDate("fechaCierre") != null) {
                     o.setFechaCierre(
                             rs.getDate("fechaCierre").toLocalDate()
@@ -221,7 +249,7 @@ public class OrdenReparacionDAO {
 
         String sql = """
         UPDATE ordenreparacion
-        SET estado = ?, observaciones = ?, manoObra = ?, fechaEstimadaCierre = ?
+        SET estado = ?, observaciones = ?, manoObra = ?
         WHERE idOrden = ?
     """;
 
@@ -231,12 +259,7 @@ public class OrdenReparacionDAO {
             ps.setString(1, o.getEstado());
             ps.setString(2, o.getObservaciones());
             ps.setDouble(3, o.getPrecio()); // manoObra
-            ps.setDate(4,
-                    o.getFechaEstimadaCierre() != null
-                            ? java.sql.Date.valueOf(o.getFechaEstimadaCierre())
-                            : null
-            );
-            ps.setInt(5, o.getIdOrden());
+            ps.setInt(4, o.getIdOrden());
 
             return ps.executeUpdate() > 0;
 

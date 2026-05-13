@@ -75,7 +75,7 @@ public class FacturaDAO {
         List<Factura> lista = new ArrayList<>();
 
         String sql = """
-                    SELECT f.*
+                    SELECT f.*, o.matricula as matricula
                     FROM factura f
                     JOIN ordenreparacion o ON f.idOrden = o.idOrden
                     WHERE o.matricula = ?
@@ -111,7 +111,7 @@ public class FacturaDAO {
         List<Factura> lista = new ArrayList<>();
 
         String sql = """
-                    SELECT f.*, o.matricula
+                    SELECT f.*, o.matricula as matricula
                     FROM factura f
                     JOIN ordenreparacion o ON f.idOrden = o.idOrden
                     JOIN vehiculo v ON o.matricula = v.matricula
@@ -127,7 +127,6 @@ public class FacturaDAO {
 
             while (rs.next()) {
                 Factura f = new Factura();
-                f.setIdFactura(rs.getInt("idFactura"));
                 f.setFechaFactura(rs.getDate("fechaFactura").toLocalDate());
                 f.setSubtotal(rs.getDouble("subtotal"));
                 f.setIva(rs.getDouble("iva"));
@@ -141,6 +140,25 @@ public class FacturaDAO {
         }
 
         return lista;
+    }
+
+    public static boolean existeFacturaParaOrden(int idOrden) {
+
+        String sql = "SELECT 1 FROM factura WHERE idOrden = ?";
+
+        try (Connection con = ConexionBD.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, idOrden);
+            ResultSet rs = ps.executeQuery();
+
+            return rs.next(); // si hay resultado, ya existe factura
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
 }

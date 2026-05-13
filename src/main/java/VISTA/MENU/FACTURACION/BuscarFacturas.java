@@ -54,7 +54,7 @@ public class BuscarFacturas extends VentanaBase {
         // TABLA
         // =========================
         String[] columnas = {
-                "ID Factura", "Fecha", "Subtotal", "IVA", "Total", "Matricula"
+                "Fecha Factura", "Subtotal", "IVA", "Total", "Matricula"
         };
 
         modeloTabla = new DefaultTableModel(columnas, 0) {
@@ -92,7 +92,6 @@ public class BuscarFacturas extends VentanaBase {
 
         for (Factura f : facturas) {
             Object[] fila = {
-                    f.getIdFactura(),
                     f.getFechaFactura(),
                     f.getSubtotal(),
                     f.getIva(),
