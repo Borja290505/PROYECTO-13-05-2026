@@ -40,11 +40,11 @@ public class MenuVehiculo extends VentanaBase {
         btnListarVehiculo.setPreferredSize(tamaño);
         btnModificarVehiculo.setPreferredSize(tamaño);
 
-        Font fuente = new Font("Arial", Font.BOLD, 14);
-        btnAltaVehiculo.setFont(fuente);
-        btnBajaVehiculo.setFont(fuente);
-        btnListarVehiculo.setFont(fuente);
-        btnModificarVehiculo.setFont(fuente);
+        Font fuenteBotones = new Font("Arial", Font.BOLD, 14);
+        btnAltaVehiculo.setFont(fuenteBotones);
+        btnBajaVehiculo.setFont(fuenteBotones);
+        btnListarVehiculo.setFont(fuenteBotones);
+        btnModificarVehiculo.setFont(fuenteBotones);
 
         panelBotones.add(btnAltaVehiculo);
         panelBotones.add(btnBajaVehiculo);
@@ -58,6 +58,7 @@ public class MenuVehiculo extends VentanaBase {
         panelVolver.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 
         btnVolver = new JButton("Volver");
+        btnVolver.setFont(fuenteBotones);
         panelVolver.add(btnVolver);
 
         add(panelVolver, BorderLayout.SOUTH);

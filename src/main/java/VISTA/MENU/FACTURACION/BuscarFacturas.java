@@ -21,6 +21,8 @@ public class BuscarFacturas extends VentanaBase {
 
         super("Buscar Facturas");
         setLayout(new BorderLayout(10, 10));
+        Font fuenteBotones = new Font("Arial", Font.BOLD, 14);
+
 
         // =========================
         // PANEL SUPERIOR (TÍTULO + BUSCADOR)
@@ -72,7 +74,9 @@ public class BuscarFacturas extends VentanaBase {
         // =========================
         JPanel panelSur = new JPanel();
         btnBuscar = new JButton("Buscar");
+        btnBuscar.setFont(fuenteBotones);
         btnVolver = new JButton("Volver");
+        btnVolver.setFont(fuenteBotones);
 
         panelSur.add(btnBuscar);
         panelSur.add(btnVolver);
@@ -86,7 +90,7 @@ public class BuscarFacturas extends VentanaBase {
     // =========================
     // CARGAR RESULTADOS
     // =========================
-        public void cargarDatos(List<Factura> facturas) {
+    public void cargarDatos(List<Factura> facturas) {
 
         modeloTabla.setRowCount(0);
 

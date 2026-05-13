@@ -4,6 +4,7 @@ import MODELO.OrdenReparacion;
 import VISTA.VentanaBase;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class ModificarOrden extends VentanaBase {
@@ -18,68 +19,95 @@ public class ModificarOrden extends VentanaBase {
 
     public ModificarOrden() {
         super("Modificar Orden de Reparación");
-        setLayout(new BorderLayout(10, 10));
+        setTitle("Modificar Orden de Reparación");
+
+        // Layout principal con márgenes limpios
+        setLayout(new BorderLayout(15, 15));
+        ((JPanel)getContentPane()).setBorder(new EmptyBorder(15, 20, 15, 20));
+
+        Font fuenteComponentes = new Font("Arial", Font.PLAIN, 14);
+        Font fuenteBotones = new Font("Arial", Font.BOLD, 14);
 
         // =========================
-        // PANEL SUPERIOR
+        // TÍTULO (Corregido: Ahora se añade al panel norte)
         // =========================
-        JPanel panelSuperior = new JPanel(new BorderLayout(10, 10));
+        JPanel panelNorte = new JPanel(new GridLayout(2, 1, 0, 10));
 
-        JLabel lblTitulo = new JLabel("Modificar Orden", JLabel.CENTER);
-        lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-        panelSuperior.add(lblTitulo, BorderLayout.NORTH);
+        JLabel lblTituloVentana = new JLabel("Modificar Orden de Reparación", JLabel.CENTER);
+        lblTituloVentana.setFont(new Font("Arial", Font.BOLD, 18));
+        panelNorte.add(lblTituloVentana);
 
-        JPanel panelBuscar = new JPanel(new BorderLayout(10, 10));
-        panelBuscar.add(new JLabel("Matrícula:"), BorderLayout.WEST);
+        // Panel Búsqueda integrado en la zona norte
+        JPanel panelBusqueda = new JPanel(new BorderLayout(10, 10));
+        JLabel lblMatricula = new JLabel("Matrícula:  ");
+        lblMatricula.setFont(fuenteComponentes);
+        panelBusqueda.add(lblMatricula, BorderLayout.WEST);
 
         txtMatricula = new JTextField();
-        panelBuscar.add(txtMatricula, BorderLayout.CENTER);
+        txtMatricula.setFont(fuenteComponentes);
+        panelBusqueda.add(txtMatricula, BorderLayout.CENTER);
 
         btnBuscar = new JButton("Buscar");
-        panelBuscar.add(btnBuscar, BorderLayout.EAST);
+        btnBuscar.setFont(fuenteBotones);
 
-        panelSuperior.add(panelBuscar, BorderLayout.CENTER);
-        add(panelSuperior, BorderLayout.NORTH);
+        panelBusqueda.add(btnBuscar, BorderLayout.EAST);
+
+        panelNorte.add(panelBusqueda);
+        add(panelNorte, BorderLayout.NORTH);
 
         // =========================
-        // FORMULARIO
+        // FORMULARIO (Corregido: Cuadros más pequeños)
         // =========================
-        JPanel panelCentro = new JPanel(new GridLayout(4, 2, 10, 10));
-        panelCentro.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+        JPanel panelForm = new JPanel(new GridLayout(4, 2, 10, 10));
 
-        panelCentro.add(new JLabel("Observaciones:"));
-        txtObservaciones = new JTextArea(3, 20);
-        panelCentro.add(new JScrollPane(txtObservaciones));
+        // Fila 1: Observaciones
+        JLabel lblObservaciones = new JLabel("Observaciones:");
+        lblObservaciones.setFont(fuenteComponentes);
+        panelForm.add(lblObservaciones);
 
-        panelCentro.add(new JLabel("Precio (mano de obra):"));
+        txtObservaciones = new JTextArea(3, 20); // 3 filas de alto máximas
+        txtObservaciones.setFont(fuenteComponentes);
+
+        panelForm.add(new JScrollPane(txtObservaciones));
+
+        // Fila 2: Precio
+        JLabel lblPrecio = new JLabel("Precio (€):");
+        lblPrecio.setFont(fuenteComponentes);
+        panelForm.add(lblPrecio);
+
         txtPrecio = new JTextField();
-        panelCentro.add(txtPrecio);
+        txtPrecio.setFont(fuenteComponentes);
+        panelForm.add(txtPrecio);
 
-        add(panelCentro, BorderLayout.CENTER);
+        // Fila 3 y 4: Huecos vacíos para evitar que el layout estire los componentes de arriba
+        panelForm.add(new JLabel(""));
+        panelForm.add(new JLabel(""));
+        panelForm.add(new JLabel(""));
+        panelForm.add(new JLabel(""));
+
+        add(panelForm, BorderLayout.CENTER);
 
         // =========================
-        // PANEL INFERIOR
+        // BOTONES DE ACCIÓN
         // =========================
-        JPanel panelSur = new JPanel();
+        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
 
         btnModificar = new JButton("Modificar");
+        btnModificar.setFont(fuenteBotones);
+
         btnVolver = new JButton("Volver");
+        btnVolver.setFont(fuenteBotones);
 
-        panelSur.add(btnModificar);
-        panelSur.add(btnVolver);
+        panelBotones.add(btnModificar);
+        panelBotones.add(btnVolver);
 
-        add(panelSur, BorderLayout.SOUTH);
+        add(panelBotones, BorderLayout.SOUTH);
 
-        // Al inicio NO se puede modificar
         setCamposEditables(false);
-
-        setLocationRelativeTo(null);
-        setVisible(true);
+        btnVolver.addActionListener(e -> dispose());
     }
 
-    // =========================
-    // MÉTODOS DE APOYO
-    // =========================
+    // Métodos de apoyo y getters/setters se mantienen exactamente igual
     public void rellenarCampos(OrdenReparacion o) {
         txtObservaciones.setText(o.getObservaciones());
         txtPrecio.setText(String.valueOf(o.getPrecio()));
@@ -89,33 +117,19 @@ public class ModificarOrden extends VentanaBase {
         txtObservaciones.setEditable(editable);
         txtPrecio.setEditable(editable);
         btnModificar.setEnabled(editable);
-        txtMatricula.setEditable(!editable); // no se cambia matrícula
+        txtMatricula.setEditable(!editable);
     }
 
-    // =========================
-    // GETTERS
-    // =========================
-    public JTextField getTxtMatricula() {
-        return txtMatricula;
-    }
-
-    public JTextArea getTxtObservaciones() {
-        return txtObservaciones;
-    }
-
-    public JTextField getTxtPrecio() {
-        return txtPrecio;
-    }
-
-    public JButton getBtnBuscar() {
-        return btnBuscar;
-    }
-
-    public JButton getBtnModificar() {
-        return btnModificar;
-    }
-
-    public JButton getBtnVolver() {
-        return btnVolver;
-    }
+    public JTextField getTxtMatricula() { return txtMatricula; }
+    public JTextArea getTxtObservaciones() { return txtObservaciones; }
+    public JTextField getTxtPrecio() { return txtPrecio; }
+    public JButton getBtnBuscar() { return btnBuscar; }
+    public JButton getBtnModificar() { return btnModificar; }
+    public JButton getBtnVolver() { return btnVolver; }
+    public void setBtnBuscar(JButton btnBuscar) { this.btnBuscar = btnBuscar; }
+    public void setBtnModificar(JButton btnModificar) { this.btnModificar = btnModificar; }
+    public void setBtnVolver(JButton btnVolver) { this.btnVolver = btnVolver; }
+    public void setTxtMatricula(JTextField txtMatricula) { this.txtMatricula = txtMatricula; }
+    public void setTxtObservaciones(JTextArea txtObservaciones) { this.txtObservaciones = txtObservaciones; }
+    public void setTxtPrecio(JTextField txtPrecio) { this.txtPrecio = txtPrecio; }
 }

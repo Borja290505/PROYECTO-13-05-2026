@@ -15,7 +15,6 @@ public class MenuOrden extends VentanaBase {
     public MenuOrden(){
         super("Menu Ordenes");
 
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(0, 20));
 
         JLabel titulo = new JLabel("Opciones de Ordenes", SwingConstants.CENTER);
@@ -37,11 +36,11 @@ public class MenuOrden extends VentanaBase {
         btnModificarOrden.setPreferredSize(tamaño);
         btnFinalizarOrden.setPreferredSize(tamaño);
 
-        Font fuente = new Font("Arial", Font.BOLD,14);
-        btnListarOrdenes.setFont(fuente);
-        btnNuevaOrden.setFont(fuente);
-        btnModificarOrden.setFont(fuente);
-        btnFinalizarOrden.setFont(fuente);
+        Font fuenteBotones = new Font("Arial", Font.BOLD, 14);
+        btnListarOrdenes.setFont(fuenteBotones);
+        btnNuevaOrden.setFont(fuenteBotones);
+        btnModificarOrden.setFont(fuenteBotones);
+        btnFinalizarOrden.setFont(fuenteBotones);
 
         panelBotones.add(btnNuevaOrden);
         panelBotones.add(btnFinalizarOrden);
@@ -55,6 +54,7 @@ public class MenuOrden extends VentanaBase {
         panelVolver.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 
         btnVolver = new JButton("Volver");
+        btnVolver.setFont(fuenteBotones);
         panelVolver.add(btnVolver);
 
         add(panelVolver, BorderLayout.SOUTH);

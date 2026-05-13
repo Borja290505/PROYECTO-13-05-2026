@@ -13,8 +13,10 @@ public class BajaVehiculo extends VentanaBase {
     public BajaVehiculo(){
         super("Baja Vehiculo");
 
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         setLayout(new BorderLayout(10, 10));
+        Font fuenteBotones = new Font("Arial", Font.BOLD, 14);
+
 
         JLabel lblInfo = new JLabel("Introduce la matrícula del vehículo a eliminar", SwingConstants.CENTER);
         lblInfo.setFont(new Font("Arial", Font.BOLD, 14));
@@ -37,9 +39,11 @@ public class BajaVehiculo extends VentanaBase {
         panelBotones.setBorder(new EmptyBorder(10, 20, 20, 20));
 
         btnEliminar = new JButton("Dar de Baja");
+        btnEliminar.setFont(fuenteBotones);
         btnEliminar.setBackground(new Color(255, 102, 102)); // Un color rojizo
 
         btnVolver = new JButton("Volver");
+        btnVolver.setFont(fuenteBotones);
 
         panelBotones.add(btnEliminar);
         panelBotones.add(btnVolver);

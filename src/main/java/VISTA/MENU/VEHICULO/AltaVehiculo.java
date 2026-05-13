@@ -27,10 +27,9 @@ public class AltaVehiculo extends VentanaBase {
 
     public AltaVehiculo() {
         super("Alta Vehículo");
-
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
-        setLocationRelativeTo(null);
+        Font fuenteBotones = new Font("Arial", Font.BOLD, 14);
+
 
         // =========================
         // TÍTULO
@@ -76,6 +75,7 @@ public class AltaVehiculo extends VentanaBase {
 
         btnBuscarCliente = new JButton("Buscar cliente");
         formulario.add(btnBuscarCliente);
+        btnBuscarCliente.setFont(fuenteBotones);
 
         lblClienteEncontrado = new JLabel("Cliente no seleccionado");
         formulario.add(lblClienteEncontrado);
@@ -89,7 +89,9 @@ public class AltaVehiculo extends VentanaBase {
         panelBotones.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 
         btnGuardar = new JButton("Guardar");
+        btnGuardar.setFont(fuenteBotones);
         btnVolver = new JButton("Volver");
+        btnVolver.setFont(fuenteBotones);
 
         panelBotones.add(btnGuardar);
         panelBotones.add(btnVolver);

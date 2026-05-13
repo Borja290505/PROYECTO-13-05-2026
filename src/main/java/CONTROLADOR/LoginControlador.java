@@ -44,12 +44,28 @@ public class LoginControlador {
         });
     }
 
-    public static void abrirRegistro() {
-        RegistroCliente registro = new RegistroCliente();
+    private void abrirRegistro() {
 
-        registro.getBtnVolver().addActionListener(e -> {
-            registro.dispose();
-            new LoginControlador();
+        RegistroCliente registroVista = new RegistroCliente();
+
+        registroVista.getBtnRegistrar().addActionListener(e -> {
+            try {
+                Cliente c = registroVista.getClienteFormulario();
+                c.setFechaAlta(java.time.LocalDateTime.now());
+
+                clienteDAO.insertarCliente(c);
+                registroVista.mostrarMensaje("Cliente registrado correctamente");
+                registroVista.dispose();
+                new LoginControlador();
+
+            } catch (Exception ex) {
+                registroVista.mostrarMensaje("Error al registrar cliente");
+            }
+        });
+
+        registroVista.getBtnVolver().addActionListener(e -> {
+            registroVista.dispose();
+            new ClienteControlador();
         });
     }
 }

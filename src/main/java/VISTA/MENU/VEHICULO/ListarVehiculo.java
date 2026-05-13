@@ -20,6 +20,7 @@ public class ListarVehiculo extends VentanaBase {
     public ListarVehiculo() {
         super("Listado de Vehículos");
         setLayout(new BorderLayout(10, 10));
+        Font fuenteBotones = new Font("Arial", Font.BOLD, 14);
 
         // =========================
         // PANEL SUPERIOR (TÍTULO + BUSCADOR)
@@ -40,6 +41,7 @@ public class ListarVehiculo extends VentanaBase {
         panelBuscar.add(txtBuscarMatricula, BorderLayout.CENTER);
 
         btnBuscar = new JButton("Buscar");
+        btnBuscar.setFont(fuenteBotones);
         panelBuscar.add(btnBuscar, BorderLayout.EAST);
 
         panelSuperior.add(panelBuscar, BorderLayout.CENTER);
@@ -69,6 +71,7 @@ public class ListarVehiculo extends VentanaBase {
         // =========================
         JPanel panelSur = new JPanel();
         btnVolver = new JButton("Volver");
+        btnVolver.setFont(fuenteBotones);
 
         panelSur.add(btnBuscar);
         panelSur.add(btnVolver);

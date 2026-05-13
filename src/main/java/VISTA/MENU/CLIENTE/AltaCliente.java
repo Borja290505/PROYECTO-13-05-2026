@@ -16,9 +16,8 @@ public class AltaCliente extends VentanaBase {
     public AltaCliente() {
         super("Alta Cliente");
 
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
-
+        Font fuenteBotones = new Font("Arial", Font.BOLD, 14);
 
         JLabel lblTitulo = new JLabel("Registro de Nuevo Cliente");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
@@ -59,14 +58,13 @@ public class AltaCliente extends VentanaBase {
 
         JPanel panelBotones = new JPanel();
         btnGuardar = new JButton("Guardar");
+        btnGuardar.setFont(fuenteBotones);
         btnVolver = new JButton("Volver");
+        btnVolver.setFont(fuenteBotones);
 
         panelBotones.add(btnGuardar);
         panelBotones.add(btnVolver);
         add(panelBotones, BorderLayout.SOUTH);
-
-        setLocationRelativeTo(null);
-        setVisible(true);
     }
 
 

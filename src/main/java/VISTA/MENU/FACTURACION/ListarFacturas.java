@@ -19,6 +19,8 @@ public class ListarFacturas extends VentanaBase {
 
         super("Listado de Facturas");
         setLayout(new BorderLayout(15, 15));
+        Font fuenteBotones = new Font("Arial", Font.BOLD, 14);
+
 
         // =========================
         // TÍTULO
@@ -57,12 +59,11 @@ public class ListarFacturas extends VentanaBase {
         panelSur.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
 
         btnVolver = new JButton("Volver");
+        btnVolver.setFont(fuenteBotones);
         panelSur.add(btnVolver);
 
         add(panelSur, BorderLayout.SOUTH);
 
-        setLocationRelativeTo(null);
-        setVisible(true);
     }
 
     // =========================

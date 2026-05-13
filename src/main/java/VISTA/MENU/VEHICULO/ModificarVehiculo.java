@@ -17,7 +17,9 @@ public class ModificarVehiculo extends VentanaBase {
 
     public ModificarVehiculo(){
         super("Modificar Vehículo");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        Font fuenteBotones = new Font("Arial", Font.BOLD, 14);
+
+
         setLayout(new BorderLayout(10, 10));
 
         JLabel lblTitulo = new JLabel("Gestión de Modificaciones");
@@ -36,6 +38,7 @@ public class ModificarVehiculo extends VentanaBase {
 
         btnBuscar = new JButton("Buscar");
         formulario.add(btnBuscar);
+        btnBuscar.setFont(fuenteBotones);
         formulario.add(new JLabel(""));
 
         formulario.add(new JLabel("Marca:"));
@@ -64,7 +67,9 @@ public class ModificarVehiculo extends VentanaBase {
         // Panel de botones
         JPanel botones = new JPanel();
         btnModificar = new JButton("Guardar Cambios");
+        btnModificar.setFont(fuenteBotones);
         btnVolver = new JButton("Volver");
+        btnVolver.setFont(fuenteBotones);
 
         // Bloqueo inicial hasta que se busque un vehículo
         setCamposEditables(false);

@@ -16,8 +16,10 @@ public class ModificarCliente extends VentanaBase {
 
     public ModificarCliente() {
         super("Modificar Cliente");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         setLayout(new BorderLayout(10, 10));
+        Font fuenteBotones = new Font("Arial", Font.BOLD, 14);
+
 
 
         JLabel lblTitulo = new JLabel("Gestión de Modificaciones de Clientes");
@@ -63,7 +65,9 @@ public class ModificarCliente extends VentanaBase {
 
         JPanel panelBotones = new JPanel();
         btnModificar = new JButton("Guardar Cambios");
+        btnModificar.setFont(fuenteBotones);
         btnVolver = new JButton("Volver");
+        btnVolver.setFont(fuenteBotones);
 
         panelBotones.add(btnModificar);
         panelBotones.add(btnVolver);

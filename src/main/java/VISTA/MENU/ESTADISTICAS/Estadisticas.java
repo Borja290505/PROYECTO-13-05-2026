@@ -19,6 +19,8 @@ public class Estadisticas extends VentanaBase {
 
         super("Estadísticas Generales");
         setLayout(new BorderLayout(10, 10));
+        Font fuenteBotones = new Font("Arial", Font.BOLD, 14);
+
 
         // TÍTULO
         JLabel lblTitulo = new JLabel("Estadísticas del Taller");
@@ -47,6 +49,8 @@ public class Estadisticas extends VentanaBase {
 
         // PANEL SUR
         btnVolver = new JButton("Volver");
+        btnVolver.setFont(fuenteBotones);
+
         JPanel panelSur = new JPanel();
         panelSur.add(btnVolver);
         add(panelSur, BorderLayout.SOUTH);

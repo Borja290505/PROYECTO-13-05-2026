@@ -15,8 +15,8 @@ public class MenuCliente extends VentanaBase {
     public MenuCliente() {
         super("Menú Cliente");
 
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(0, 20));
+        Font fuenteBotones = new Font("Arial", Font.BOLD, 14);
 
         JLabel titulo = new JLabel("Opciones de Cliente", SwingConstants.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 22));
@@ -50,6 +50,7 @@ public class MenuCliente extends VentanaBase {
         panelVolver.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 
         btnVolver = new JButton("Volver");
+        btnVolver.setFont(fuenteBotones);
         panelVolver.add(btnVolver);
 
         add(panelVolver, BorderLayout.SOUTH);

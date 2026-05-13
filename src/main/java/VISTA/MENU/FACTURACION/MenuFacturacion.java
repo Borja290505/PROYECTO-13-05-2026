@@ -13,8 +13,9 @@ public class MenuFacturacion extends VentanaBase {
 
     public MenuFacturacion(){
         super("Menú de Facturación");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
+        Font fuenteBotones = new Font("Arial", Font.BOLD, 14);
+
 
         // =========================
         // TÍTULO
@@ -34,6 +35,14 @@ public class MenuFacturacion extends VentanaBase {
         btnListarFacturas = new JButton("Listar Facturas");
         btnBuscarFacturas = new JButton("Buscar Facturas");
 
+        Font fuente = new Font("Arial", Font.BOLD,14);
+        btnListarFacturas.setFont(fuente);
+        btnBuscarFacturas.setFont(fuente);
+
+        Dimension tamaño = new Dimension(180, 120);
+        btnListarFacturas.setPreferredSize(tamaño);
+        btnBuscarFacturas.setPreferredSize(tamaño);
+
         panelCentro.add(btnListarFacturas);
         panelCentro.add(btnBuscarFacturas);
 
@@ -46,12 +55,10 @@ public class MenuFacturacion extends VentanaBase {
         panelSur.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
 
         btnVolver = new JButton("Volver");
+        btnVolver.setFont(fuenteBotones);
         panelSur.add(btnVolver);
 
         add(panelSur, BorderLayout.SOUTH);
-
-        setLocationRelativeTo(null);
-        setVisible(true);
     }
 
     // =========================

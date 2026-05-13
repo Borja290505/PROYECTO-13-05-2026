@@ -21,6 +21,8 @@ public class ListaCliente extends VentanaBase {
     public ListaCliente() {
         super("Listado de Clientes");
         setLayout(new BorderLayout(15, 15));
+        Font fuenteBotones = new Font("Arial", Font.BOLD, 14);
+
 
         // =========================
         // PANEL SUPERIOR (TÍTULO + BUSCADOR)
@@ -42,6 +44,7 @@ public class ListaCliente extends VentanaBase {
 
         txtBuscar = new JTextField();
         btnBuscar = new JButton("Buscar");
+        btnBuscar.setFont(fuenteBotones);
 
         panelBuscar.add(new JLabel("Buscar por:"));
         panelBuscar.add(comboTipoBusqueda);
@@ -75,6 +78,7 @@ public class ListaCliente extends VentanaBase {
         // =========================
         JPanel panelSur = new JPanel();
         btnVolver = new JButton("Volver");
+        btnVolver.setFont(fuenteBotones);
 
         panelSur.add(btnBuscar);
         panelSur.add(btnVolver);
