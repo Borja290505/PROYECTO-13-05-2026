@@ -183,24 +183,46 @@ public class VehiculoControlador {
 
         vista.getBtnBuscar().addActionListener(e -> {
 
-            String matricula = vista.getTxtBuscarMatricula()
+            String tipo = vista.getComboTipoBusqueda()
+                    .getSelectedItem().toString();
+
+            String valor = vista.getTxtValor()
                     .getText()
                     .trim()
                     .toUpperCase();
 
-            if (matricula.isEmpty()) {
+            // ✅ si no escribe nada → mostrar todo
+            if (valor.isEmpty()) {
                 vista.cargarDatos(VehiculoDAO.ListarVehiculos());
                 return;
             }
 
-            Vehiculo v = VehiculoDAO.buscarPorMatricula(matricula);
+            // =========================
+            // BUSCAR
+            // =========================
+            if (tipo.equals("Matrícula")) {
 
-            if (v == null) {
-                JOptionPane.showMessageDialog(vista,
-                        "No existe ningún vehículo con esa matrícula");
-                vista.cargarDatos(List.of());
-            } else {
-                vista.cargarDatos(List.of(v));
+                Vehiculo v = VehiculoDAO.buscarPorMatricula(valor);
+
+                if (v == null) {
+                    JOptionPane.showMessageDialog(vista,
+                            "No existe ningún vehículo con esa matrícula");
+
+                    vista.cargarDatos(List.of()); // tabla vacía
+                } else {
+                    vista.cargarDatos(List.of(v));
+                }
+
+            } else if (tipo.equals("DNI Cliente")) {
+
+                List<Vehiculo> lista = VehiculoDAO.buscarPorDni(valor);
+
+                if (lista.isEmpty()) {
+                    JOptionPane.showMessageDialog(vista,
+                            "No hay vehículos para ese DNI");
+                }
+
+                vista.cargarDatos(lista);
             }
         });
 

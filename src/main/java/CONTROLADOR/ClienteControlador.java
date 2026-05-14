@@ -63,13 +63,14 @@ public class ClienteControlador {
                 JOptionPane.showMessageDialog(vista, "El apellido no puede contener numeros");
                 return;
             }
-            if (!emailValido(email)) {
-                JOptionPane.showMessageDialog(vista, "El email tiene que tener formato ****@****.****");
-                return;
-            }
 
             if(!telefonoValido(telefono)){
                 JOptionPane.showMessageDialog(vista,"El telefo tiene que estar formado por 9 numeros");
+                return;
+            }
+            if (!emailValido(email)) {
+                JOptionPane.showMessageDialog(vista, "El email tiene que tener formato ****@****.****");
+                return;
             }
 
             if (clienteDAO.existeClientePorDni(dni)) {

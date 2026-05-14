@@ -13,45 +13,51 @@ public class ListarVehiculo extends VentanaBase {
     private JTable tabla;
     private DefaultTableModel modeloTabla;
 
-    private JTextField txtBuscarMatricula;
+    private JComboBox<String> comboTipoBusqueda;
+    private JTextField txtValor;
     private JButton btnBuscar;
     private JButton btnVolver;
 
     public ListarVehiculo() {
-        super("Listado de Vehículos");
+
+        super("Buscar Vehículos");
         setLayout(new BorderLayout(10, 10));
         Font fuenteBotones = new Font("Arial", Font.BOLD, 14);
 
         // =========================
-        // PANEL SUPERIOR (TÍTULO + BUSCADOR)
+        // PANEL SUPERIOR
         // =========================
         JPanel panelSuperior = new JPanel(new BorderLayout(10, 10));
 
-        JLabel lblTitulo = new JLabel("Vehículos Registrados", JLabel.CENTER);
-        lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
+        JLabel lblTitulo = new JLabel("Gestión de Vehículos");
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
+        lblTitulo.setHorizontalAlignment(JLabel.CENTER);
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(15, 0, 5, 0));
         panelSuperior.add(lblTitulo, BorderLayout.NORTH);
 
-        JPanel panelBuscar = new JPanel(new BorderLayout(10, 10));
+        JPanel panelBuscar = new JPanel(new GridLayout(2, 2, 10, 10));
         panelBuscar.setBorder(BorderFactory.createEmptyBorder(10, 40, 10, 40));
 
-        panelBuscar.add(new JLabel("Buscar por Matrícula:"), BorderLayout.WEST);
+        comboTipoBusqueda = new JComboBox<>(
+                new String[]{"Matrícula", "DNI Cliente"}
+        );
 
-        txtBuscarMatricula = new JTextField();
-        panelBuscar.add(txtBuscarMatricula, BorderLayout.CENTER);
+        txtValor = new JTextField();
 
-        btnBuscar = new JButton("Buscar");
-        btnBuscar.setFont(fuenteBotones);
-        panelBuscar.add(btnBuscar, BorderLayout.EAST);
+        panelBuscar.add(new JLabel("Buscar por:"));
+        panelBuscar.add(comboTipoBusqueda);
+        panelBuscar.add(new JLabel("Valor:"));
+        panelBuscar.add(txtValor);
 
         panelSuperior.add(panelBuscar, BorderLayout.CENTER);
+
         add(panelSuperior, BorderLayout.NORTH);
 
         // =========================
         // TABLA
         // =========================
         String[] columnas = {
-                "Matrícula", "Marca", "Modelo", "Año", "Km", "ID Cliente"
+                "Matrícula", "Marca", "Modelo", "Año", "Km", "DNI Cliente"
         };
 
         modeloTabla = new DefaultTableModel(columnas, 0) {
@@ -62,14 +68,16 @@ public class ListarVehiculo extends VentanaBase {
         };
 
         tabla = new JTable(modeloTabla);
-        tabla.getTableHeader().setReorderingAllowed(false);
-
         add(new JScrollPane(tabla), BorderLayout.CENTER);
 
         // =========================
         // PANEL INFERIOR
         // =========================
         JPanel panelSur = new JPanel();
+
+        btnBuscar = new JButton("Buscar"); // ✅ ahora sí existe
+        btnBuscar.setFont(fuenteBotones);
+
         btnVolver = new JButton("Volver");
         btnVolver.setFont(fuenteBotones);
 
@@ -86,6 +94,7 @@ public class ListarVehiculo extends VentanaBase {
     // CARGAR DATOS
     // =========================
     public void cargarDatos(List<Vehiculo> vehiculos) {
+
         modeloTabla.setRowCount(0);
 
         for (Vehiculo v : vehiculos) {
@@ -95,17 +104,21 @@ public class ListarVehiculo extends VentanaBase {
                     v.getModelo(),
                     v.getAnio(),
                     v.getKmsActuales(),
-                    v.getIdCliente()
+                    v.getDni()
             };
             modeloTabla.addRow(fila);
         }
     }
 
     // =========================
-    // GETTERS PARA CONTROLADOR
+    // GETTERS
     // =========================
-    public JTextField getTxtBuscarMatricula() {
-        return txtBuscarMatricula;
+    public JComboBox<String> getComboTipoBusqueda() {
+        return comboTipoBusqueda;
+    }
+
+    public JTextField getTxtValor() {
+        return txtValor;
     }
 
     public JButton getBtnBuscar() {

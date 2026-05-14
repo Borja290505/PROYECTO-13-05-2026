@@ -66,13 +66,19 @@ public class VehiculoDAO {
     public static List<Vehiculo> ListarVehiculos() {
 
         List<Vehiculo> lista = new ArrayList<>();
-        String sql = "SELECT * FROM Vehiculo";
+
+        String sql = """
+        SELECT v.*, c.dni
+        FROM vehiculo v
+        JOIN cliente c ON v.idCliente = c.idCliente
+    """;
 
         try (Connection con = ConexionBD.getConexion();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
+
                 Vehiculo v = new Vehiculo(
                         rs.getString("matricula"),
                         rs.getString("marca"),
@@ -81,12 +87,17 @@ public class VehiculoDAO {
                         rs.getDouble("kmsActuales"),
                         rs.getInt("idCliente")
                 );
+
+                // ✅ AÑADIR DNI
+                v.setDni(rs.getString("dni"));
+
                 lista.add(v);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return lista;
     }
 
@@ -96,11 +107,10 @@ public class VehiculoDAO {
     public static boolean ModificarVehiculo(Vehiculo v) {
 
         String sql = """
-            UPDATE Vehiculo
-            SET marca = ?, modelo = ?, anio = ?, kmsActuales = ?,
-                combustible = ?, idCliente = ?
-            WHERE matricula = ?
-        """;
+        UPDATE Vehiculo
+        SET marca = ?, modelo = ?, anio = ?, kmsActuales = ?, idCliente = ?
+        WHERE matricula = ?
+    """;
 
         try (Connection con = ConexionBD.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -121,11 +131,16 @@ public class VehiculoDAO {
     }
 
     // =========================
-// BUSCAR VEHÍCULO POR MATRÍCULA
-// =========================
+    // BUSCAR VEHÍCULO POR MATRÍCULA
+    // =========================
     public static Vehiculo buscarPorMatricula(String matricula) {
 
-        String sql = "SELECT * FROM Vehiculo WHERE matricula = ?";
+        String sql = """
+        SELECT v.*, c.dni
+        FROM vehiculo v
+        JOIN cliente c ON v.idCliente = c.idCliente
+        WHERE v.matricula = ?
+    """;
 
         try (Connection con = ConexionBD.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -134,7 +149,8 @@ public class VehiculoDAO {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                return new Vehiculo(
+
+                Vehiculo v = new Vehiculo(
                         rs.getString("matricula"),
                         rs.getString("marca"),
                         rs.getString("modelo"),
@@ -142,12 +158,59 @@ public class VehiculoDAO {
                         rs.getDouble("kmsActuales"),
                         rs.getInt("idCliente")
                 );
+
+                v.setDni(rs.getString("dni"));
+
+                return v;
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return null; // no existe
+        return null;
+    }
+
+    // =========================
+    // BUSCAR VEHÍCULO POR DNI
+    // =========================
+    public static List<Vehiculo> buscarPorDni(String dni) {
+
+        List<Vehiculo> lista = new ArrayList<>();
+
+        String sql = """
+        SELECT v.*, c.dni
+        FROM vehiculo v
+        JOIN cliente c ON v.idCliente = c.idCliente
+        WHERE c.dni = ?
+    """;
+
+        try (Connection con = ConexionBD.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, dni);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                Vehiculo v = new Vehiculo(
+                        rs.getString("matricula"),
+                        rs.getString("marca"),
+                        rs.getString("modelo"),
+                        rs.getInt("anio"),
+                        rs.getDouble("kmsActuales"),
+                        rs.getInt("idCliente")
+                );
+
+                v.setDni(rs.getString("dni"));
+
+                lista.add(v);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
     }
 }

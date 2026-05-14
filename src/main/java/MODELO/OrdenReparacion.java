@@ -11,9 +11,19 @@ public class OrdenReparacion {
     private int kmEntrada;
     private String estado;
     private String observaciones;
-    private Double precio_;
-
+    private Double precio;
     private Vehiculo vehiculo;
+
+    public OrdenReparacion(String estado, LocalDate fechaApertura, LocalDate fechaCierre, int idOrden, int kmEntrada, Vehiculo vehiculo, String observaciones, Double precio) {
+        this.estado = estado;
+        this.fechaApertura = fechaApertura;
+        this.fechaCierre = fechaCierre;
+        this.idOrden = idOrden;
+        this.kmEntrada = kmEntrada;
+        this.vehiculo = vehiculo;
+        this.observaciones = observaciones;
+        this.precio = precio;
+    }
 
     public OrdenReparacion() {}
 
@@ -74,18 +84,10 @@ public class OrdenReparacion {
     }
 
     public Double getPrecio() {
-        return precio_;
+        return precio;
     }
 
-    public void setPrecio(Double precio_) {
-        this.precio_ = precio_;
-    }
-
-    public Double getPrecio_() {
-        return precio_;
-    }
-
-    public void setPrecio_(Double precio_) {
-        this.precio_ = precio_;
+    public void setPrecio(Double precio) {
+        this.precio = precio;
     }
 }
