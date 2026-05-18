@@ -94,7 +94,6 @@ public class VehiculoControlador {
                 return;
             }
 
-            // ✅ NUEVO FIX
             if (!modeloValido(modelo)) {
                 JOptionPane.showMessageDialog(vista, "Modelo vacío");
                 return;
@@ -150,6 +149,12 @@ public class VehiculoControlador {
 
             if (matricula.isEmpty()) {
                 JOptionPane.showMessageDialog(vista, "Introduce matrícula");
+                return;
+            }
+
+            if (DAO.OrdenReparacionDAO.existeOrdenAbierta(matricula)) {
+                JOptionPane.showMessageDialog(vista,
+                        "No se puede dar de baja: el vehículo tiene una orden ABIERTA.");
                 return;
             }
 
@@ -232,8 +237,6 @@ public class VehiculoControlador {
 
         ModificarVehiculo vista = new ModificarVehiculo();
 
-        // FIX: la vista ya no llama a la BD en su constructor.
-        // El controlador obtiene los clientes aquí y se los pasa a la vista.
         vista.cargarClientes(clienteDAO.listarClientes());
 
         vista.getBtnBuscar().addActionListener(e -> {
@@ -242,13 +245,23 @@ public class VehiculoControlador {
 
             Vehiculo v = VehiculoDAO.buscarPorMatricula(matricula);
 
-            if (v != null) {
-                vista.rellenarCampos(v);
-                vista.setCamposEditables(true);
-                vista.getTxtMatricula().setEditable(false);
-            } else {
-                JOptionPane.showMessageDialog(vista, "No encontrado");
+            if (v == null) {
+                JOptionPane.showMessageDialog(vista, "Vehículo no encontrado.");
+                return;
             }
+
+            if (!v.isActivo()) {
+                JOptionPane.showMessageDialog(vista,
+                        "Este vehículo está dado de baja y no está disponible para modificar.",
+                        "Vehículo no disponible",
+                        JOptionPane.WARNING_MESSAGE);
+                vista.setCamposEditables(false);
+                return;
+            }
+
+            vista.rellenarCampos(v);
+            vista.setCamposEditables(true);
+            vista.getTxtMatricula().setEditable(false);
         });
 
         vista.getBtnModificar().addActionListener(e -> {
@@ -257,8 +270,28 @@ public class VehiculoControlador {
                 String matricula = vista.getTxtMatricula().getText();
                 String marca     = vista.getTxtMarca().getText().trim();
                 String modelo    = vista.getTxtModelo().getText().trim();
-                int anio         = Integer.parseInt(vista.getTxtAnio().getText().trim());
-                double kms       = Double.parseDouble(vista.getTxtKms().getText().trim());
+                String anioTxt   = vista.getTxtAnio().getText().trim();
+                String kmsTxt    = vista.getTxtKms().getText().trim();
+
+                if (!marcaValida(marca)) {
+                    JOptionPane.showMessageDialog(vista, "Marca no válida");
+                    return;
+                }
+                if (!modeloValido(modelo)) {
+                    JOptionPane.showMessageDialog(vista, "Modelo vacío o demasiado largo");
+                    return;
+                }
+                if (!anioValido(anioTxt)) {
+                    JOptionPane.showMessageDialog(vista, "Año no válido (1900 - año actual)");
+                    return;
+                }
+                if (!kmsValido(kmsTxt)) {
+                    JOptionPane.showMessageDialog(vista, "Km no válidos");
+                    return;
+                }
+
+                int anio   = Integer.parseInt(anioTxt);
+                double kms = Double.parseDouble(kmsTxt);
 
                 Cliente c = (Cliente) vista.getComboClientes().getSelectedItem();
 

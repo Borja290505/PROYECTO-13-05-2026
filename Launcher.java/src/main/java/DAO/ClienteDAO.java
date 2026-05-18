@@ -146,7 +146,7 @@ public class ClienteDAO {
         String sql = """
         SELECT *
         FROM cliente
-        WHERE UPPER(nombre) LIKE UPPER(?) OR apellidos LIKE UPPER(?)
+        WHERE UPPER(nombre) LIKE UPPER(?) OR UPPER(apellidos) LIKE UPPER(?)
     """;
 
         try (java.sql.Connection con = CONFIGURADOR.ConexionBD.getConexion();

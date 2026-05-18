@@ -21,8 +21,9 @@ public class LoginApp {
         LocalDateTime fechaHora = LocalDateTime.now();
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+        String usuarioLog = correcto ? usuario : "***";
         String linea = fechaHora.format(formato)
-                + " | Usuario: " + usuario
+                + " | Usuario: " + usuarioLog
                 + " | Resultado: " + (correcto ? "LOGIN CORRECTO" : "LOGIN INCORRECTO")
                 + System.lineSeparator();
 

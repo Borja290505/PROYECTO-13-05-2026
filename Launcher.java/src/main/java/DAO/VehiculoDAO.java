@@ -46,7 +46,7 @@ public class VehiculoDAO {
     // =========================
     public static boolean eliminarVehiculo(String matricula) {
 
-        String sql = "DELETE FROM Vehiculo WHERE matricula = ?";
+        String sql = "UPDATE vehiculo SET activo = false WHERE matricula = ?";
 
         try (Connection con = ConexionBD.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -71,6 +71,7 @@ public class VehiculoDAO {
             SELECT v.*, c.dni
             FROM vehiculo v
             JOIN cliente c ON v.idCliente = c.idCliente
+            WHERE v.activo = true
             ORDER BY v.matricula
         """;
 
@@ -130,6 +131,7 @@ public class VehiculoDAO {
                 );
 
                 v.setDni(rs.getString("dni"));
+                v.setActivo(rs.getBoolean("activo")); // FIX NUEVO: leer estado activo
 
                 return v;
             }
@@ -152,7 +154,7 @@ public class VehiculoDAO {
             SELECT v.*, c.dni
             FROM vehiculo v
             JOIN cliente c ON v.idCliente = c.idCliente
-            WHERE c.dni = ?
+            WHERE c.dni = ? AND v.activo = true
         """;
 
         try (Connection con = ConexionBD.getConexion();

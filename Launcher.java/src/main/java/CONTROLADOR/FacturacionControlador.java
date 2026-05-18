@@ -15,9 +15,8 @@ public class FacturacionControlador {
         vista.cargarDatos(FacturaDAO.listarFacturas());
 
         // BOTÓN BUSCAR
-        vista.getBtnBuscar().addActionListener(e -> {
 
-            List<Factura> lista = List.of();
+        vista.getBtnBuscar().addActionListener(e -> {
 
             String tipo = vista.getComboTipoBusqueda()
                     .getSelectedItem().toString();
@@ -27,6 +26,13 @@ public class FacturacionControlador {
                     .trim()
                     .toUpperCase();
 
+            if (valor.isEmpty()) {
+                vista.cargarDatos(FacturaDAO.listarFacturas());
+                return;
+            }
+
+            List<Factura> lista = List.of();
+
             if (tipo.equals("Matrícula")) {
                 lista = FacturaDAO.listarFacturasPorMatricula(valor);
             } else if (tipo.equals("DNI")){
@@ -34,12 +40,9 @@ public class FacturacionControlador {
             }
 
             if (lista.isEmpty()) {
-                JOptionPane.showMessageDialog(vista,
-                        "No hay facturas");
+                JOptionPane.showMessageDialog(vista, "No hay facturas para ese criterio");
                 lista = FacturaDAO.listarFacturas();
             }
-
-
 
             vista.cargarDatos(lista);
         });

@@ -8,7 +8,8 @@ public class Vehiculo {
     private int anio;
     private double kmsActuales;
     private int idCliente;
-    private String dni; 
+    private String dni;
+    private boolean activo;
 
     public Vehiculo(String matricula, String marca, String modelo,
                     int anio, double kmsActuales, int idCliente) {
@@ -31,6 +32,7 @@ public class Vehiculo {
     public double getKmsActuales() { return kmsActuales; }
     public int getIdCliente() { return idCliente; }
     public String getDni() { return dni; }
+    public boolean isActivo() { return activo; }
 
     // SETTERS
     public void setMatricula(String matricula) { this.matricula = matricula; }
@@ -40,4 +42,5 @@ public class Vehiculo {
     public void setKmsActuales(double kmsActuales) { this.kmsActuales = kmsActuales; }
     public void setIdCliente(int idCliente) { this.idCliente = idCliente; }
     public void setDni(String dni) { this.dni = dni; }
+    public void setActivo(boolean activo) { this.activo = activo; }
 }

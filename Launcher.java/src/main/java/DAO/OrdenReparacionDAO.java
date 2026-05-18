@@ -115,10 +115,14 @@ public class OrdenReparacionDAO {
     // =========================
     public static int finalizarOrdenPorMatricula(String matricula, String observaciones) {
 
+        // 1. Obtener el id de la orden abierta ANTES de cerrarla
+        int idOrden = obtenerIdOrdenAbiertaPorMatricula(matricula);
+        if (idOrden == -1) return -1;
+
         String sql = """
             UPDATE ordenreparacion
             SET fechaCierre = ?, estado = ?, observaciones = ?
-            WHERE matricula = ? AND estado = 'ABIERTA'
+            WHERE idOrden = ? AND estado = 'ABIERTA'
         """;
 
         try (Connection con = ConexionBD.getConexion();
@@ -127,13 +131,10 @@ public class OrdenReparacionDAO {
             ps.setDate(1, Date.valueOf(LocalDate.now()));
             ps.setString(2, "FINALIZADA");
             ps.setString(3, observaciones);
-            ps.setString(4, matricula);
+            ps.setInt(4, idOrden);
 
             int filas = ps.executeUpdate();
-
-            if (filas > 0) {
-                return obtenerIdOrdenPorMatricula(matricula);
-            }
+            if (filas > 0) return idOrden;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -143,15 +144,14 @@ public class OrdenReparacionDAO {
     }
 
     // =========================
-    // OBTENER ID ORDEN
+    // OBTENER ID DE ORDEN ABIERTA (uso interno)
     // =========================
-    public static int obtenerIdOrdenPorMatricula(String matricula) {
+    private static int obtenerIdOrdenAbiertaPorMatricula(String matricula) {
 
         String sql = """
             SELECT idOrden
             FROM ordenreparacion
-            WHERE matricula = ?
-            ORDER BY fechaCierre DESC
+            WHERE matricula = ? AND estado = 'ABIERTA'
             LIMIT 1
         """;
 
@@ -160,10 +160,7 @@ public class OrdenReparacionDAO {
 
             ps.setString(1, matricula);
             ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                return rs.getInt("idOrden");
-            }
+            if (rs.next()) return rs.getInt("idOrden");
 
         } catch (SQLException e) {
             e.printStackTrace();

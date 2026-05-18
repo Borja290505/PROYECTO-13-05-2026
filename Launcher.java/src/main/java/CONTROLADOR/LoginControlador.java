@@ -110,7 +110,14 @@ public class LoginControlador {
                     return;
                 }
 
-                Cliente c = registroVista.getClienteFormulario();
+                Cliente c = new Cliente();
+                c.setDni(dni);
+                c.setNombre(nombre);
+                c.setApellidos(apellidos);
+                c.setEmail(email);
+                c.setTelefono(telefono);
+                c.setDireccion(registroVista.getTxtDireccion().getText().trim());
+                c.setContraseña(contrasena);
                 c.setFechaAlta(java.time.LocalDateTime.now());
 
                 clienteDAO.insertarCliente(c);
