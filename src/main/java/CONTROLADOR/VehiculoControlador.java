@@ -15,36 +15,45 @@ import static UTIL.Validaciones.*;
 public class VehiculoControlador {
 
     private ClienteDAO clienteDAO = new ClienteDAO();
+    private Vehiculo vehiculoActual;
 
+    // =========================
+    // ABRIR MENÚ VEHÍCULOS
+    // =========================
     public void abrirMenuVehiculo() {
 
         MenuVehiculo menu = new MenuVehiculo();
-
-        menu.getBtnAltaVehiculo().addActionListener(e -> {
-            menu.dispose();
-            abrirAltaVehiculo();
-        });
-
-        menu.getBtnBajaVehiculo().addActionListener(e -> {
-            menu.dispose();
-            abrirBajaVehiculo();
-        });
-
-        menu.getBtnListarVehiculo().addActionListener(e -> {
-            menu.dispose();
-            abrirListarVehiculos();
-        });
-
-        menu.getBtnModificarVehiculo().addActionListener(e -> {
-            menu.dispose();
-            abrirModificarVehiculo();
-        });
-
-        menu.getBtnVolver().addActionListener(e -> {
-            menu.dispose();
-            new MenuPrincipalControlador(); // vuelve al menú principal
-        });
+        menu.setControlador(this);
     }
+
+    // =========================
+    // NAVEGACIÓN
+    // =========================
+    public void irAlta(MenuVehiculo vista) {
+        vista.dispose();
+        abrirAltaVehiculo();
+    }
+
+    public void irBaja(MenuVehiculo vista) {
+        vista.dispose();
+        abrirBajaVehiculo();
+    }
+
+    public void irLista(MenuVehiculo vista) {
+        vista.dispose();
+        abrirListarVehiculos();
+    }
+
+    public void irModificar(MenuVehiculo vista) {
+        vista.dispose();
+        abrirModificarVehiculo();
+    }
+
+    public void volverMenu(JFrame vista) {
+        vista.dispose();
+        new MenuPrincipalControlador();
+    }
+
 
     // =========================
     // ALTA VEHÍCULO
@@ -52,96 +61,92 @@ public class VehiculoControlador {
     private void abrirAltaVehiculo() {
 
         AltaVehiculo vista = new AltaVehiculo();
+        vista.setControlador(this);
+    }
 
-        vista.getBtnBuscarCliente().addActionListener(e -> {
+    public void buscarCliente(AltaVehiculo vista) {
 
-            String dni = vista.getTxtBuscarDni().getText().trim().toUpperCase();
+        String dni = vista.getTxtBuscarDni().getText().trim().toUpperCase();
 
-            if (dni.isEmpty()) {
-                JOptionPane.showMessageDialog(vista,
-                        "Introduce un DNI para buscar");
-                return;
-            }
+        if (dni.isEmpty()) {
+            JOptionPane.showMessageDialog(vista,
+                    "Introduce un DNI");
+            return;
+        }
 
-            Cliente c = clienteDAO.obtenerClientePorDni(dni);
+        Cliente c = clienteDAO.obtenerClientePorDni(dni);
 
-            if (c == null) {
-                JOptionPane.showMessageDialog(vista,
-                        "No existe ningún cliente con ese DNI");
-                vista.setClienteEncontrado(null);
-                return;
-            }
+        if (c == null) {
+            JOptionPane.showMessageDialog(vista,
+                    "Cliente no encontrado");
+            vista.setClienteEncontrado(null);
+            return;
+        }
 
-            vista.setClienteEncontrado(c);
-        });
+        vista.setClienteEncontrado(c);
+    }
 
-        vista.getBtnGuardar().addActionListener(e -> {
+    public void guardarVehiculo(AltaVehiculo vista) {
 
-            String matricula = vista.getTxtMatricula().getText().trim().toUpperCase();
-            String marca = vista.getTxtMarca().getText().trim();
-            String modelo = vista.getTxtModelo().getText().trim();
-            String anioTxt = vista.getTxtAnio().getText().trim();
-            String kmsTxt = vista.getTxtKms().getText().trim();
+        String matricula = vista.getTxtMatricula().getText().trim().toUpperCase();
+        String marca = vista.getTxtMarca().getText().trim();
+        String modelo = vista.getTxtModelo().getText().trim();
+        String anioTxt = vista.getTxtAnio().getText().trim();
+        String kmsTxt = vista.getTxtKms().getText().trim();
 
-            Cliente propietario = vista.getClienteSeleccionado();
+        Cliente propietario = vista.getClienteSeleccionado();
 
-            if (!matriculaValida(matricula)) {
-                JOptionPane.showMessageDialog(vista,
-                        "La matrícula debe tener el formato 1234ABC");
-                return;
-            }
+        if (!matriculaValida(matricula)) {
+            JOptionPane.showMessageDialog(vista,
+                    "Formato matrícula incorrecto");
+            return;
+        }
 
-            if (!marcaValida(marca)) {
-                JOptionPane.showMessageDialog(vista,
-                        "La marca no es válida");
-                return;
-            }
+        if (!marcaValida(marca)) {
+            JOptionPane.showMessageDialog(vista,
+                    "Marca inválida");
+            return;
+        }
 
-            if (!anioValido(anioTxt)) {
-                JOptionPane.showMessageDialog(vista,
-                        "El año no es válido");
-                return;
-            }
+        if (!anioValido(anioTxt)) {
+            JOptionPane.showMessageDialog(vista,
+                    "Año inválido");
+            return;
+        }
 
-            if (!kmsValido(kmsTxt)) {
-                JOptionPane.showMessageDialog(vista,
-                        "Los kilómetros deben ser un número positivo");
-                return;
-            }
+        if (!kmsValido(kmsTxt)) {
+            JOptionPane.showMessageDialog(vista,
+                    "KM inválidos");
+            return;
+        }
 
-            if (propietario == null) {
-                JOptionPane.showMessageDialog(vista,
-                        "Debes buscar y seleccionar un cliente");
-                return;
-            }
+        if (propietario == null) {
+            JOptionPane.showMessageDialog(vista,
+                    "Selecciona un cliente");
+            return;
+        }
 
-            int anio = Integer.parseInt(anioTxt);
-            double kmsActuales = Double.parseDouble(kmsTxt);
+        int anio = Integer.parseInt(anioTxt);
+        double kms = Double.parseDouble(kmsTxt);
 
-            Vehiculo v = new Vehiculo(
-                    matricula,
-                    marca,
-                    modelo,
-                    anio,
-                    kmsActuales,
-                    propietario.getIdCliente()
-            );
+        Vehiculo v = new Vehiculo(
+                matricula,
+                marca,
+                modelo,
+                anio,
+                kms,
+                propietario.getIdCliente()
+        );
 
-            if (VehiculoDAO.InsertarVehiculo(v)) {
-                JOptionPane.showMessageDialog(vista,
-                        "Vehículo insertado correctamente");
-                vista.dispose();
-                abrirMenuVehiculo();
-            } else {
-                JOptionPane.showMessageDialog(vista,
-                        "Error al insertar el vehículo");
-            }
-        });
-
-        vista.getBtnVolver().addActionListener(e -> {
+        if (VehiculoDAO.InsertarVehiculo(v)) {
+            JOptionPane.showMessageDialog(vista,
+                    "Vehículo guardado");
             vista.dispose();
             abrirMenuVehiculo();
-        });
+        } else {
+            JOptionPane.showMessageDialog(vista,
+                    "Error al guardar");
+        }
     }
 
     // =========================
@@ -150,27 +155,23 @@ public class VehiculoControlador {
     private void abrirBajaVehiculo() {
 
         BajaVehiculo vista = new BajaVehiculo();
+        vista.setControlador(this);
+    }
 
-        vista.getBtnEliminar().addActionListener(e -> {
+    public void eliminarVehiculo(BajaVehiculo vista) {
 
-            String matricula = vista.getTxtMatricula().getText().trim();
+        String matricula = vista.getTxtMatricula().getText().trim();
 
-            if (VehiculoDAO.EliminarVehiculo(matricula)) {
-                JOptionPane.showMessageDialog(vista,
-                        "Vehículo eliminado correctamente");
-            } else {
-                JOptionPane.showMessageDialog(vista,
-                        "No existe esa matrícula");
-            }
+        if (VehiculoDAO.EliminarVehiculo(matricula)) {
+            JOptionPane.showMessageDialog(vista,
+                    "Vehículo eliminado");
+        } else {
+            JOptionPane.showMessageDialog(vista,
+                    "No existe ese vehículo");
+        }
 
-            vista.dispose();
-            abrirMenuVehiculo();
-        });
-
-        vista.getBtnVolver().addActionListener(e -> {
-            vista.dispose();
-            abrirMenuVehiculo();
-        });
+        vista.dispose();
+        abrirMenuVehiculo();
     }
 
     // =========================
@@ -179,57 +180,44 @@ public class VehiculoControlador {
     private void abrirListarVehiculos() {
 
         ListarVehiculo vista = new ListarVehiculo();
+        vista.setControlador(this);
+
         vista.cargarDatos(VehiculoDAO.ListarVehiculos());
+    }
 
-        vista.getBtnBuscar().addActionListener(e -> {
+    public void buscarVehiculo(ListarVehiculo vista) {
 
-            String tipo = vista.getComboTipoBusqueda()
-                    .getSelectedItem().toString();
+        String tipo = vista.getComboTipoBusqueda().getSelectedItem().toString();
+        String valor = vista.getTxtValor().getText().trim().toUpperCase();
 
-            String valor = vista.getTxtValor()
-                    .getText()
-                    .trim()
-                    .toUpperCase();
+        if (valor.isEmpty()) {
+            vista.cargarDatos(VehiculoDAO.ListarVehiculos());
+            return;
+        }
 
-            // ✅ si no escribe nada → mostrar todo
-            if (valor.isEmpty()) {
-                vista.cargarDatos(VehiculoDAO.ListarVehiculos());
-                return;
+        if (tipo.equals("Matrícula")) {
+
+            Vehiculo v = VehiculoDAO.buscarPorMatricula(valor);
+
+            if (v == null) {
+                JOptionPane.showMessageDialog(vista,
+                        "No encontrado");
+                vista.cargarDatos(List.of());
+            } else {
+                vista.cargarDatos(List.of(v));
             }
 
-            // =========================
-            // BUSCAR
-            // =========================
-            if (tipo.equals("Matrícula")) {
+        } else {
 
-                Vehiculo v = VehiculoDAO.buscarPorMatricula(valor);
+            List<Vehiculo> lista = VehiculoDAO.buscarPorDni(valor);
 
-                if (v == null) {
-                    JOptionPane.showMessageDialog(vista,
-                            "No existe ningún vehículo con esa matrícula");
-
-                    vista.cargarDatos(List.of()); // tabla vacía
-                } else {
-                    vista.cargarDatos(List.of(v));
-                }
-
-            } else if (tipo.equals("DNI Cliente")) {
-
-                List<Vehiculo> lista = VehiculoDAO.buscarPorDni(valor);
-
-                if (lista.isEmpty()) {
-                    JOptionPane.showMessageDialog(vista,
-                            "No hay vehículos para ese DNI");
-                }
-
-                vista.cargarDatos(lista);
+            if (lista.isEmpty()) {
+                JOptionPane.showMessageDialog(vista,
+                        "Sin resultados");
             }
-        });
 
-        vista.getBtnVolver().addActionListener(e -> {
-            vista.dispose();
-            abrirMenuVehiculo();
-        });
+            vista.cargarDatos(lista);
+        }
     }
 
     // =========================
@@ -238,62 +226,64 @@ public class VehiculoControlador {
     private void abrirModificarVehiculo() {
 
         ModificarVehiculo vista = new ModificarVehiculo();
+        vista.setControlador(this);
+    }
 
-        vista.getBtnBuscar().addActionListener(e -> {
+    public void buscarModificar(ModificarVehiculo vista) {
 
-            String matricula = vista.getTxtMatricula().getText().trim();
+        String matricula = vista.getTxtMatricula().getText().trim();
 
-            Vehiculo v = VehiculoDAO.buscarPorMatricula(matricula);
+        vehiculoActual = VehiculoDAO.buscarPorMatricula(matricula);
 
-            if (v != null) {
-                vista.rellenarCampos(v);
-                vista.setCamposEditables(true);
-                vista.getTxtMatricula().setEditable(false);
+        if (vehiculoActual != null) {
+            vista.rellenarCampos(vehiculoActual);
+            vista.setCamposEditables(true);
+            vista.getTxtMatricula().setEditable(false);
+        } else {
+            JOptionPane.showMessageDialog(vista,
+                    "Vehículo no encontrado");
+        }
+    }
+
+    public void modificarVehiculo(ModificarVehiculo vista) {
+
+        try {
+            String matricula = vista.getTxtMatricula().getText();
+            String marca = vista.getTxtMarca().getText();
+            String modelo = vista.getTxtModelo().getText();
+            int anio = Integer.parseInt(vista.getTxtAnio().getText());
+            double kms = Double.parseDouble(vista.getTxtKms().getText());
+
+            Cliente c = (Cliente) vista.getComboClientes().getSelectedItem();
+
+            if (c == null) {
+                JOptionPane.showMessageDialog(vista,
+                        "Selecciona cliente");
+                return;
+            }
+
+            Vehiculo v = new Vehiculo(
+                    matricula,
+                    marca,
+                    modelo,
+                    anio,
+                    kms,
+                    c.getIdCliente()
+            );
+
+            if (VehiculoDAO.ModificarVehiculo(v)) {
+                JOptionPane.showMessageDialog(vista,
+                        "Vehículo actualizado");
+                vista.dispose();
+                abrirMenuVehiculo();
             } else {
                 JOptionPane.showMessageDialog(vista,
-                        "No se encontró ningún vehículo con esa matrícula.");
+                        "Error al actualizar");
             }
-        });
 
-
-
-        vista.getBtnModificar().addActionListener(e -> {
-            try {
-                String matricula = vista.getTxtMatricula().getText();
-                String marca = vista.getTxtMarca().getText();
-                String modelo = vista.getTxtModelo().getText();
-                int anio = Integer.parseInt(vista.getTxtAnio().getText().trim());
-                double kmsActuales = Double.parseDouble(vista.getTxtKms().getText().trim());
-
-                Cliente c = (Cliente) vista.getComboClientes().getSelectedItem();
-
-                if (c == null) {
-                    JOptionPane.showMessageDialog(vista,
-                            "Debes seleccionar un propietario.");
-                    return;
-                }
-
-                Vehiculo v = new Vehiculo(matricula,marca,modelo,anio,kmsActuales, c.getIdCliente());
-
-                if (VehiculoDAO.ModificarVehiculo(v)) {
-                    JOptionPane.showMessageDialog(vista,
-                            "Vehículo actualizado correctamente.");
-                    vista.dispose();
-                    abrirMenuVehiculo();
-                } else {
-                    JOptionPane.showMessageDialog(vista,
-                            "Error al actualizar el vehículo.");
-                }
-
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(vista,
-                        "Año y kilómetros deben ser numéricos.");
-            }
-        });
-
-        vista.getBtnVolver().addActionListener(e -> {
-            vista.dispose();
-            abrirMenuVehiculo();
-        });
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(vista,
+                    "Datos incorrectos");
+        }
     }
 }

@@ -1,5 +1,6 @@
 package VISTA.MENU.ORDEN;
 
+import CONTROLADOR.OrdenRepControlador;
 import VISTA.VentanaBase;
 
 import javax.swing.*;
@@ -61,6 +62,14 @@ public class MenuOrden extends VentanaBase {
 
         setVisible(true);
 
+    }
+    public void setControlador(OrdenRepControlador c){
+
+        btnNuevaOrden.addActionListener(e -> c.irNueva(this));
+        btnFinalizarOrden.addActionListener(e -> c.irFinalizar(this));
+        btnListarOrdenes.addActionListener(e -> c.irLista(this));
+        btnModificarOrden.addActionListener(e -> c.irModificar(this));
+        btnVolver.addActionListener(e -> c.volverMenu(this));
     }
 
     public JButton getBtnListarOrdenes() {

@@ -1,5 +1,6 @@
 package VISTA.MENU.CLIENTE;
 
+import CONTROLADOR.ClienteControlador;
 import MODELO.Cliente;
 import VISTA.VentanaBase;
 
@@ -22,7 +23,6 @@ public class ListaCliente extends VentanaBase {
         super("Listado de Clientes");
         setLayout(new BorderLayout(15, 15));
         Font fuenteBotones = new Font("Arial", Font.BOLD, 14);
-
 
         // =========================
         // PANEL SUPERIOR (TÍTULO + BUSCADOR)
@@ -87,6 +87,13 @@ public class ListaCliente extends VentanaBase {
 
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    // ✅ MÉTODO CLAVE (LO QUE TE FALTABA)
+    public void setControlador(ClienteControlador c){
+
+        btnBuscar.addActionListener(e -> c.buscarClientes(this));
+        btnVolver.addActionListener(e -> c.volverMenu(this));
     }
 
     // =========================

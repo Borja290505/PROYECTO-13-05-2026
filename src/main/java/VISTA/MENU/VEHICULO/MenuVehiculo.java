@@ -1,5 +1,6 @@
 package VISTA.MENU.VEHICULO;
 
+import CONTROLADOR.VehiculoControlador;
 import VISTA.VentanaBase;
 
 import javax.swing.*;
@@ -64,6 +65,14 @@ public class MenuVehiculo extends VentanaBase {
         add(panelVolver, BorderLayout.SOUTH);
 
         setVisible(true);
+    }
+    public void setControlador(VehiculoControlador c){
+
+        btnAltaVehiculo.addActionListener(e -> c.irAlta(this));
+        btnBajaVehiculo.addActionListener(e -> c.irBaja(this));
+        btnListarVehiculo.addActionListener(e -> c.irLista(this));
+        btnModificarVehiculo.addActionListener(e -> c.irModificar(this));
+        btnVolver.addActionListener(e -> c.volverMenu(this));
     }
 
     // ===== GETTERS (OBLIGATORIOS) =====

@@ -1,5 +1,6 @@
 package VISTA.MENU.PRINCIPAL;
 
+import CONTROLADOR.MenuPrincipalControlador;
 import VISTA.VentanaBase;
 
 import javax.swing.*;
@@ -71,6 +72,15 @@ public class MenuPrincipal extends VentanaBase {
         add(panelCentral, BorderLayout.CENTER);
 
         setVisible(true);
+    }
+    public void setControlador(MenuPrincipalControlador c){
+
+        btnClientes.addActionListener(e -> c.irClientes(this));
+        btnVehiculos.addActionListener(e -> c.irVehiculos(this));
+        btnOrdenes.addActionListener(e -> c.irOrdenes(this));
+        btnFacturacion.addActionListener(e -> c.irFacturacion(this));
+        btnEstadisticas.addActionListener(e -> c.irEstadisticas(this));
+        btnSalir.addActionListener(e -> c.salir(this));
     }
 
     public JButton getBtnClientes() {

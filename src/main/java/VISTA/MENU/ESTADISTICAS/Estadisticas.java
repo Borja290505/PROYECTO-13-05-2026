@@ -1,5 +1,6 @@
 package VISTA.MENU.ESTADISTICAS;
 
+import CONTROLADOR.EstadisticasControlador;
 import VISTA.VentanaBase;
 
 import javax.swing.*;
@@ -68,6 +69,9 @@ public class Estadisticas extends VentanaBase {
         lblSinIva.setText("Total facturado sin IVA: " + sinIva + " €");
         lblIva.setText("IVA total: " + iva + " €");
         lblConIva.setText("Total facturado con IVA: " + conIva + " €");
+    }
+    public void setControlador(EstadisticasControlador c){
+        btnVolver.addActionListener(e -> c.volver(this));
     }
 
     public JButton getBtnVolver() {

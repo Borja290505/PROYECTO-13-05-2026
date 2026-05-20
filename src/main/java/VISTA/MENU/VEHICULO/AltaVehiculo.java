@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import CONTROLADOR.VehiculoControlador;
 import MODELO.Cliente;
 import VISTA.VentanaBase;
 
@@ -95,6 +96,13 @@ public class AltaVehiculo extends VentanaBase {
 
         setVisible(true);
     }
+    public void setControlador(VehiculoControlador c){
+
+        btnBuscarCliente.addActionListener(e -> c.buscarCliente(this));
+        btnGuardar.addActionListener(e -> c.guardarVehiculo(this));
+        btnVolver.addActionListener(e -> c.volverMenu(this));
+    }
+
 
     // =========================
     // GETTERS PARA EL CONTROLADOR

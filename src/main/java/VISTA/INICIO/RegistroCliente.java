@@ -12,6 +12,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import CONTROLADOR.LoginControlador;
 import MODELO.Cliente;
 import VISTA.VentanaBase;
 
@@ -59,7 +60,6 @@ public class RegistroCliente extends VentanaBase {
         txtContraseña = new JPasswordField();
         formulario.add(txtContraseña);
 
-        // ✅ SCROLL AQUÍ
         JScrollPane scroll = new JScrollPane(formulario);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
@@ -98,6 +98,11 @@ public class RegistroCliente extends VentanaBase {
         c.setDireccion(txtDireccion.getText());
         c.setContraseña(new String(txtContraseña.getPassword()));
         return c;
+    }
+    public void setControlador(LoginControlador c){
+
+        btnRegistrar.addActionListener(e -> c.registrarCliente(this));
+        btnVolver.addActionListener(e -> c.volverLogin(this));
     }
 
     public void mostrarMensaje(String mensaje) {

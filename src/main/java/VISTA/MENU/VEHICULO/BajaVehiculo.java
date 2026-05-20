@@ -1,5 +1,6 @@
 package VISTA.MENU.VEHICULO;
 
+import CONTROLADOR.VehiculoControlador;
 import VISTA.VentanaBase;
 
 import javax.swing.*;
@@ -50,6 +51,11 @@ public class BajaVehiculo extends VentanaBase {
         add(panelBotones, BorderLayout.SOUTH);
 
         setVisible(true);
+    }
+    public void setControlador(VehiculoControlador c){
+
+        btnEliminar.addActionListener(e -> c.eliminarVehiculo(this));
+        btnVolver.addActionListener(e -> c.volverMenu(this));
     }
 
     public JButton getBtnEliminar() {

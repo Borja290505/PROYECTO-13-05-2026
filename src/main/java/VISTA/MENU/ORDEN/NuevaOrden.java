@@ -1,5 +1,6 @@
 package VISTA.MENU.ORDEN;
 
+import CONTROLADOR.OrdenRepControlador;
 import MODELO.OrdenReparacion;
 import MODELO.Vehiculo;
 import VISTA.VentanaBase;
@@ -107,6 +108,12 @@ public class NuevaOrden extends VentanaBase {
         // Acción volver
         btnVolver.addActionListener(e -> dispose());
     }
+    public void setControlador(OrdenRepControlador c){
+
+        btnCrear.addActionListener(e -> c.crearOrden(this));
+        btnVolver.addActionListener(e -> c.volverMenu(this));
+    }
+
 
     // =========================
     // CONSTRUIR ORDEN

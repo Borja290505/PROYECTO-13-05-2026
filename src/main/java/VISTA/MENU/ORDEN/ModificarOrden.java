@@ -1,5 +1,6 @@
 package VISTA.MENU.ORDEN;
 
+import CONTROLADOR.OrdenRepControlador;
 import MODELO.OrdenReparacion;
 import VISTA.VentanaBase;
 
@@ -119,6 +120,13 @@ public class ModificarOrden extends VentanaBase {
         btnModificar.setEnabled(editable);
         txtMatricula.setEditable(!editable);
     }
+    public void setControlador(OrdenRepControlador c){
+
+        btnBuscar.addActionListener(e -> c.buscarModificar(this));
+        btnModificar.addActionListener(e -> c.modificarOrden(this));
+        btnVolver.addActionListener(e -> c.volverMenu(this));
+    }
+
 
     public JTextField getTxtMatricula() { return txtMatricula; }
     public JTextArea getTxtObservaciones() { return txtObservaciones; }

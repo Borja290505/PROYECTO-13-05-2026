@@ -1,5 +1,6 @@
 package VISTA.INICIO;
 
+import CONTROLADOR.LoginControlador;
 import VISTA.VentanaBase;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -83,6 +84,42 @@ public class PaginaInicio extends VentanaBase {
         add(panelAbajo, BorderLayout.SOUTH);
 
         setVisible(true);
+    }
+    public void setControlador(LoginControlador c){
+        btnInicioSesion.addActionListener(e -> c.login(this));
+        btnRegistro.addActionListener(e -> c.irRegistro(this));
+    }
+
+    public void setBtnInicioSesion(JButton btnInicioSesion) {
+        this.btnInicioSesion = btnInicioSesion;
+    }
+
+    public void setBtnRegistro(JButton btnRegistro) {
+        this.btnRegistro = btnRegistro;
+    }
+
+    public Font getFuenteBotones() {
+        return fuenteBotones;
+    }
+
+    public void setFuenteBotones(Font fuenteBotones) {
+        this.fuenteBotones = fuenteBotones;
+    }
+
+    public Font getFuenteTexto() {
+        return fuenteTexto;
+    }
+
+    public void setFuenteTexto(Font fuenteTexto) {
+        this.fuenteTexto = fuenteTexto;
+    }
+
+    public void setTxtPassword(JPasswordField txtPassword) {
+        this.txtPassword = txtPassword;
+    }
+
+    public void setTxtUsuario(JTextField txtUsuario) {
+        this.txtUsuario = txtUsuario;
     }
 
     public JButton getBtnRegistro() { return btnRegistro; }

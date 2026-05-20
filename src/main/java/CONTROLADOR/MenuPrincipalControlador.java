@@ -1,61 +1,79 @@
 package CONTROLADOR;
 
-import MODELO.OrdenReparacion;
 import VISTA.MENU.PRINCIPAL.MenuPrincipal;
 
 import javax.swing.*;
 
 public class MenuPrincipalControlador {
 
+    // =========================
+    // CONSTRUCTOR
+    // =========================
     public MenuPrincipalControlador() {
         abrirMenu();
     }
 
+    // =========================
+    // ABRIR MENÚ
+    // =========================
     private void abrirMenu() {
 
         MenuPrincipal menu = new MenuPrincipal();
+        menu.setControlador(this);
+    }
 
-        menu.getBtnClientes().addActionListener(e -> {
-            menu.dispose();
-            new ClienteControlador().abrirMenuCliente();
-        });
+    // =========================
+    // NAVEGACIÓN
+    // =========================
+    public void irClientes(MenuPrincipal vista) {
+        vista.dispose();
+        new ClienteControlador().abrirMenuCliente();
+    }
 
-        menu.getBtnVehiculos().addActionListener(e -> {
-            menu.dispose();
-            new VehiculoControlador().abrirMenuVehiculo();
-        });
+    public void irVehiculos(MenuPrincipal vista) {
+        vista.dispose();
+        new VehiculoControlador().abrirMenuVehiculo();
+    }
 
-        menu.getBtnOrdenes().addActionListener(e -> {
-            menu.dispose();
-            new OrdenRepControlador().abrirMenuOrdenes();
-        });
+    public void irOrdenes(MenuPrincipal vista) {
+        vista.dispose();
+        new OrdenRepControlador().abrirMenuOrdenes();
+    }
 
-        menu.getBtnFacturacion().addActionListener(e -> {
-            menu.dispose();
-            new FacturacionControlador().abrirMenuFacturacion();
-        });
+    public void irFacturacion(MenuPrincipal vista) {
+        vista.dispose();
+        new FacturacionControlador().abrirMenuFacturacion();
+    }
 
-        menu.getBtnEstadisticas().addActionListener(e -> {
-            menu.dispose();
-            new EstadisticasControlador().abrirMenuEstadisticas();
-        });
+    public void irEstadisticas(MenuPrincipal vista) {
+        vista.dispose();
+        new EstadisticasControlador().abrirMenuEstadisticas();
+    }
 
-        menu.getBtnSalir().addActionListener(e -> {
+    // =========================
+    // SALIR
+    // =========================
+    public void salir(MenuPrincipal vista) {
 
-            String[] opciones = {"Cerrar sesión", "Salir del programa", "Cancelar"};
-            int op = JOptionPane.showOptionDialog(menu,
-                    "¿Qué deseas hacer?",
-                    "Salir",
-                    JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null, opciones, opciones[0]);
+        String[] opciones = {"Cerrar sesión", "Salir del programa", "Cancelar"};
 
-            if (op == 0) {
-                menu.dispose();
-                new LoginControlador();
-            } else if (op == 1) {
-                System.exit(0);
-            }
-        });
+        int op = JOptionPane.showOptionDialog(
+                vista,
+                "¿Qué deseas hacer?",
+                "Salir",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones,
+                opciones[0]
+        );
+
+        if (op == 0) {
+            vista.dispose();
+            new LoginControlador();
+        } else if (op == 1) {
+            System.exit(0);
+        }
+        // Cancelar → no hace nada
     }
 }

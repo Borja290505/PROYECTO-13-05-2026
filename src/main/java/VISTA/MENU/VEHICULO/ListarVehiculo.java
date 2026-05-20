@@ -1,5 +1,6 @@
 package VISTA.MENU.VEHICULO;
 
+import CONTROLADOR.VehiculoControlador;
 import MODELO.Vehiculo;
 import VISTA.VentanaBase;
 
@@ -109,6 +110,12 @@ public class ListarVehiculo extends VentanaBase {
             modeloTabla.addRow(fila);
         }
     }
+    public void setControlador(VehiculoControlador c){
+
+        btnBuscar.addActionListener(e -> c.buscarVehiculo(this));
+        btnVolver.addActionListener(e -> c.volverMenu(this));
+    }
+
 
     // =========================
     // GETTERS

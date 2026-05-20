@@ -1,5 +1,6 @@
 package VISTA.MENU.CLIENTE;
 
+import CONTROLADOR.ClienteControlador;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -20,14 +21,11 @@ public class ModificarCliente extends VentanaBase {
         setLayout(new BorderLayout(10, 10));
         Font fuenteBotones = new Font("Arial", Font.BOLD, 14);
 
-
-
         JLabel lblTitulo = new JLabel("Gestión de Modificaciones de Clientes");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
         lblTitulo.setHorizontalAlignment(JLabel.CENTER);
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
         add(lblTitulo, BorderLayout.NORTH);
-
 
         JPanel formulario = new JPanel(new GridLayout(7, 2, 10, 10));
         formulario.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
@@ -62,7 +60,6 @@ public class ModificarCliente extends VentanaBase {
 
         add(formulario, BorderLayout.CENTER);
 
-
         JPanel panelBotones = new JPanel();
         btnModificar = new JButton("Guardar Cambios");
         btnModificar.setFont(fuenteBotones);
@@ -73,14 +70,24 @@ public class ModificarCliente extends VentanaBase {
         panelBotones.add(btnVolver);
         add(panelBotones, BorderLayout.SOUTH);
 
-        // Bloqueamos los campos hasta buscar
+        // Bloqueamos campos
         setCamposEditables(false);
 
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
+    // ✅ CLAVE → MÉTODO PARA EL CONTROLADOR
+    public void setControlador(ClienteControlador c){
 
+        btnBuscar.addActionListener(e -> c.buscarClienteModificar(this));
+        btnModificar.addActionListener(e -> c.modificarCliente(this));
+        btnVolver.addActionListener(e -> c.volverMenu(this));
+    }
+
+    // =========================
+    // MÉTODOS DE APOYO
+    // =========================
     public void rellenarCampos(Cliente c) {
         txtNombre.setText(c.getNombre());
         txtApellidos.setText(c.getApellidos());
@@ -98,6 +105,9 @@ public class ModificarCliente extends VentanaBase {
         btnModificar.setEnabled(estado);
     }
 
+    // =========================
+    // GETTERS
+    // =========================
     public JTextField getTxtDni() { return txtDni; }
     public JTextField getTxtNombre() { return txtNombre; }
     public JTextField getTxtApellidos() { return txtApellidos; }

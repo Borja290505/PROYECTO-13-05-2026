@@ -1,5 +1,6 @@
 package VISTA.MENU.ORDEN;
 
+import CONTROLADOR.OrdenRepControlador;
 import VISTA.VentanaBase;
 
 import javax.swing.*;
@@ -82,6 +83,11 @@ public class FinalizarOrden extends VentanaBase {
 
         // Acción volver
         btnVolver.addActionListener(e -> dispose());
+    }
+    public void setControlador(OrdenRepControlador c){
+
+        btnFinalizar.addActionListener(e -> c.finalizarOrden(this));
+        btnVolver.addActionListener(e -> c.volverMenu(this));
     }
 
     // =========================

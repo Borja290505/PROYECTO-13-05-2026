@@ -1,5 +1,6 @@
 package VISTA.MENU.CLIENTE;
 
+import CONTROLADOR.ClienteControlador;
 import VISTA.VentanaBase;
 
 import javax.swing.*;
@@ -56,6 +57,15 @@ public class MenuCliente extends VentanaBase {
         add(panelVolver, BorderLayout.SOUTH);
 
         setVisible(true);
+    }
+
+    // ✅ IMPORTANTE → MÉTODO PARA EL CONTROLADOR
+    public void setControlador(ClienteControlador c) {
+
+        btnAltaCliente.addActionListener(e -> c.irAlta(this));
+        btnListarCliente.addActionListener(e -> c.irLista(this));
+        btnModificarCliente.addActionListener(e -> c.irModificar(this));
+        btnVolver.addActionListener(e -> c.volverMenu(this));
     }
 
     // ===== GETTERS (OBLIGATORIOS) =====

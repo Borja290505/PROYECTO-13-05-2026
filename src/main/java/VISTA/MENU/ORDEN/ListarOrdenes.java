@@ -1,5 +1,6 @@
 package VISTA.MENU.ORDEN;
 
+import CONTROLADOR.OrdenRepControlador;
 import MODELO.OrdenReparacion;
 import VISTA.VentanaBase;
 
@@ -84,7 +85,10 @@ public class ListarOrdenes extends VentanaBase {
             });
         }
     }
+    public void setControlador(OrdenRepControlador c){
 
+        btnVolver.addActionListener(e -> c.volverMenu(this));
+    }
     // =========================
     // GETTERS
     // =========================

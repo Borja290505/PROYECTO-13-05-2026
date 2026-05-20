@@ -9,100 +9,117 @@ import VISTA.INICIO.RegistroCliente;
 import javax.swing.*;
 
 import static UTIL.Validaciones.*;
-import static UTIL.Validaciones.emailValido;
-import static UTIL.Validaciones.telefonoValido;
 
 public class LoginControlador {
 
     private PaginaInicio vista;
     private ClienteDAO clienteDAO;
 
+    // =========================
+    // CONSTRUCTOR
+    // =========================
     public LoginControlador() {
         clienteDAO = new ClienteDAO();
         vista = new PaginaInicio();
-        configurarEventos();
+        vista.setControlador(this);
     }
 
-    private void configurarEventos() {
+    // =========================
+    // LOGIN
+    // =========================
+    public void login(PaginaInicio vista) {
 
-        vista.getBtnInicioSesion().addActionListener(e -> {
+        String usuario = vista.getTxtUsuario().getText().trim().toUpperCase();
+        String pass = new String(vista.getTxtPassword().getPassword()).trim();
 
-            String usuario = vista.getTxtUsuario().getText().trim().toUpperCase();
-            String pass = new String(vista.getTxtPassword().getPassword()).trim();
+        boolean ok = clienteDAO.loginCliente(usuario, pass);
+        LoginApp.registrarLogin(usuario, ok);
 
-            boolean ok = clienteDAO.loginCliente(usuario, pass);
-            LoginApp.registrarLogin(usuario, ok);
-
-            if (ok) {
-                vista.dispose();
-                new MenuPrincipalControlador();
-            } else {
-                JOptionPane.showMessageDialog(vista,
-                        "Usuario o contraseña incorrectos");
-            }
-        });
-
-        vista.getBtnRegistro().addActionListener(e -> {
+        if (ok) {
             vista.dispose();
-            abrirRegistro();
-        });
+            new MenuPrincipalControlador();
+        } else {
+            JOptionPane.showMessageDialog(vista,
+                    "Usuario o contraseña incorrectos");
+        }
     }
 
+    // =========================
+    // IR A REGISTRO
+    // =========================
+    public void irRegistro(PaginaInicio vista) {
+        vista.dispose();
+        abrirRegistro();
+    }
+
+    // =========================
+    // REGISTRO CLIENTE
+    // =========================
     private void abrirRegistro() {
 
         RegistroCliente registroVista = new RegistroCliente();
+        registroVista.setControlador(this);
+    }
 
-        registroVista.getBtnRegistrar().addActionListener(e -> {
-            try {
-                Cliente c = registroVista.getClienteFormulario();
-                c.setFechaAlta(java.time.LocalDateTime.now());
+    public void registrarCliente(RegistroCliente vista) {
 
-                String dni = registroVista.getTxtDni().getText().trim().toUpperCase();
-                String nombre = registroVista.getTxtNombre().getText().trim();
-                String apellidos = registroVista.getTxtApellidos().getText().trim();
-                String email = registroVista.getTxtEmail().getText().trim();
-                String telefono = registroVista.getTxtTelefono().getText().trim();
+        try {
+            Cliente c = vista.getClienteFormulario();
+            c.setFechaAlta(java.time.LocalDateTime.now());
 
-                if (!dniValido(dni)) {
-                    JOptionPane.showMessageDialog(vista, "El DNI tiene que tener formato 12345678A");
-                    return;
-                }
+            String dni = vista.getTxtDni().getText().trim().toUpperCase();
+            String nombre = vista.getTxtNombre().getText().trim();
+            String apellidos = vista.getTxtApellidos().getText().trim();
+            String email = vista.getTxtEmail().getText().trim();
+            String telefono = vista.getTxtTelefono().getText().trim();
 
-                if (!nombreValido(nombre)) {
-                    JOptionPane.showMessageDialog(vista, "El nombre no puede contener numeros");
-                    return;
-                }
-                if (!apellidoValido(apellidos) ) {
-                    JOptionPane.showMessageDialog(vista, "El apellido no puede contener numeros");
-                    return;
-                }
-                if (!emailValido(email)) {
-                    JOptionPane.showMessageDialog(vista, "El email tiene que tener formato ****@****.****");
-                    return;
-                }
-
-                if(!telefonoValido(telefono)){
-                    JOptionPane.showMessageDialog(vista,"El telefo tiene que estar formado por 9 numeros");
-                }
-
-                if (clienteDAO.existeClientePorDni(dni)) {
-                    JOptionPane.showMessageDialog(vista, "Cliente ya existente");
-                    return;
-                }
-
-                clienteDAO.insertarCliente(c);
-                registroVista.mostrarMensaje("Cliente registrado correctamente");
-                registroVista.dispose();
-                new LoginControlador();
-
-            } catch (Exception ex) {
-                registroVista.mostrarMensaje("Error al registrar cliente");
+            if (!dniValido(dni)) {
+                JOptionPane.showMessageDialog(vista, "El DNI debe tener formato 12345678A");
+                return;
             }
-        });
 
-        registroVista.getBtnVolver().addActionListener(e -> {
-            registroVista.dispose();
-            new ClienteControlador();
-        });
+            if (!nombreValido(nombre)) {
+                JOptionPane.showMessageDialog(vista, "El nombre no puede tener números");
+                return;
+            }
+
+            if (!apellidoValido(apellidos)) {
+                JOptionPane.showMessageDialog(vista, "El apellido no puede tener números");
+                return;
+            }
+
+            if (!emailValido(email)) {
+                JOptionPane.showMessageDialog(vista, "Email inválido");
+                return;
+            }
+
+            if (!telefonoValido(telefono)) {
+                JOptionPane.showMessageDialog(vista, "El teléfono debe tener 9 cifras");
+                return;
+            }
+
+            if (clienteDAO.existeClientePorDni(dni)) {
+                JOptionPane.showMessageDialog(vista, "Cliente ya existente");
+                return;
+            }
+
+            clienteDAO.insertarCliente(c);
+
+            vista.mostrarMensaje("Cliente registrado correctamente");
+
+            vista.dispose();
+            new LoginControlador();
+
+        } catch (Exception ex) {
+            vista.mostrarMensaje("Error al registrar cliente");
+        }
+    }
+
+    // =========================
+    // VOLVER DESDE REGISTRO
+    // =========================
+    public void volverLogin(RegistroCliente vista) {
+        vista.dispose();
+        new LoginControlador();
     }
 }

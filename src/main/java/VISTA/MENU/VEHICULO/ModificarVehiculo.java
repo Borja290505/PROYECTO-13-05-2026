@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.*;
+
+import CONTROLADOR.VehiculoControlador;
 import MODELO.Cliente;
 import MODELO.Vehiculo;
 import VISTA.VentanaBase;
@@ -107,6 +109,12 @@ public class ModificarVehiculo extends VentanaBase {
         txtKms.setEditable(estado);
         comboClientes.setEnabled(estado);
         btnModificar.setEnabled(estado);
+    }
+    public void setControlador(VehiculoControlador c){
+
+        btnBuscar.addActionListener(e -> c.buscarModificar(this));
+        btnModificar.addActionListener(e -> c.modificarVehiculo(this));
+        btnVolver.addActionListener(e -> c.volverMenu(this));
     }
 
 

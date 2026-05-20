@@ -1,5 +1,6 @@
 package VISTA.MENU.CLIENTE;
 
+import CONTROLADOR.ClienteControlador;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -24,7 +25,6 @@ public class AltaCliente extends VentanaBase {
         lblTitulo.setHorizontalAlignment(JLabel.CENTER);
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
         add(lblTitulo, BorderLayout.NORTH);
-
 
         JPanel formulario = new JPanel(new GridLayout(6, 2, 10, 10));
         formulario.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
@@ -55,7 +55,6 @@ public class AltaCliente extends VentanaBase {
 
         add(formulario, BorderLayout.CENTER);
 
-
         JPanel panelBotones = new JPanel();
         btnGuardar = new JButton("Guardar");
         btnGuardar.setFont(fuenteBotones);
@@ -67,7 +66,16 @@ public class AltaCliente extends VentanaBase {
         add(panelBotones, BorderLayout.SOUTH);
     }
 
+    // ✅ MÉTODO CLAVE (LO QUE TE PEDÍA EL PROFESOR)
+    public void setControlador(ClienteControlador c){
 
+        btnGuardar.addActionListener(e -> c.guardarCliente(this));
+        btnVolver.addActionListener(e -> c.volverMenu(this));
+    }
+
+    // =========================
+    // DATOS DEL FORMULARIO
+    // =========================
     public Cliente getClienteFormulario() {
 
         Cliente c = new Cliente();
@@ -80,62 +88,25 @@ public class AltaCliente extends VentanaBase {
         c.setContraseña("");
         return c;
     }
+
+    // ===== GETTERS =====
     public JButton getBtnGuardar() { return btnGuardar; }
     public JButton getBtnVolver() { return btnVolver; }
 
-    public void setBtnGuardar(JButton btnGuardar) {
-        this.btnGuardar = btnGuardar;
-    }
+    public JTextField getTxtApellidos() { return txtApellidos; }
+    public JTextField getTxtDireccion() { return txtDireccion; }
+    public JTextField getTxtDni() { return txtDni; }
+    public JTextField getTxtEmail() { return txtEmail; }
+    public JTextField getTxtNombre() { return txtNombre; }
+    public JTextField getTxtTelefono() { return txtTelefono; }
 
-    public void setBtnVolver(JButton btnVolver) {
-        this.btnVolver = btnVolver;
-    }
-
-    public JTextField getTxtApellidos() {
-        return txtApellidos;
-    }
-
-    public void setTxtApellidos(JTextField txtApellidos) {
-        this.txtApellidos = txtApellidos;
-    }
-
-    public JTextField getTxtDireccion() {
-        return txtDireccion;
-    }
-
-    public void setTxtDireccion(JTextField txtDireccion) {
-        this.txtDireccion = txtDireccion;
-    }
-
-    public JTextField getTxtDni() {
-        return txtDni;
-    }
-
-    public void setTxtDni(JTextField txtDni) {
-        this.txtDni = txtDni;
-    }
-
-    public JTextField getTxtEmail() {
-        return txtEmail;
-    }
-
-    public void setTxtEmail(JTextField txtEmail) {
-        this.txtEmail = txtEmail;
-    }
-
-    public JTextField getTxtNombre() {
-        return txtNombre;
-    }
-
-    public void setTxtNombre(JTextField txtNombre) {
-        this.txtNombre = txtNombre;
-    }
-
-    public JTextField getTxtTelefono() {
-        return txtTelefono;
-    }
-
-    public void setTxtTelefono(JTextField txtTelefono) {
-        this.txtTelefono = txtTelefono;
-    }
+    // (estos setters realmente no los necesitas, pero los dejo porque los tenías)
+    public void setBtnGuardar(JButton btnGuardar) { this.btnGuardar = btnGuardar; }
+    public void setBtnVolver(JButton btnVolver) { this.btnVolver = btnVolver; }
+    public void setTxtApellidos(JTextField txtApellidos) { this.txtApellidos = txtApellidos; }
+    public void setTxtDireccion(JTextField txtDireccion) { this.txtDireccion = txtDireccion; }
+    public void setTxtDni(JTextField txtDni) { this.txtDni = txtDni; }
+    public void setTxtEmail(JTextField txtEmail) { this.txtEmail = txtEmail; }
+    public void setTxtNombre(JTextField txtNombre) { this.txtNombre = txtNombre; }
+    public void setTxtTelefono(JTextField txtTelefono) { this.txtTelefono = txtTelefono; }
 }

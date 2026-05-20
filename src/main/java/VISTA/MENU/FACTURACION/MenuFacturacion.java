@@ -1,5 +1,6 @@
 package VISTA.MENU.FACTURACION;
 
+import CONTROLADOR.FacturacionControlador;
 import MODELO.Factura;
 import VISTA.VentanaBase;
 
@@ -104,6 +105,11 @@ public class MenuFacturacion extends VentanaBase {
             };
             modeloTabla.addRow(fila);
         }
+    }
+    public void setControlador(FacturacionControlador c){
+
+        btnBuscar.addActionListener(e -> c.buscar(this));
+        btnVolver.addActionListener(e -> c.volver(this));
     }
 
     // GETTERS

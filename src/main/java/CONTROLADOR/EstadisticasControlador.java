@@ -5,9 +5,13 @@ import VISTA.MENU.ESTADISTICAS.Estadisticas;
 
 public class EstadisticasControlador {
 
+    // =========================
+    // ABRIR MENÚ ESTADÍSTICAS
+    // =========================
     public void abrirMenuEstadisticas() {
 
         Estadisticas vista = new Estadisticas();
+        vista.setControlador(this);
 
         vista.cargarDatos(
                 EstadisticasDAO.totalClientes(),
@@ -16,10 +20,13 @@ public class EstadisticasControlador {
                 EstadisticasDAO.totalIva(),
                 EstadisticasDAO.totalConIva()
         );
+    }
 
-        vista.getBtnVolver().addActionListener(e -> {
-            vista.dispose();
-            new MenuPrincipalControlador();
-        });
+    // =========================
+    // VOLVER AL MENÚ PRINCIPAL
+    // =========================
+    public void volver(Estadisticas vista) {
+        vista.dispose();
+        new MenuPrincipalControlador();
     }
 }

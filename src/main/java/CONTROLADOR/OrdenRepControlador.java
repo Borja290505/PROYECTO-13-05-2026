@@ -20,37 +20,42 @@ public class OrdenRepControlador {
     private OrdenReparacion ordenActual;
 
     // =========================
-    // MENÚ ÓRDENES
+    // ABRIR MENÚ ÓRDENES
     // =========================
     public void abrirMenuOrdenes() {
 
         MenuOrden menu = new MenuOrden();
-
-        menu.getBtnNuevaOrden().addActionListener(e -> {
-            menu.dispose();
-            abrirNuevaOrden();
-        });
-
-        menu.getBtnFinalizarOrden().addActionListener(e -> {
-            menu.dispose();
-            abrirFinalizarOrden();
-        });
-
-        menu.getBtnListarOrdenes().addActionListener(e -> {
-            menu.dispose();
-            abrirListarOrdenes();
-        });
-
-        menu.getBtnModificarOrden().addActionListener(e -> {
-            menu.dispose();
-            abrirModificarOrden();
-        });
-
-        menu.getBtnVolver().addActionListener(e -> {
-            menu.dispose();
-            new MenuPrincipalControlador();
-        });
+        menu.setControlador(this);
     }
+
+    // =========================
+    // NAVEGACIÓN
+    // =========================
+    public void irNueva(MenuOrden vista) {
+        vista.dispose();
+        abrirNuevaOrden();
+    }
+
+    public void irFinalizar(MenuOrden vista) {
+        vista.dispose();
+        abrirFinalizarOrden();
+    }
+
+    public void irLista(MenuOrden vista) {
+        vista.dispose();
+        abrirListarOrdenes();
+    }
+
+    public void irModificar(MenuOrden vista) {
+        vista.dispose();
+        abrirModificarOrden();
+    }
+
+    public void volverMenu(JFrame vista) {
+        vista.dispose();
+        new MenuPrincipalControlador();
+    }
+
 
     // =========================
     // NUEVA ORDEN
@@ -58,82 +63,70 @@ public class OrdenRepControlador {
     private void abrirNuevaOrden() {
 
         NuevaOrden vista = new NuevaOrden();
+        vista.setControlador(this);
+    }
 
+    public void crearOrden(NuevaOrden vista) {
 
-        vista.getBtnCrear().addActionListener(e -> {
+        String matricula = vista.getTxtMatricula().getText().trim().toUpperCase();
+        String kms = vista.getTxtKm().getText().trim();
+        String precio = vista.getTxtPrecio().getText().trim();
 
-            String matricula = vista.getTxtMatricula()
-                    .getText().trim().toUpperCase();
-            String kms = vista.getTxtKm().getText().trim();
-            String precio = vista.getTxtPrecio().getText().trim();
+        if (matricula.isEmpty() || kms.isEmpty() || precio.isEmpty()) {
+            JOptionPane.showMessageDialog(vista,
+                    "Matrícula, KM y precio son obligatorios");
+            return;
+        }
 
-            // 1️⃣ Campos obligatorios
-            if (matricula.isEmpty() || kms.isEmpty() || precio.isEmpty()) {
-                JOptionPane.showMessageDialog(vista,
-                        "Matrícula, KM y precio son obligatorios",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+        if (!matriculaValida(matricula)) {
+            JOptionPane.showMessageDialog(vista,
+                    "Formato matrícula incorrecto (1234ABC)");
+            return;
+        }
 
-            // 2️⃣ Validaciones con TU clase
-            if (!matriculaValida(matricula)) {
-                JOptionPane.showMessageDialog(vista,
-                        "Formato de matrícula incorrecto (1234ABC)");
-                return;
-            }
+        if (!kmsValido(kms)) {
+            JOptionPane.showMessageDialog(vista,
+                    "KM inválidos");
+            return;
+        }
 
-            if (!kmsValido(kms)) {
-                JOptionPane.showMessageDialog(vista,
-                        "Los KM deben ser un número válido");
-                return;
-            }
+        double precioNum;
+        try {
+            precioNum = Double.parseDouble(precio);
+            if (precioNum < 0) throw new NumberFormatException();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(vista,
+                    "Precio inválido");
+            return;
+        }
 
-            double precioNum;
-            try {
-                precioNum = Double.parseDouble(precio);
-                if (precioNum < 0) throw new NumberFormatException();
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(vista,
-                        "El precio debe ser un número positivo");
-                return;
-            }
+        Vehiculo vehiculo = VehiculoDAO.buscarPorMatricula(matricula);
 
-            // 3️⃣ Vehículo
-            Vehiculo vehiculo = VehiculoDAO.buscarPorMatricula(matricula);
-            if (vehiculo == null) {
-                JOptionPane.showMessageDialog(vista,
-                        "No existe ningún vehículo con esa matrícula");
-                return;
-            }
+        if (vehiculo == null) {
+            JOptionPane.showMessageDialog(vista,
+                    "Vehículo no encontrado");
+            return;
+        }
 
-            // 4️⃣ Orden abierta
-            if (OrdenReparacionDAO.existeOrdenAbierta(matricula)) {
-                JOptionPane.showMessageDialog(vista,
-                        "Este vehículo ya tiene una orden ABIERTA");
-                return;
-            }
+        if (OrdenReparacionDAO.existeOrdenAbierta(matricula)) {
+            JOptionPane.showMessageDialog(vista,
+                    "Ya existe una orden abierta");
+            return;
+        }
 
-            // 5️⃣ Crear orden
-            OrdenReparacion orden = vista.getOrdenFormulario(vehiculo);
-            int id = OrdenReparacionDAO.insertarOrden(orden);
+        OrdenReparacion orden = vista.getOrdenFormulario(vehiculo);
 
-            if (id > 0) {
-                JOptionPane.showMessageDialog(vista,
-                        "Orden creada correctamente");
-                vista.dispose();
-                abrirMenuOrdenes();
-            } else {
-                JOptionPane.showMessageDialog(vista,
-                        "Error al crear la orden");
-            }
-        });
+        int id = OrdenReparacionDAO.insertarOrden(orden);
 
-
-        vista.getBtnVolver().addActionListener(e -> {
+        if (id > 0) {
+            JOptionPane.showMessageDialog(vista,
+                    "Orden creada correctamente");
             vista.dispose();
             abrirMenuOrdenes();
-        });
+        } else {
+            JOptionPane.showMessageDialog(vista,
+                    "Error al crear la orden");
+        }
     }
 
     // =========================
@@ -142,103 +135,80 @@ public class OrdenRepControlador {
     private void abrirFinalizarOrden() {
 
         FinalizarOrden vista = new FinalizarOrden();
+        vista.setControlador(this);
+    }
 
-        vista.getBtnFinalizar().addActionListener(e -> {
+    public void finalizarOrden(FinalizarOrden vista) {
 
-            // ✅ Evitar doble ejecución
-            vista.getBtnFinalizar().setEnabled(false);
+        String matricula = vista.getTxtMatricula().getText().trim().toUpperCase();
+        String observaciones = vista.getTxtObservaciones().getText().trim();
 
-            String matricula = vista.getTxtMatricula()
-                    .getText()
-                    .trim()
-                    .toUpperCase();
-
-            String observaciones = vista.getTxtObservaciones().getText().trim();
-
-            if (matricula.isEmpty()) {
-                JOptionPane.showMessageDialog(vista,
-                        "Introduce una matrícula");
-                vista.getBtnFinalizar().setEnabled(true);
-                return;
-            }
-
-            // ✅ 1. Buscar SOLO la orden ABIERTA
-            OrdenReparacion orden =
-                    OrdenReparacionDAO.buscarOrdenAbiertaPorMatricula(matricula);
-
-            if (orden == null) {
-                JOptionPane.showMessageDialog(vista,
-                        "No existe una orden ABIERTA para esa matrícula");
-                vista.getBtnFinalizar().setEnabled(true);
-                return;
-            }
-
-            int idOrden = orden.getIdOrden();
-
-            // ✅ 2. Comprobar si YA existe factura para esa orden
-            if (FacturaDAO.existeFacturaParaOrden(idOrden)) {
-                JOptionPane.showMessageDialog(vista,
-                        "Esta orden ya tiene una factura asociada");
-                vista.dispose();
-                abrirMenuOrdenes();
-                return;
-            }
-
-            // ✅ 3. Finalizar orden en BD
-            int resultado = OrdenReparacionDAO.finalizarOrdenPorMatricula(
-                    matricula,
-                    observaciones
-            );
-
-            if (resultado == -1) {
-                JOptionPane.showMessageDialog(vista,
-                        "Error al cerrar la orden");
-                vista.getBtnFinalizar().setEnabled(true);
-                return;
-            }
-
-            // ✅ 4. Crear factura (usando datos ya obtenidos)
-            double subtotal = orden.getPrecio();
-            double iva = Math.round(subtotal * 0.21 * 100.0) / 100.0;
-            double total = Math.round((subtotal + iva) * 100.0) / 100.0;
-
-            Factura factura = new Factura();
-            factura.setFechaFactura(LocalDate.now());
-            factura.setSubtotal(subtotal);
-            factura.setIva(iva);
-            factura.setTotal(total);
-            factura.setIdOrden(idOrden);
-
-            FacturaDAO.insertarFactura(factura);
-
+        if (matricula.isEmpty()) {
             JOptionPane.showMessageDialog(vista,
-                    "Orden finalizada y factura creada correctamente");
+                    "Introduce una matrícula");
+            return;
+        }
 
+        OrdenReparacion orden =
+                OrdenReparacionDAO.buscarOrdenAbiertaPorMatricula(matricula);
+
+        if (orden == null) {
+            JOptionPane.showMessageDialog(vista,
+                    "No hay orden abierta");
+            return;
+        }
+
+        int idOrden = orden.getIdOrden();
+
+        if (FacturaDAO.existeFacturaParaOrden(idOrden)) {
+            JOptionPane.showMessageDialog(vista,
+                    "Ya tiene factura");
             vista.dispose();
             abrirMenuOrdenes();
-        });
+            return;
+        }
 
-        vista.getBtnVolver().addActionListener(e -> {
-            vista.dispose();
-            abrirMenuOrdenes();
-        });
+        int resultado = OrdenReparacionDAO.finalizarOrdenPorMatricula(
+                matricula,
+                observaciones
+        );
+
+        if (resultado == -1) {
+            JOptionPane.showMessageDialog(vista,
+                    "Error al cerrar orden");
+            return;
+        }
+
+        double subtotal = orden.getPrecio();
+        double iva = Math.round(subtotal * 0.21 * 100.0) / 100.0;
+        double total = Math.round((subtotal + iva) * 100.0) / 100.0;
+
+        Factura factura = new Factura();
+        factura.setFechaFactura(LocalDate.now());
+        factura.setSubtotal(subtotal);
+        factura.setIva(iva);
+        factura.setTotal(total);
+        factura.setIdOrden(idOrden);
+
+        FacturaDAO.insertarFactura(factura);
+
+        JOptionPane.showMessageDialog(vista,
+                "Orden finalizada y factura creada");
+
+        vista.dispose();
+        abrirMenuOrdenes();
     }
 
     // =========================
-    // LISTAR ÓRDENES
+    // LISTAR ORDENES
     // =========================
     private void abrirListarOrdenes() {
 
         ListarOrdenes vista = new ListarOrdenes();
-        List<OrdenReparacion> lista =
-                OrdenReparacionDAO.listarOrdenes();
+        vista.setControlador(this);
 
+        List<OrdenReparacion> lista = OrdenReparacionDAO.listarOrdenes();
         vista.cargarDatos(lista);
-
-        vista.getBtnVolver().addActionListener(e -> {
-            vista.dispose();
-            abrirMenuOrdenes();
-        });
     }
 
     // =========================
@@ -247,76 +217,68 @@ public class OrdenRepControlador {
     private void abrirModificarOrden() {
 
         ModificarOrden vista = new ModificarOrden();
+        vista.setControlador(this);
+    }
 
-        vista.getBtnBuscar().addActionListener(e -> {
+    public void buscarModificar(ModificarOrden vista) {
 
-            String matricula = vista.getTxtMatricula()
-                    .getText()
-                    .trim()
-                    .toUpperCase();
+        String matricula = vista.getTxtMatricula().getText().trim().toUpperCase();
 
-            if (matricula.isEmpty()) {
-                JOptionPane.showMessageDialog(vista,
-                        "Introduce una matrícula");
-                return;
-            }
+        if (matricula.isEmpty()) {
+            JOptionPane.showMessageDialog(vista,
+                    "Introduce matrícula");
+            return;
+        }
 
-            ordenActual = OrdenReparacionDAO.buscarPorMatricula(matricula);
+        ordenActual = OrdenReparacionDAO.buscarPorMatricula(matricula);
 
-            if (ordenActual == null) {
-                JOptionPane.showMessageDialog(vista,
-                        "No existe ninguna orden para esa matrícula");
-                return;
-            }
+        if (ordenActual == null) {
+            JOptionPane.showMessageDialog(vista,
+                    "Orden no encontrada");
+            return;
+        }
 
-            vista.rellenarCampos(ordenActual);
+        vista.rellenarCampos(ordenActual);
 
-            if ("FINALIZADA".equalsIgnoreCase(ordenActual.getEstado())) {
-                JOptionPane.showMessageDialog(vista,
-                        "Esta orden está finalizada y no se puede modificar");
-                vista.setCamposEditables(false);
-                return;
-            }
-
+        if ("FINALIZADA".equalsIgnoreCase(ordenActual.getEstado())) {
+            JOptionPane.showMessageDialog(vista,
+                    "No se puede modificar");
+            vista.setCamposEditables(false);
+        } else {
             vista.setCamposEditables(true);
-            vista.getTxtMatricula().setEditable(false);
-        });
+        }
+    }
 
-        vista.getBtnModificar().addActionListener(e -> {
+    public void modificarOrden(ModificarOrden vista) {
 
-            if (ordenActual == null) {
+        if (ordenActual == null) {
+            JOptionPane.showMessageDialog(vista,
+                    "Busca una orden primero");
+            return;
+        }
+
+        try {
+            ordenActual.setObservaciones(
+                    vista.getTxtObservaciones().getText()
+            );
+
+            ordenActual.setPrecio(
+                    Double.parseDouble(vista.getTxtPrecio().getText())
+            );
+
+            if (OrdenReparacionDAO.modificarOrden(ordenActual)) {
                 JOptionPane.showMessageDialog(vista,
-                        "Primero debes buscar una orden");
-                return;
+                        "Modificado correctamente");
+                vista.dispose();
+                abrirMenuOrdenes();
+            } else {
+                JOptionPane.showMessageDialog(vista,
+                        "Error al modificar");
             }
 
-            try {
-                ordenActual.setObservaciones(
-                        vista.getTxtObservaciones().getText()
-                );
-                ordenActual.setPrecio(
-                        Double.parseDouble(vista.getTxtPrecio().getText())
-                );
-
-                if (OrdenReparacionDAO.modificarOrden(ordenActual)) {
-                    JOptionPane.showMessageDialog(vista,
-                            "Orden modificada correctamente");
-                    vista.dispose();
-                    abrirMenuOrdenes();
-                } else {
-                    JOptionPane.showMessageDialog(vista,
-                            "Error al modificar la orden");
-                }
-
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(vista,
-                        "Datos incorrectos");
-            }
-        });
-
-        vista.getBtnVolver().addActionListener(e -> {
-            vista.dispose();
-            abrirMenuOrdenes();
-        });
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(vista,
+                    "Datos inválidos");
+        }
     }
 }
